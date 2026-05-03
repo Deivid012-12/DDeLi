@@ -1,0 +1,29 @@
+package co.edu.unbosque.ddeli.entity;
+
+import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+
+@Entity
+public class DetallePedido {
+
+    @Id @GeneratedValue
+    private Long idDetalle;
+
+    private int cantidad;
+    private double precioUnitario;
+    private double subtotal;
+
+    @ManyToOne
+    private Pedido pedido;
+
+    @ManyToOne
+    private Producto producto;
+
+    @ManyToMany
+    private List<OpcionPersonalizacion> opciones;
+}

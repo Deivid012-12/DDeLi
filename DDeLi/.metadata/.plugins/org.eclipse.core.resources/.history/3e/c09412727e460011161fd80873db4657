@@ -1,0 +1,117 @@
+package co.edu.unbosque.ddeli.dto;
+
+import java.util.List;
+import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+
+@Entity
+public class OpcionPersonalizacion {
+
+	@Id
+	@GeneratedValue
+	private Long idOpcion; // falta determinar la secuencia para generar automaticamente el id
+
+	private String nombre;
+	private double costoAdicional;
+
+	@ManyToMany(mappedBy = "opciones")
+	private List<DetallePedidoDTO> detalles;
+
+	public OpcionPersonalizacion() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public OpcionPersonalizacion(Long idOpcion, String nombre, double costoAdicional, List<DetallePedidoDTO> detalles) {
+		super();
+		this.idOpcion = idOpcion;
+		this.nombre = nombre;
+		this.costoAdicional = costoAdicional;
+		this.detalles = detalles;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(costoAdicional, detalles, idOpcion, nombre);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OpcionPersonalizacion other = (OpcionPersonalizacion) obj;
+		return Double.doubleToLongBits(costoAdicional) == Double.doubleToLongBits(other.costoAdicional)
+				&& Objects.equals(detalles, other.detalles) && Objects.equals(idOpcion, other.idOpcion)
+				&& Objects.equals(nombre, other.nombre);
+	}
+
+	/**
+	 * @return the idOpcion
+	 */
+	public Long getIdOpcion() {
+		return idOpcion;
+	}
+
+	/**
+	 * @param idOpcion the idOpcion to set
+	 */
+	public void setIdOpcion(Long idOpcion) {
+		this.idOpcion = idOpcion;
+	}
+
+	/**
+	 * @return the nombre
+	 */
+	public String getNombre() {
+		return nombre;
+	}
+
+	/**
+	 * @param nombre the nombre to set
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	/**
+	 * @return the costoAdicional
+	 */
+	public double getCostoAdicional() {
+		return costoAdicional;
+	}
+
+	/**
+	 * @param costoAdicional the costoAdicional to set
+	 */
+	public void setCostoAdicional(double costoAdicional) {
+		this.costoAdicional = costoAdicional;
+	}
+
+	/**
+	 * @return the detalles
+	 */
+	public List<DetallePedidoDTO> getDetalles() {
+		return detalles;
+	}
+
+	/**
+	 * @param detalles the detalles to set
+	 */
+	public void setDetalles(List<DetallePedidoDTO> detalles) {
+		this.detalles = detalles;
+	}
+
+	@Override
+	public String toString() {
+		return "OpcionPersonalizacion [idOpcion=" + idOpcion + ", nombre=" + nombre + ", costoAdicional="
+				+ costoAdicional + ", detalles=" + detalles + "]";
+	}
+
+}

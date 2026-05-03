@@ -1,0 +1,140 @@
+package co.edu.unbosque.ddeli.dto;
+
+import java.util.Objects;
+
+public class ProductoDTO {
+
+	private Long idProducto;
+	private String nombre;
+	private String descripcion;
+	private double precioBase;
+	private boolean disponibilidad;
+	private CategoriaDTO categoria;
+
+	public ProductoDTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public ProductoDTO(Long idProducto, String nombre, String descripcion, double precioBase, boolean disponibilidad,
+			CategoriaDTO categoria) {
+		super();
+		this.idProducto = idProducto;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.precioBase = precioBase;
+		this.disponibilidad = disponibilidad;
+		this.categoria = categoria;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(categoria, descripcion, disponibilidad, idProducto, nombre, precioBase);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ProductoDTO other = (ProductoDTO) obj;
+		return Objects.equals(categoria, other.categoria) && Objects.equals(descripcion, other.descripcion)
+				&& disponibilidad == other.disponibilidad && Objects.equals(idProducto, other.idProducto)
+				&& Objects.equals(nombre, other.nombre)
+				&& Double.doubleToLongBits(precioBase) == Double.doubleToLongBits(other.precioBase);
+	}
+
+	/**
+	 * @return the idProducto
+	 */
+	public Long getIdProducto() {
+		return idProducto;
+	}
+
+	/**
+	 * @param idProducto the idProducto to set
+	 */
+	public void setIdProducto(Long idProducto) {
+		this.idProducto = idProducto;
+	}
+
+	/**
+	 * @return the nombre
+	 */
+	public String getNombre() {
+		return nombre;
+	}
+
+	/**
+	 * @param nombre the nombre to set
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	/**
+	 * @return the descripcion
+	 */
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	/**
+	 * @param descripcion the descripcion to set
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	/**
+	 * @return the precioBase
+	 */
+	public double getPrecioBase() {
+		return precioBase;
+	}
+
+	/**
+	 * @param precioBase the precioBase to set
+	 */
+	public void setPrecioBase(double precioBase) {
+		this.precioBase = precioBase;
+	}
+
+	/**
+	 * @return the disponibilidad
+	 */
+	public boolean isDisponibilidad() {
+		return disponibilidad;
+	}
+
+	/**
+	 * @param disponibilidad the disponibilidad to set
+	 */
+	public void setDisponibilidad(boolean disponibilidad) {
+		this.disponibilidad = disponibilidad;
+	}
+
+	/**
+	 * @return the categoria
+	 */
+	public CategoriaDTO getCategoria() {
+		return categoria;
+	}
+
+	/**
+	 * @param categoria the categoria to set
+	 */
+	public void setCategoria(CategoriaDTO categoria) {
+		this.categoria = categoria;
+	}
+
+	@Override
+	public String toString() {
+		return "Producto [idProducto=" + idProducto + ", nombre=" + nombre + ", descripcion=" + descripcion
+				+ ", precioBase=" + precioBase + ", disponibilidad=" + disponibilidad + ", categoria=" + categoria
+				+ "]";
+	}
+
+}
