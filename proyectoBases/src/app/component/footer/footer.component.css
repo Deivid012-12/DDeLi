@@ -1,0 +1,19 @@
+.footer {
+  width: 100%;
+  height: 110px;
+  background-color: #000000;
+  color: white;
+  text-align: center;
+  font-size: 14px;
+  z-index: 1000; /*para que se quede fijo*/
+  font-family: 'Press Start 2P', cursive;
+  padding-bottom: 20px !important;
+  padding-top: 20px !important;
+}
+
+.footer span {
+  padding-bottom: 20px;
+  font-family: 'Press Start 2P', cursive;
+  font-weight: bold;
+  color: #ffffff;
+}
