@@ -1,0 +1,63 @@
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 90px;
+
+  background-color: #f5e6d3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 1000; /*para que se quede fijo*/
+  margin-bottom: 0px;
+}
+.topbar {
+  transition: box-shadow 0.3s;
+}
+
+.topbar:hover {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+.topbar-left {
+  margin-right: -100px;
+}
+
+/* Menú centrado */
+.topbar-center {
+  display: flex;
+  gap: 60px;
+  justify-items: center;
+}
+
+.topbar-center a {
+  text-decoration: none;
+  color: #131212;
+  font-weight: 700;
+  transition: 0.3s;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 19px !important;
+}
+
+.topbar-center a:hover {
+  color: #7671d6;
+
+}
+
+/* Iconos derecha */
+.topbar-right {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.topbar-right a i {
+  font-size: 22px !important;
+  color: #131212 !important;
+  cursor: pointer;
+}
+.topbar-right a i:hover {
+  color: #7474e1 !important;
+  cursor: pointer;
+}

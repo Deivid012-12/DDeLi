@@ -1,0 +1,405 @@
+
+/* FONDO */
+.fondo {
+  position: relative;
+
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
+
+  background-image: url("../../../assets/inicio4.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.fondo::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      rgba(255, 192, 203, 0.25),
+      rgba(216, 191, 255, 0.25)
+    );
+
+  backdrop-filter: blur(2px);
+}
+
+/* CONTENEDOR PRINCIPAL */
+.inicio-container {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 80px;
+
+  position: relative;
+  z-index: 2;
+}
+
+/* HERO */
+.hero-text {
+  width: 45%;
+
+  position: relative;
+
+  margin-left: 40px;
+}
+
+.hero-text h1 {
+  font-size: 95px;
+
+  color: white;
+
+  font-family: 'Comic Sans MS', sans-serif;
+
+  line-height: 1;
+
+  margin-top: 10px;
+  margin-bottom: -10px !important;
+
+  text-shadow:
+    0 5px 15px rgba(0,0,0,0.25);
+}
+
+.hero-text p {
+  font-size: 28px;
+
+  color: #fff5fa;
+
+  font-family: 'Comic Sans MS', sans-serif;
+
+  width: 80%;
+
+  line-height: 1.5;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.18);
+  margin-top: 20px !important;
+}
+
+/* ===== ÓVALOS AESTHETIC ===== */
+
+.cake {
+  position: absolute;
+
+  width: 240px;
+  height: 170px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 10px;
+
+  background: rgba(255,255,255,0.80);
+
+  backdrop-filter: blur(5px);
+
+  /* ÓVALO */
+  border-radius: 50%;
+  box-shadow:
+    0 12px 30px rgba(255,255,255,0.6),
+    0 8px 18px rgba(255, 182, 193, 0.25),
+    0 5px 14px rgba(216, 191, 255, 0.2);
+
+  animation: flotar 5s ease-in-out infinite;
+
+  transition: 0.3s ease;
+
+  overflow: hidden;
+
+  z-index: 1;
+}
+
+/* IMAGEN */
+.cake img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  transition: 0.3s ease;
+}
+
+/* HOVER */
+.cake:hover {
+  transform: scale(1.06) rotate(-2deg);
+
+  box-shadow:
+    0 18px 40px rgba(255,255,255,0.75),
+    0 10px 24px rgba(255, 182, 193, 0.35),
+    0 6px 18px rgba(216, 191, 255, 0.3);
+}
+
+.cake:hover img {
+  transform: scale(1.05);
+}
+
+/* CUPCAKE */
+.cake1 {
+  top: -190px;
+  left: 30px;
+
+  width: 220px;
+  height: 160px;
+
+  animation-delay: 0s;
+}
+
+/* TORTA */
+.cake2 {
+  top: 280px;
+  left: 20px;
+
+  width: 260px;
+  height: 180px;
+
+  animation-delay: 1s;
+}
+
+/* DONA */
+.cake3 {
+  top: 220px;
+  left: 470px;
+  width: 190px;
+  height: 140px;
+  animation-delay: 2s;
+}
+
+
+.cake4 {
+  bottom: 310px;
+  left: 500px;
+
+  width: 180px;
+  height: 130px;
+
+  animation-delay: 1.5s;
+}
+
+/* ===== ANIMACIÓN ===== */
+
+@keyframes flotar {
+
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-14px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* CARD */
+.card {
+  position: relative;
+
+  background: rgba(255, 245, 248, 0.40);
+
+  backdrop-filter: blur(12px);
+
+  border-radius: 40px;
+
+  border: 2px solid rgba(255,255,255,0.34);
+
+  box-shadow:
+    0 8px 32px rgba(212, 157, 181, 0.35),
+    0 2px 10px rgba(186, 151, 255, 0.2);
+
+  padding: 100px 32px 20px 32px;
+
+  width: 430px;
+  height: 540px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* LOGO */
+.logo-container {
+  position: absolute;
+
+  top: -90px;
+
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+}
+
+.logo {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 40px !important;
+  margin-top: -30px !important;
+}
+
+/* FORM */
+.form-body {
+  width: 100%;
+
+  margin-top: 60px;
+}
+
+form {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 16px;
+}
+
+/* INPUTS */
+input {
+  width: 80%;
+  height: 55px;
+
+  padding: 12px 18px;
+
+  border-radius: 18px;
+
+  background: rgba(255,255,255,0.95);
+
+  border: 2px solid #d8b4f8;
+
+  font-size: 20px;
+  font-weight: 600;
+
+  color: #6d4c7d;
+
+  font-family: 'Poppins', sans-serif;
+
+  outline: none;
+
+  box-shadow:
+    0 3px 10px rgba(216, 180, 248, 0.35);
+
+  transition: 0.25s ease;
+}
+
+input:focus {
+  border-color: #ffb3c6;
+
+  box-shadow:
+    0 0 0 4px rgba(255, 179, 198, 0.25);
+}
+
+/* BOTÓN */
+button {
+  width: 220px;
+  height: 70px;
+
+  margin-top: 20px;
+
+  border: none;
+
+  border-radius: 25px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffcad4,
+      #e0bbff
+    );
+
+  color: white;
+
+  font-size: 30px;
+  font-weight: bold;
+
+  font-family: 'Fredoka', sans-serif;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 18px rgba(255, 182, 193, 0.45);
+
+  transition: 0.25s ease;
+}
+
+button:hover {
+  transform: translateY(-3px) scale(1.03);
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffb3c6,
+      #d0a2f7
+    );
+}
+
+/* LINKS */
+.link-box {
+  margin-top: 25px;
+
+  text-align: center;
+
+  font-size: 18px;
+
+  font-family: 'Poppins', sans-serif;
+
+  color: #dd04fb;
+}
+
+.link-box span {
+  color: #933e4b;
+}
+
+.link-accent {
+  color: #7101c6;
+
+  font-weight: bold;
+
+  margin-left: 5px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.link-accent:hover {
+  color: #ff8fab;
+}
+
+/* ERROR */
+.error {
+  color: #c95d7b;
+
+  background: rgba(255, 228, 236, 0.8);
+
+  font-weight: bold;
+
+  padding: 8px 12px;
+
+  border-left: 5px solid #ff8fab;
+
+  border-radius: 10px;
+
+  width: 80%;
+
+  box-shadow:
+    0 2px 6px rgba(255, 143, 171, 0.2);
+}
