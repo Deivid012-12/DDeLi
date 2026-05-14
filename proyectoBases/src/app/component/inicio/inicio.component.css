@@ -1,405 +1,230 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* FONDO */
 .fondo {
-  position: relative;
-
   width: 100%;
   height: 100vh;
-
   display: flex;
-  justify-content: center;
-  align-items: center;
-
-  overflow: hidden;
-
-  background-image: url("../../../assets/inicio4.png");
+  background-image: url("../../../assets/inicio3.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.fondo::before {
-  content: "";
-
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
+.login-wrapper {
   width: 100%;
   height: 100%;
-
-  background:
-    linear-gradient(
-      rgba(255, 192, 203, 0.25),
-      rgba(216, 191, 255, 0.25)
-    );
-
-  backdrop-filter: blur(2px);
+  display: flex;
 }
 
-/* CONTENEDOR PRINCIPAL */
-.inicio-container {
-  width: 100%;
-
+/* ── LADO IZQUIERDO ── */
+.login-left {
+  flex: 1;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(3px);            /* ya lo tienes, auméntalo un poco */
+}
 
-  padding: 0 80px;
-
+.left-content {
   position: relative;
   z-index: 2;
+  max-width: 800px;
+}
+.login-left h2 {
+  font-size: 45px;
+  font-weight: 900;
+  color: #630303;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+  font-family: 'Comic Sans MS', sans-serif
 }
 
-/* HERO */
-.hero-text {
-  width: 45%;
-
-  position: relative;
-
-  margin-left: 40px;
+.login-left p {
+  font-size: 25px;
+  color: rgba(101, 6, 6, 0.8);
+  line-height: 1.7;
+  font-family: 'Comic Sans MS', sans-serif
 }
 
-.hero-text h1 {
-  font-size: 95px;
-
-  color: white;
-
-  font-family: 'Comic Sans MS', sans-serif;
-
-  line-height: 1;
-
-  margin-top: 10px;
-  margin-bottom: -10px !important;
-
-  text-shadow:
-    0 5px 15px rgba(0,0,0,0.25);
-}
-
-.hero-text p {
-  font-size: 28px;
-
-  color: #fff5fa;
-
-  font-family: 'Comic Sans MS', sans-serif;
-
-  width: 80%;
-
-  line-height: 1.5;
-
-  text-shadow:
-    0 2px 8px rgba(0,0,0,0.18);
-  margin-top: 20px !important;
-}
-
-/* ===== ÓVALOS AESTHETIC ===== */
-
-.cake {
-  position: absolute;
-
-  width: 240px;
-  height: 170px;
-
+.login-right {
+  width: 480px;
+  flex-shrink: 0;
   display: flex;
-  justify-content: center;
   align-items: center;
-
-  padding: 10px;
-
-  background: rgba(255,255,255,0.80);
-
-  backdrop-filter: blur(5px);
-
-  /* ÓVALO */
-  border-radius: 50%;
-  box-shadow:
-    0 12px 30px rgba(255,255,255,0.6),
-    0 8px 18px rgba(255, 182, 193, 0.25),
-    0 5px 14px rgba(216, 191, 255, 0.2);
-
-  animation: flotar 5s ease-in-out infinite;
-
-  transition: 0.3s ease;
-
-  overflow: hidden;
-
-  z-index: 1;
-}
-
-/* IMAGEN */
-.cake img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: contain;
-
-  transition: 0.3s ease;
-}
-
-/* HOVER */
-.cake:hover {
-  transform: scale(1.06) rotate(-2deg);
-
-  box-shadow:
-    0 18px 40px rgba(255,255,255,0.75),
-    0 10px 24px rgba(255, 182, 193, 0.35),
-    0 6px 18px rgba(216, 191, 255, 0.3);
-}
-
-.cake:hover img {
-  transform: scale(1.05);
-}
-
-/* CUPCAKE */
-.cake1 {
-  top: -190px;
-  left: 30px;
-
-  width: 220px;
-  height: 160px;
-
-  animation-delay: 0s;
-}
-
-/* TORTA */
-.cake2 {
-  top: 280px;
-  left: 20px;
-
-  width: 260px;
-  height: 180px;
-
-  animation-delay: 1s;
-}
-
-/* DONA */
-.cake3 {
-  top: 220px;
-  left: 470px;
-  width: 190px;
-  height: 140px;
-  animation-delay: 2s;
-}
-
-
-.cake4 {
-  bottom: 310px;
-  left: 500px;
-
-  width: 180px;
-  height: 130px;
-
-  animation-delay: 1.5s;
-}
-
-/* ===== ANIMACIÓN ===== */
-
-@keyframes flotar {
-
-  0% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-14px);
-  }
-
-  100% {
-    transform: translateY(0px);
-  }
-}
-
-/* CARD */
-.card {
-  position: relative;
-
-  background: rgba(255, 245, 248, 0.40);
-
-  backdrop-filter: blur(12px);
-
-  border-radius: 40px;
-
-  border: 2px solid rgba(255,255,255,0.34);
-
-  box-shadow:
-    0 8px 32px rgba(212, 157, 181, 0.35),
-    0 2px 10px rgba(186, 151, 255, 0.2);
-
-  padding: 100px 32px 20px 32px;
-
-  width: 430px;
-  height: 540px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* LOGO */
-.logo-container {
-  position: absolute;
-
-  top: -90px;
-
-  width: 100%;
-
-  display: flex;
   justify-content: center;
+  background: #fff;
+  padding: 2rem;
 }
 
-.logo {
+.login-card {
   width: 100%;
-  height: 100%;
-  margin-bottom: 40px !important;
+  max-width: 380px;
+}
+
+.card-header {
+  margin-bottom: 1rem;
+}
+
+.card-header h1 {
+  font-size: 40px;
+  font-weight: 500;
+  color: #3d1515;
+  font-family: 'Comic Sans MS', sans-serif;
+  margin-bottom: 6px;
   margin-top: -30px !important;
 }
 
-/* FORM */
-.form-body {
-  width: 100%;
-
-  margin-top: 60px;
+.card-header p {
+  font-size: 15px;
+  color: #9e5050;
+  font-family: 'Comic Sans MS', sans-serif;
 }
 
-form {
+/* FIELDS */
+.field-wrap {
   width: 100%;
+  margin-bottom: 1.25rem;
+}
 
+label {
+  display: block;
+  font-size: 18px;
+  color: #9e5050;
+  font-weight: 500;
+  margin-bottom: 5px;
+  font-family:'Comic Sans MS', sans-serif;
+}
+
+.label-row {
   display: flex;
-  flex-direction: column;
   align-items: center;
-
-  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 5px;
 }
 
-/* INPUTS */
+.forgot {
+  font-size: 12px;
+  color: #c0392b;
+  text-decoration: none;
+  font-family: 'Comic Sans MS', sans-serif;
+}
+.forgot:hover { text-decoration: underline; }
+
+.field-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 16px;
+  color: #d49090;
+  pointer-events: none;
+  z-index: 1;
+  font-family: 'Comic Sans MS', sans-serif;
+}
+
 input {
-  width: 80%;
-  height: 55px;
-
-  padding: 12px 18px;
-
-  border-radius: 18px;
-
-  background: rgba(255,255,255,0.95);
-
-  border: 2px solid #d8b4f8;
-
-  font-size: 20px;
-  font-weight: 600;
-
-  color: #6d4c7d;
-
-  font-family: 'Poppins', sans-serif;
-
+  width: 100%;
+  height: 46px;
+  padding: 0 14px 0 40px;
+  border-radius: 10px;
+  border: 0.5px solid #f0c8c8;
+  background: #fffafa;
+  font-size: 14px;
+  color: #3d1515;
+  font-family: 'Comic Sans MS', sans-serif;
   outline: none;
-
-  box-shadow:
-    0 3px 10px rgba(216, 180, 248, 0.35);
-
-  transition: 0.25s ease;
+  box-shadow: none;
+  margin: 0;
+  transition: border-color 0.2s;
 }
-
 input:focus {
-  border-color: #ffb3c6;
-
-  box-shadow:
-    0 0 0 4px rgba(255, 179, 198, 0.25);
+  border-color: #c0392b;
+  background: #fff;
 }
+input::placeholder { color: #c8a0a0; }
+
+/* p-password igual que los inputs */
+:host ::ng-deep .p-password { width: 100%; }
+:host ::ng-deep .p-password input {
+  width: 100%;
+  height: 46px;
+  padding: 0 40px;
+  border-radius: 10px;
+  border: 0.5px solid #f0c8c8;
+  background: #fffafa;
+  font-size: 14px;
+  color: #3d1515;
+  font-family: 'Comic Sans MS', sans-serif;
+  outline: none;
+  box-shadow: none;
+}
+:host ::ng-deep .p-password input:focus {
+  border-color: #c0392b;
+  background: #fff;
+}
+:host ::ng-deep .p-password input::placeholder { color: #c8a0a0; }
 
 /* BOTÓN */
-button {
-  width: 220px;
-  height: 70px;
-
-  margin-top: 20px;
-
+button[type="submit"] {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
   border: none;
-
-  border-radius: 25px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #ffcad4,
-      #e0bbff
-    );
-
-  color: white;
-
-  font-size: 30px;
-  font-weight: bold;
-
-  font-family: 'Fredoka', sans-serif;
-
+  background: #c0392b;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: 'Comic Sans MS', sans-serif;
   cursor: pointer;
-
-  box-shadow:
-    0 6px 18px rgba(255, 182, 193, 0.45);
-
-  transition: 0.25s ease;
+  transition: opacity 0.15s;
+  margin: 0.5rem 0 0;
+  box-shadow: none;
+  letter-spacing: 0.2px;
 }
+button[type="submit"]:hover { opacity: 0.9; }
+button[type="submit"]:disabled { background: #e0b0b0; cursor: not-allowed; }
 
-button:hover {
-  transform: translateY(-3px) scale(1.03);
-
-  background:
-    linear-gradient(
-      135deg,
-      #ffb3c6,
-      #d0a2f7
-    );
-}
-
-/* LINKS */
-.link-box {
-  margin-top: 25px;
-
+/* FOOTER */
+.card-footer {
   text-align: center;
-
-  font-size: 18px;
-
-  font-family: 'Poppins', sans-serif;
-
-  color: #dd04fb;
+  margin-top: 1.5rem;
+  font-size: 13px;
+  color: #9e5050;
+  font-family: 'Comic Sans MS', sans-serif;
 }
-
-.link-box span {
-  color: #933e4b;
-}
-
 .link-accent {
-  color: #7101c6;
-
-  font-weight: bold;
-
-  margin-left: 5px;
-
-  cursor: pointer;
-
-  transition: 0.2s ease;
+  color: #c0392b;
+  font-weight: 500;
+  text-decoration: none;
+  margin-left: 4px;
 }
+.link-accent:hover { text-decoration: underline; }
 
-.link-accent:hover {
-  color: #ff8fab;
-}
-
-/* ERROR */
+/* ERRORES */
 .error {
-  color: #c95d7b;
+  color: #c0392b;
+  font-size: 12px;
+  margin-top: 4px;
+  padding-left: 2px;
+  font-family: 'Poppins', sans-serif;
+}
 
-  background: rgba(255, 228, 236, 0.8);
-
-  font-weight: bold;
-
-  padding: 8px 12px;
-
-  border-left: 5px solid #ff8fab;
-
+.error-message {
+  background: #faece7;
+  color: #712b13;
+  font-size: 13px;
+  padding: 0.75rem;
   border-radius: 10px;
-
-  width: 80%;
-
-  box-shadow:
-    0 2px 6px rgba(255, 143, 171, 0.2);
+  border: 0.5px solid #f0997b;
+  text-align: center;
+  margin-top: 0.75rem;
+  font-family: 'Poppins', sans-serif;
 }

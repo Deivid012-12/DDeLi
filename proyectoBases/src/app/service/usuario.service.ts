@@ -14,10 +14,9 @@ export class UsuarioService {
   crearUsuario(usuario: Usuario): Observable<any> {
     const params = new HttpParams()
       .set('correo', usuario.correo)
-      .set('nombre', usuario.nombreUsurio)
+      .set('nombre', usuario.nombreUsuario)
       .set('contrasenia', usuario.contrasenia)
-      .set('fechaNacimiento', usuario.fechaNacimiento.toISOString().split('T')[0])
-      .set('esHombre', usuario.esHombre.toString());
+      .set('telefono', usuario.telefono)
 
     return this.http.post(`${this.baseUrl}/crear`, null, {
       params: params,

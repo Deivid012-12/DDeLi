@@ -1,21 +1,19 @@
 export interface Usuario {
   correo: string;
-  nombreUsurio: string;
+  nombreUsuario: string;
   contrasenia: string;
-  fechaNacimiento: Date;
-  esHombre: boolean;
+  telefono:string;
 }
 
 export interface UsuarioDTO {
   correo: string;
-  nombreUsurio: string;
+  nombreUsuario: string;
+  telefono: string;
   contrasenia: string;
-  fechaNacimiento: Date;
-  esHombre: boolean;
 }
 
 export interface UsuarioLogin {
-  nombreUsuario: string;
+  correo: string;
   contrasenia?: string;
 }
 
