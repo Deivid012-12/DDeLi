@@ -21,7 +21,7 @@ import { FooterComponent } from './component/footer/footer.component';
     RegistroComponent,
     TopBarComponent,
     CarritoComponent,
-    FooterComponent
+    FooterComponent,
   ],
   providers: [],
   bootstrap: [],

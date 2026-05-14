@@ -1,1 +1,65 @@
-<p>carrito.component works!</p>
+<div class="fondo">
+  <div class="carrito-wrapper">
+
+    <!-- ENCABEZADO -->
+    <div class="carrito-header">
+      <h1>🛒 Mi Carrito</h1>
+      <p>{{ items.length }} producto(s) en tu carrito</p>
+    </div>
+
+    <!-- BODY -->
+    <div class="carrito-body">
+
+      <!-- LISTA DE PRODUCTOS -->
+      <div class="productos-lista">
+
+        <div *ngIf="items.length === 0" class="carrito-vacio">
+          <p>Tu carrito está vacío</p>
+          <a routerLink="/principal" class="link-accent">← Seguir comprando</a>
+        </div>
+
+        <div class="producto-card" *ngFor="let item of items">
+          <div class="producto-img">
+            <img [src]="item.producto.imagen" [alt]="item.producto.nombre">
+          </div>
+          <div class="producto-info">
+            <h3 class="producto-nombre">{{ item.producto.nombre }}</h3>
+            <p class="producto-desc">{{ item.producto.descripcion }}</p>
+            <span class="producto-precio">$ {{ item.precioUnitario | number:'1.2-2' }}</span>
+          </div>
+          <div class="producto-cantidad">
+            <button class="btn-cantidad">−</button>
+            <span>{{ item.cantidad }}</span>
+            <button class="btn-cantidad">+</button>
+          </div>
+          <div class="producto-total">$ {{ item.subtotal | number:'1.2-2' }}</div>
+          <button class="btn-eliminar" (click)="eliminarItem(item.idItem)">
+            <i class="ti ti-trash"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- RESUMEN -->
+      <div class="resumen-card">
+        <h2>Resumen del pedido</h2>
+        <div class="resumen-fila">
+          <span>Subtotal</span>
+          <span>$ {{ calcularTotal() | number:'1.2-2' }}</span>
+        </div>
+        <div class="resumen-fila descuento">
+          <span>Descuento</span>
+          <span>$ 0.00</span>
+        </div>
+        <div class="resumen-divider"></div>
+        <div class="resumen-fila total">
+          <span>Total</span>
+          <span>$ {{ calcularTotal() | number:'1.2-2' }}</span>
+        </div>
+        <button class="btn-pagar">Proceder al pago</button>
+        <a routerLink="/principal" class="link-seguir">← Seguir comprando</a>
+      </div>
+
+    </div>
+  </div>
+</div>

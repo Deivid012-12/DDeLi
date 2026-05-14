@@ -23,12 +23,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     providePrimeNG({
       theme: { preset: Aura },
-      translation: {
-        passwordPrompt: 'Ingresa una contraseña',
-        weak: 'Débil',
-        medium: 'Regular',
-        strong: 'Fuerte'
-      }
     }),
     provideAnimations()
   ]
