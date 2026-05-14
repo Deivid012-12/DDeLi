@@ -1,66 +1,29 @@
+// PedidoDTO.java
 package co.edu.unbosque.ddeli.dto;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-
-@Entity
 public class PedidoDTO {
 
-	@Id
-	@GeneratedValue
-	private Long idPedido; // falta determinar la secuencia para generar automaticamente el id
-
+	private Long idPedido;
 	private LocalDate fechaPedido;
 	private double valorTotal;
-
-	@ManyToOne
-	private ClienteDTO cliente;
-
-	@ManyToOne
-	private EventoDTO evento;
-
-	@ManyToOne
-	private PromocionDTO promocion;
-
-	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+	private Long idUsuario;
+	private String nombreUsuario;
+	private Long idEvento;
+	private Long idPromocion;
+	private String nombrePromocion;
 	private List<DetallePedidoDTO> detalles;
 
-	@OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
-	private PagoDTO pago;
-
-	@OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
-	private EnvioDTO envio;
-
 	public PedidoDTO() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public PedidoDTO(Long idPedido, LocalDate fechaPedido, double valorTotal, ClienteDTO cliente, EventoDTO evento,
-			PromocionDTO promocion, List<DetallePedidoDTO> detalles, PagoDTO pago, EnvioDTO envio) {
-		super();
-		this.idPedido = idPedido;
-		this.fechaPedido = fechaPedido;
-		this.valorTotal = valorTotal;
-		this.cliente = cliente;
-		this.evento = evento;
-		this.promocion = promocion;
-		this.detalles = detalles;
-		this.pago = pago;
-		this.envio = envio;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cliente, detalles, envio, evento, fechaPedido, idPedido, pago, promocion, valorTotal);
+		return Objects.hash(detalles, fechaPedido, idEvento, idPedido, idPromocion, idUsuario, nombrePromocion,
+				nombreUsuario, valorTotal);
 	}
 
 	@Override
@@ -72,144 +35,89 @@ public class PedidoDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		PedidoDTO other = (PedidoDTO) obj;
-		return Objects.equals(cliente, other.cliente) && Objects.equals(detalles, other.detalles)
-				&& Objects.equals(envio, other.envio) && Objects.equals(evento, other.evento)
-				&& Objects.equals(fechaPedido, other.fechaPedido) && Objects.equals(idPedido, other.idPedido)
-				&& Objects.equals(pago, other.pago) && Objects.equals(promocion, other.promocion)
+		return Objects.equals(detalles, other.detalles) && Objects.equals(fechaPedido, other.fechaPedido)
+				&& Objects.equals(idEvento, other.idEvento) && Objects.equals(idPedido, other.idPedido)
+				&& Objects.equals(idPromocion, other.idPromocion) && Objects.equals(idUsuario, other.idUsuario)
+				&& Objects.equals(nombrePromocion, other.nombrePromocion)
+				&& Objects.equals(nombreUsuario, other.nombreUsuario)
 				&& Double.doubleToLongBits(valorTotal) == Double.doubleToLongBits(other.valorTotal);
 	}
 
-	/**
-	 * @return the idPedido
-	 */
 	public Long getIdPedido() {
 		return idPedido;
 	}
 
-	/**
-	 * @param idPedido the idPedido to set
-	 */
 	public void setIdPedido(Long idPedido) {
 		this.idPedido = idPedido;
 	}
 
-	/**
-	 * @return the fechaPedido
-	 */
 	public LocalDate getFechaPedido() {
 		return fechaPedido;
 	}
 
-	/**
-	 * @param fechaPedido the fechaPedido to set
-	 */
 	public void setFechaPedido(LocalDate fechaPedido) {
 		this.fechaPedido = fechaPedido;
 	}
 
-	/**
-	 * @return the valorTotal
-	 */
 	public double getValorTotal() {
 		return valorTotal;
 	}
 
-	/**
-	 * @param valorTotal the valorTotal to set
-	 */
 	public void setValorTotal(double valorTotal) {
 		this.valorTotal = valorTotal;
 	}
 
-	/**
-	 * @return the cliente
-	 */
-	public ClienteDTO getCliente() {
-		return cliente;
+	public Long getIdUsuario() {
+		return idUsuario;
 	}
 
-	/**
-	 * @param cliente the cliente to set
-	 */
-	public void setCliente(ClienteDTO cliente) {
-		this.cliente = cliente;
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 
-	/**
-	 * @return the evento
-	 */
-	public EventoDTO getEvento() {
-		return evento;
+	public String getNombreUsuario() {
+		return nombreUsuario;
 	}
 
-	/**
-	 * @param evento the evento to set
-	 */
-	public void setEvento(EventoDTO evento) {
-		this.evento = evento;
+	public void setNombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
 	}
 
-	/**
-	 * @return the promocion
-	 */
-	public PromocionDTO getPromocion() {
-		return promocion;
+	public Long getIdEvento() {
+		return idEvento;
 	}
 
-	/**
-	 * @param promocion the promocion to set
-	 */
-	public void setPromocion(PromocionDTO promocion) {
-		this.promocion = promocion;
+	public void setIdEvento(Long idEvento) {
+		this.idEvento = idEvento;
 	}
 
-	/**
-	 * @return the detalles
-	 */
+	public Long getIdPromocion() {
+		return idPromocion;
+	}
+
+	public void setIdPromocion(Long idPromocion) {
+		this.idPromocion = idPromocion;
+	}
+
+	public String getNombrePromocion() {
+		return nombrePromocion;
+	}
+
+	public void setNombrePromocion(String nombrePromocion) {
+		this.nombrePromocion = nombrePromocion;
+	}
+
 	public List<DetallePedidoDTO> getDetalles() {
 		return detalles;
 	}
 
-	/**
-	 * @param detalles the detalles to set
-	 */
 	public void setDetalles(List<DetallePedidoDTO> detalles) {
 		this.detalles = detalles;
 	}
 
-	/**
-	 * @return the pago
-	 */
-	public PagoDTO getPago() {
-		return pago;
-	}
-
-	/**
-	 * @param pago the pago to set
-	 */
-	public void setPago(PagoDTO pago) {
-		this.pago = pago;
-	}
-
-	/**
-	 * @return the envio
-	 */
-	public EnvioDTO getEnvio() {
-		return envio;
-	}
-
-	/**
-	 * @param envio the envio to set
-	 */
-	public void setEnvio(EnvioDTO envio) {
-		this.envio = envio;
-	}
-
 	@Override
 	public String toString() {
-		return "Pedido [idPedido=" + idPedido + ", fechaPedido=" + fechaPedido + ", valorTotal=" + valorTotal
-				+ ", cliente=" + cliente + ", evento=" + evento + ", promocion=" + promocion + ", detalles=" + detalles
-				+ ", pago=" + pago + ", envio=" + envio + "]";
+		return "PedidoDTO [idPedido=" + idPedido + ", fechaPedido=" + fechaPedido + ", valorTotal=" + valorTotal
+				+ ", nombreUsuario=" + nombreUsuario + "]";
 	}
-
 }

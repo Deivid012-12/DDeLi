@@ -20,24 +20,24 @@ public class Evento {
 	private String tipoEvento;
 
 	@ManyToOne
-	private Cliente cliente;
+	private Usuario usuario;
 
 	public Evento() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Evento(Long idEvento, LocalDate fechaEvento, int numeroPersonas, String tipoEvento, Cliente cliente) {
+	public Evento(Long idEvento, LocalDate fechaEvento, int numeroPersonas, String tipoEvento, Usuario cliente) {
 		super();
 		this.idEvento = idEvento;
 		this.fechaEvento = fechaEvento;
 		this.numeroPersonas = numeroPersonas;
 		this.tipoEvento = tipoEvento;
-		this.cliente = cliente;
+		this.usuario = cliente;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cliente, fechaEvento, idEvento, numeroPersonas, tipoEvento);
+		return Objects.hash(usuario, fechaEvento, idEvento, numeroPersonas, tipoEvento);
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class Evento {
 		if (getClass() != obj.getClass())
 			return false;
 		Evento other = (Evento) obj;
-		return Objects.equals(cliente, other.cliente) && Objects.equals(fechaEvento, other.fechaEvento)
+		return Objects.equals(usuario, other.usuario) && Objects.equals(fechaEvento, other.fechaEvento)
 				&& Objects.equals(idEvento, other.idEvento) && numeroPersonas == other.numeroPersonas
 				&& Objects.equals(tipoEvento, other.tipoEvento);
 	}
@@ -111,23 +111,23 @@ public class Evento {
 	}
 
 	/**
-	 * @return the cliente
+	 * @return the usuario
 	 */
-	public Cliente getCliente() {
-		return cliente;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
 	/**
-	 * @param cliente the cliente to set
+	 * @param cliente the usuario to set
 	 */
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override
 	public String toString() {
 		return "Evento [idEvento=" + idEvento + ", fechaEvento=" + fechaEvento + ", numeroPersonas=" + numeroPersonas
-				+ ", tipoEvento=" + tipoEvento + ", cliente=" + cliente + "]";
+				+ ", tipoEvento=" + tipoEvento + ", usuario=" + usuario + "]";
 	}
 
 }

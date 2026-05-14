@@ -21,27 +21,27 @@ public class Direccion {
 	private String departamento;
 
 	@ManyToOne
-	@JoinColumn(name = "id_cliente")
-	private Cliente cliente;
+	@JoinColumn(name = "id_usuario")
+	private Usuario usuario;
 
 	public Direccion() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public Direccion(Long idDireccion, String calle, String ciudad, String codigoPostal, String departamento,
-			Cliente cliente) {
+			Usuario usuario) {
 		super();
 		this.idDireccion = idDireccion;
 		this.calle = calle;
 		this.ciudad = ciudad;
 		this.codigoPostal = codigoPostal;
 		this.departamento = departamento;
-		this.cliente = cliente;
+		this.usuario = usuario;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(calle, ciudad, cliente, codigoPostal, departamento, idDireccion);
+		return Objects.hash(calle, ciudad, usuario, codigoPostal, departamento, idDireccion);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class Direccion {
 			return false;
 		Direccion other = (Direccion) obj;
 		return Objects.equals(calle, other.calle) && Objects.equals(ciudad, other.ciudad)
-				&& Objects.equals(cliente, other.cliente) && Objects.equals(codigoPostal, other.codigoPostal)
+				&& Objects.equals(usuario, other.usuario) && Objects.equals(codigoPostal, other.codigoPostal)
 				&& Objects.equals(departamento, other.departamento) && Objects.equals(idDireccion, other.idDireccion);
 	}
 
@@ -131,21 +131,21 @@ public class Direccion {
 	/**
 	 * @return the cliente
 	 */
-	public Cliente getCliente() {
-		return cliente;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
 	/**
 	 * @param cliente the cliente to set
 	 */
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setUsuario(Usuario cliente) {
+		this.usuario = cliente;
 	}
 
 	@Override
 	public String toString() {
 		return "Direccion [idDireccion=" + idDireccion + ", calle=" + calle + ", ciudad=" + ciudad + ", codigoPostal="
-				+ codigoPostal + ", departamento=" + departamento + ", cliente=" + cliente + "]";
+				+ codigoPostal + ", departamento=" + departamento + ", usuario=" + usuario + "]";
 	}
 
 }

@@ -3,17 +3,8 @@ package co.edu.unbosque.ddeli.dto;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-
-@Entity
 public class PagoDTO {
 
-	@Id
-	@GeneratedValue
 	private Long idPago; // falta determinar la secuencia para generar automaticamente el id
 
 	private double cantidadPago;
@@ -21,8 +12,6 @@ public class PagoDTO {
 	private String estadoTransaccion;
 	private LocalDate fechaPago;
 
-	@OneToOne
-	@JoinColumn(name = "id_pedido")
 	private PedidoDTO pedido;
 
 	public PagoDTO() {

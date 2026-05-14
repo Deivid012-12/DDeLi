@@ -4,10 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -16,41 +20,45 @@ import jakarta.persistence.OneToOne;
 public class Pedido {
 
 	@Id
-	@GeneratedValue
-	private Long idPedido; // falta determinar la secuencia para generar automaticamente el id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idPedido;
 
 	private LocalDate fechaPedido;
 	private double valorTotal;
 
 	@ManyToOne
-	private Cliente cliente;
+	@JoinColumn(name = "id_usuario")
+	private Usuario usuario;
 
 	@ManyToOne
-	private Evento evento;
+	@JoinColumn(name = "id_evento")
+	private Evento evento; // nullable, opcional
 
 	@ManyToOne
-	private Promocion promocion;
+	@JoinColumn(name = "id_promocion")
+	private Promocion promocion; // nullable, opcional
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private List<DetallePedido> detalles;
 
+	@JsonIgnore
 	@OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private Pago pago;
 
+	@JsonIgnore
 	@OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private Envio envio;
 
 	public Pedido() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public Pedido(Long idPedido, LocalDate fechaPedido, double valorTotal, Cliente cliente, Evento evento,
+	public Pedido(Long idPedido, LocalDate fechaPedido, double valorTotal, Usuario usuario, Evento evento,
 			Promocion promocion, List<DetallePedido> detalles, Pago pago, Envio envio) {
-		super();
 		this.idPedido = idPedido;
 		this.fechaPedido = fechaPedido;
 		this.valorTotal = valorTotal;
-		this.cliente = cliente;
+		this.usuario = usuario;
 		this.evento = evento;
 		this.promocion = promocion;
 		this.detalles = detalles;
@@ -60,7 +68,7 @@ public class Pedido {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cliente, detalles, envio, evento, fechaPedido, idPedido, pago, promocion, valorTotal);
+		return Objects.hash(idPedido);
 	}
 
 	@Override
@@ -72,135 +80,77 @@ public class Pedido {
 		if (getClass() != obj.getClass())
 			return false;
 		Pedido other = (Pedido) obj;
-		return Objects.equals(cliente, other.cliente) && Objects.equals(detalles, other.detalles)
-				&& Objects.equals(envio, other.envio) && Objects.equals(evento, other.evento)
-				&& Objects.equals(fechaPedido, other.fechaPedido) && Objects.equals(idPedido, other.idPedido)
-				&& Objects.equals(pago, other.pago) && Objects.equals(promocion, other.promocion)
-				&& Double.doubleToLongBits(valorTotal) == Double.doubleToLongBits(other.valorTotal);
+		return Objects.equals(idPedido, other.idPedido);
 	}
 
-	/**
-	 * @return the idPedido
-	 */
 	public Long getIdPedido() {
 		return idPedido;
 	}
 
-	/**
-	 * @param idPedido the idPedido to set
-	 */
 	public void setIdPedido(Long idPedido) {
 		this.idPedido = idPedido;
 	}
 
-	/**
-	 * @return the fechaPedido
-	 */
 	public LocalDate getFechaPedido() {
 		return fechaPedido;
 	}
 
-	/**
-	 * @param fechaPedido the fechaPedido to set
-	 */
 	public void setFechaPedido(LocalDate fechaPedido) {
 		this.fechaPedido = fechaPedido;
 	}
 
-	/**
-	 * @return the valorTotal
-	 */
 	public double getValorTotal() {
 		return valorTotal;
 	}
 
-	/**
-	 * @param valorTotal the valorTotal to set
-	 */
 	public void setValorTotal(double valorTotal) {
 		this.valorTotal = valorTotal;
 	}
 
-	/**
-	 * @return the cliente
-	 */
-	public Cliente getCliente() {
-		return cliente;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	/**
-	 * @param cliente the cliente to set
-	 */
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
-	/**
-	 * @return the evento
-	 */
 	public Evento getEvento() {
 		return evento;
 	}
 
-	/**
-	 * @param evento the evento to set
-	 */
 	public void setEvento(Evento evento) {
 		this.evento = evento;
 	}
 
-	/**
-	 * @return the promocion
-	 */
 	public Promocion getPromocion() {
 		return promocion;
 	}
 
-	/**
-	 * @param promocion the promocion to set
-	 */
 	public void setPromocion(Promocion promocion) {
 		this.promocion = promocion;
 	}
 
-	/**
-	 * @return the detalles
-	 */
 	public List<DetallePedido> getDetalles() {
 		return detalles;
 	}
 
-	/**
-	 * @param detalles the detalles to set
-	 */
 	public void setDetalles(List<DetallePedido> detalles) {
 		this.detalles = detalles;
 	}
 
-	/**
-	 * @return the pago
-	 */
 	public Pago getPago() {
 		return pago;
 	}
 
-	/**
-	 * @param pago the pago to set
-	 */
 	public void setPago(Pago pago) {
 		this.pago = pago;
 	}
 
-	/**
-	 * @return the envio
-	 */
 	public Envio getEnvio() {
 		return envio;
 	}
 
-	/**
-	 * @param envio the envio to set
-	 */
 	public void setEnvio(Envio envio) {
 		this.envio = envio;
 	}
@@ -208,8 +158,6 @@ public class Pedido {
 	@Override
 	public String toString() {
 		return "Pedido [idPedido=" + idPedido + ", fechaPedido=" + fechaPedido + ", valorTotal=" + valorTotal
-				+ ", cliente=" + cliente + ", evento=" + evento + ", promocion=" + promocion + ", detalles=" + detalles
-				+ ", pago=" + pago + ", envio=" + envio + "]";
+				+ ", usuario=" + usuario + ", evento=" + evento + ", promocion=" + promocion + "]";
 	}
-
 }

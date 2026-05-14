@@ -3,6 +3,8 @@ package co.edu.unbosque.ddeli.entity;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -18,6 +20,7 @@ public class OpcionPersonalizacion {
 	private String nombre;
 	private double costoAdicional;
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "opciones")
 	private List<DetallePedido> detalles;
 

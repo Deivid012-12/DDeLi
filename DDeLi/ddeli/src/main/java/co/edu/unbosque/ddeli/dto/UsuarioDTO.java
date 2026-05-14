@@ -7,29 +7,48 @@ import co.edu.unbosque.ddeli.entity.Direccion;
 import co.edu.unbosque.ddeli.entity.Evento;
 import co.edu.unbosque.ddeli.entity.Pedido;
 import co.edu.unbosque.ddeli.entity.Suscripcion;
+import co.edu.unbosque.ddeli.entity.Usuario.Role;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-public class ClienteDTO {
+public class UsuarioDTO {
 
-	private Long idCliente;
+	private Long idUsuario;
+	@Schema(hidden = true)
 	private String nombre;
 	private String correo;
+	private String contrasenia;
+	@Schema(hidden = true)
 	private String telefono;
+	@Schema(hidden = true)
+	private Role rol;
+	@Schema(hidden = true)
+	private boolean verificado;
+	@Schema(hidden = true)
+	private int token;
+	@Schema(hidden = true)
 	private ArrayList<Direccion> direcciones;
+	@Schema(hidden = true)
 	private ArrayList<Evento> eventos;
+	@Schema(hidden = true)
 	private ArrayList<Pedido> pedidos;
+	@Schema(hidden = true)
 	private ArrayList<Suscripcion> suscripciones;
 
-	public ClienteDTO() {
-		// TODO Auto-generated constructor stub
+	public UsuarioDTO() {
 	}
 
-	public ClienteDTO(Long idCliente, String nombre, String correo, String telefono, ArrayList<Direccion> direcciones,
-			ArrayList<Evento> eventos, ArrayList<Pedido> pedidos, ArrayList<Suscripcion> suscripciones) {
-		super();
-		this.idCliente = idCliente;
-		this.nombre = nombre;
+	public UsuarioDTO(Long id, String nombreUsuario, String correo, String contrasenia, String telefono, Role rol,
+			boolean verificado, int token, ArrayList<Direccion> direcciones, ArrayList<Evento> eventos,
+			ArrayList<Pedido> pedidos, ArrayList<Suscripcion> suscripciones) {
+
+		this.idUsuario = id;
+		this.nombre = nombreUsuario;
 		this.correo = correo;
+		this.contrasenia = contrasenia;
 		this.telefono = telefono;
+		this.rol = rol;
+		this.verificado = verificado;
+		this.token = token;
 		this.direcciones = direcciones;
 		this.eventos = eventos;
 		this.pedidos = pedidos;
@@ -38,140 +57,127 @@ public class ClienteDTO {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(correo, idCliente, nombre, suscripciones, telefono);
+		return Objects.hash(correo, idUsuario, nombre, telefono);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
+
 		if (this == obj)
 			return true;
+
 		if (obj == null)
 			return false;
+
 		if (getClass() != obj.getClass())
 			return false;
-		ClienteDTO other = (ClienteDTO) obj;
-		return Objects.equals(correo, other.correo) && Objects.equals(idCliente, other.idCliente)
-				&& Objects.equals(nombre, other.nombre) && Objects.equals(suscripciones, other.suscripciones)
-				&& Objects.equals(telefono, other.telefono);
+
+		UsuarioDTO other = (UsuarioDTO) obj;
+
+		return Objects.equals(correo, other.correo) && Objects.equals(idUsuario, other.idUsuario)
+				&& Objects.equals(nombre, other.nombre) && Objects.equals(telefono, other.telefono);
 	}
 
-	/**
-	 * @return the idCliente
-	 */
-	public Long getIdCliente() {
-		return idCliente;
+	public Long getIdUsuario() {
+		return idUsuario;
 	}
 
-	/**
-	 * @param idCliente the idCliente to set
-	 */
-	public void setIdCliente(Long idCliente) {
-		this.idCliente = idCliente;
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 
-	/**
-	 * @return the nombre
-	 */
 	public String getNombre() {
 		return nombre;
 	}
 
-	/**
-	 * @param nombre the nombre to set
-	 */
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-	/**
-	 * @return the correo
-	 */
 	public String getCorreo() {
 		return correo;
 	}
 
-	/**
-	 * @param correo the correo to set
-	 */
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
 
-	/**
-	 * @return the telefono
-	 */
+	public String getContrasenia() {
+		return contrasenia;
+	}
+
+	public void setContrasenia(String contrasenia) {
+		this.contrasenia = contrasenia;
+	}
+
 	public String getTelefono() {
 		return telefono;
 	}
 
-	/**
-	 * @param telefono the telefono to set
-	 */
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
 
-	/**
-	 * @return the direcciones
-	 */
+	public Role getRol() {
+		return rol;
+	}
+
+	public void setRol(Role rol) {
+		this.rol = rol;
+	}
+
+	public boolean isVerificado() {
+		return verificado;
+	}
+
+	public void setVerificado(boolean verificado) {
+		this.verificado = verificado;
+	}
+
+	public int getToken() {
+		return token;
+	}
+
+	public void setToken(int token) {
+		this.token = token;
+	}
+
 	public ArrayList<Direccion> getDirecciones() {
 		return direcciones;
 	}
 
-	/**
-	 * @param direcciones the direcciones to set
-	 */
 	public void setDirecciones(ArrayList<Direccion> direcciones) {
 		this.direcciones = direcciones;
 	}
 
-	/**
-	 * @return the eventos
-	 */
 	public ArrayList<Evento> getEventos() {
 		return eventos;
 	}
 
-	/**
-	 * @param eventos the eventos to set
-	 */
 	public void setEventos(ArrayList<Evento> eventos) {
 		this.eventos = eventos;
 	}
 
-	/**
-	 * @return the pedidos
-	 */
 	public ArrayList<Pedido> getPedidos() {
 		return pedidos;
 	}
 
-	/**
-	 * @param pedidos the pedidos to set
-	 */
 	public void setPedidos(ArrayList<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
 
-	/**
-	 * @return the suscripciones
-	 */
 	public ArrayList<Suscripcion> getSuscripciones() {
 		return suscripciones;
 	}
 
-	/**
-	 * @param suscripciones the suscripciones to set
-	 */
 	public void setSuscripciones(ArrayList<Suscripcion> suscripciones) {
 		this.suscripciones = suscripciones;
 	}
 
 	@Override
 	public String toString() {
-		return "ClienteDTO [idCliente=" + idCliente + ", nombre=" + nombre + ", correo=" + correo + ", telefono="
-				+ telefono + ", direcciones=" + direcciones + ", eventos=" + eventos + ", pedidos=" + pedidos
-				+ ", suscripciones=" + suscripciones + "]";
+		return "UsuarioDTO [id=" + idUsuario + ", nombreUsuario=" + nombre + ", correo=" + correo + ", telefono="
+				+ telefono + ", role=" + rol + "]";
 	}
 
 }

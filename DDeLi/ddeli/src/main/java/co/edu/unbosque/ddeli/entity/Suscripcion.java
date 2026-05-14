@@ -18,6 +18,9 @@ public class Suscripcion {
 
 	private LocalDate fechaInicio;
 	private String estado;
+	@ManyToOne
+	@JoinColumn(name = "id_usuario")
+	private Usuario usuario;
 
 	@ManyToOne
 	@JoinColumn(name = "id_plan") // FK en la tabla suscripcion

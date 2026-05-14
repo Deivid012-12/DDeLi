@@ -9,14 +9,14 @@ public class DireccionDTO {
 	private String ciudad;
 	private String codigoPostal;
 	private String departamento;
-	private ClienteDTO cliente;
+	private UsuarioDTO cliente;
 
 	public DireccionDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public DireccionDTO(Long idDireccion, String calle, String ciudad, String codigoPostal, String departamento,
-			ClienteDTO cliente) {
+			UsuarioDTO cliente) {
 		super();
 		this.idDireccion = idDireccion;
 		this.calle = calle;
@@ -118,14 +118,14 @@ public class DireccionDTO {
 	/**
 	 * @return the cliente
 	 */
-	public ClienteDTO getCliente() {
+	public UsuarioDTO getCliente() {
 		return cliente;
 	}
 
 	/**
 	 * @param cliente the cliente to set
 	 */
-	public void setCliente(ClienteDTO cliente) {
+	public void setCliente(UsuarioDTO cliente) {
 		this.cliente = cliente;
 	}
 

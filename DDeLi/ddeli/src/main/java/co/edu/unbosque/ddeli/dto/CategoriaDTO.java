@@ -1,32 +1,26 @@
+// CategoriaDTO.java
 package co.edu.unbosque.ddeli.dto;
 
-import java.util.ArrayList;
 import java.util.Objects;
-
-import co.edu.unbosque.ddeli.entity.Producto;
 
 public class CategoriaDTO {
 
 	private Long idCategoria;
 	private String nombre;
 	private String descripcion;
-	private ArrayList<Producto> productos;
 
 	public CategoriaDTO() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public CategoriaDTO(Long idCategoria, String nombre, String descripcion, ArrayList<Producto> productos) {
-		super();
+	public CategoriaDTO(Long idCategoria, String nombre, String descripcion) {
 		this.idCategoria = idCategoria;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		this.productos = productos;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(descripcion, idCategoria, nombre, productos);
+		return Objects.hash(descripcion, idCategoria, nombre);
 	}
 
 	@Override
@@ -39,69 +33,35 @@ public class CategoriaDTO {
 			return false;
 		CategoriaDTO other = (CategoriaDTO) obj;
 		return Objects.equals(descripcion, other.descripcion) && Objects.equals(idCategoria, other.idCategoria)
-				&& Objects.equals(nombre, other.nombre) && Objects.equals(productos, other.productos);
+				&& Objects.equals(nombre, other.nombre);
 	}
 
-	/**
-	 * @return the idCategoria
-	 */
 	public Long getIdCategoria() {
 		return idCategoria;
 	}
 
-	/**
-	 * @param idCategoria the idCategoria to set
-	 */
 	public void setIdCategoria(Long idCategoria) {
 		this.idCategoria = idCategoria;
 	}
 
-	/**
-	 * @return the nombre
-	 */
 	public String getNombre() {
 		return nombre;
 	}
 
-	/**
-	 * @param nombre the nombre to set
-	 */
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-	/**
-	 * @return the descripcion
-	 */
 	public String getDescripcion() {
 		return descripcion;
 	}
 
-	/**
-	 * @param descripcion the descripcion to set
-	 */
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
-	/**
-	 * @return the productos
-	 */
-	public ArrayList<Producto> getProductos() {
-		return productos;
-	}
-
-	/**
-	 * @param productos the productos to set
-	 */
-	public void setProductos(ArrayList<Producto> productos) {
-		this.productos = productos;
-	}
-
 	@Override
 	public String toString() {
-		return "Categoria [idCategoria=" + idCategoria + ", nombre=" + nombre + ", descripcion=" + descripcion
-				+ ", productos=" + productos + "]";
+		return "CategoriaDTO [idCategoria=" + idCategoria + ", nombre=" + nombre + ", descripcion=" + descripcion + "]";
 	}
-
 }

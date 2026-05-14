@@ -10,24 +10,24 @@ public class EventoDTO {
 	private LocalDate fechaEvento;
 	private int numeroPersonas;
 	private String tipoEvento;
-	private ClienteDTO cliente;
+	private UsuarioDTO usuario;
 
 	public EventoDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public EventoDTO(Long idEvento, LocalDate fechaEvento, int numeroPersonas, String tipoEvento, ClienteDTO cliente) {
+	public EventoDTO(Long idEvento, LocalDate fechaEvento, int numeroPersonas, String tipoEvento, UsuarioDTO cliente) {
 		super();
 		this.idEvento = idEvento;
 		this.fechaEvento = fechaEvento;
 		this.numeroPersonas = numeroPersonas;
 		this.tipoEvento = tipoEvento;
-		this.cliente = cliente;
+		this.usuario = cliente;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cliente, fechaEvento, idEvento, numeroPersonas, tipoEvento);
+		return Objects.hash(usuario, fechaEvento, idEvento, numeroPersonas, tipoEvento);
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class EventoDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		EventoDTO other = (EventoDTO) obj;
-		return Objects.equals(cliente, other.cliente) && Objects.equals(fechaEvento, other.fechaEvento)
+		return Objects.equals(usuario, other.usuario) && Objects.equals(fechaEvento, other.fechaEvento)
 				&& Objects.equals(idEvento, other.idEvento) && numeroPersonas == other.numeroPersonas
 				&& Objects.equals(tipoEvento, other.tipoEvento);
 	}
@@ -103,21 +103,21 @@ public class EventoDTO {
 	/**
 	 * @return the cliente
 	 */
-	public ClienteDTO getCliente() {
-		return cliente;
+	public UsuarioDTO getUsuario() {
+		return usuario;
 	}
 
 	/**
 	 * @param cliente the cliente to set
 	 */
-	public void setCliente(ClienteDTO cliente) {
-		this.cliente = cliente;
+	public void setUsuario(UsuarioDTO cliente) {
+		this.usuario = cliente;
 	}
 
 	@Override
 	public String toString() {
 		return "Evento [idEvento=" + idEvento + ", fechaEvento=" + fechaEvento + ", numeroPersonas=" + numeroPersonas
-				+ ", tipoEvento=" + tipoEvento + ", cliente=" + cliente + "]";
+				+ ", tipoEvento=" + tipoEvento + ", cliente=" + usuario + "]";
 	}
 
 }

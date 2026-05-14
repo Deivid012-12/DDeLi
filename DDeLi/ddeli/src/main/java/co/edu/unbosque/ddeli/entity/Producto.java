@@ -1,45 +1,60 @@
 package co.edu.unbosque.ddeli.entity;
 
+import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Producto {
 
 	@Id
-	@GeneratedValue
-	private Long idProducto; // falta determinar la secuencia para generar automaticamente el id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idProducto;
 
 	private String nombre;
 	private String descripcion;
 	private double precioBase;
 	private boolean disponibilidad;
+	private String tipo;
+	private String imagenURL;
 
 	@ManyToOne
+	@JoinColumn(name = "id_categoria")
 	private Categoria categoria;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "producto")
+	private List<ItemCarrito> itemsCarrito;
+
 	public Producto() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public Producto(Long idProducto, String nombre, String descripcion, double precioBase, boolean disponibilidad,
-			Categoria categoria) {
+			String tipo, String imagenURL, Categoria categoria, List<ItemCarrito> itemsCarrito) {
 		super();
 		this.idProducto = idProducto;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.precioBase = precioBase;
 		this.disponibilidad = disponibilidad;
+		this.tipo = tipo;
+		this.imagenURL = imagenURL;
 		this.categoria = categoria;
+		this.itemsCarrito = itemsCarrito;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(categoria, descripcion, disponibilidad, idProducto, nombre, precioBase);
+		return Objects.hash(idProducto, nombre, descripcion, precioBase, disponibilidad, tipo, categoria);
 	}
 
 	@Override
@@ -51,101 +66,87 @@ public class Producto {
 		if (getClass() != obj.getClass())
 			return false;
 		Producto other = (Producto) obj;
-		return Objects.equals(categoria, other.categoria) && Objects.equals(descripcion, other.descripcion)
-				&& disponibilidad == other.disponibilidad && Objects.equals(idProducto, other.idProducto)
-				&& Objects.equals(nombre, other.nombre)
-				&& Double.doubleToLongBits(precioBase) == Double.doubleToLongBits(other.precioBase);
+		return Objects.equals(idProducto, other.idProducto);
 	}
 
-	/**
-	 * @return the idProducto
-	 */
 	public Long getIdProducto() {
 		return idProducto;
 	}
 
-	/**
-	 * @param idProducto the idProducto to set
-	 */
 	public void setIdProducto(Long idProducto) {
 		this.idProducto = idProducto;
 	}
 
-	/**
-	 * @return the nombre
-	 */
 	public String getNombre() {
 		return nombre;
 	}
 
-	/**
-	 * @param nombre the nombre to set
-	 */
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-	/**
-	 * @return the descripcion
-	 */
 	public String getDescripcion() {
 		return descripcion;
 	}
 
-	/**
-	 * @param descripcion the descripcion to set
-	 */
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
-	/**
-	 * @return the precioBase
-	 */
 	public double getPrecioBase() {
 		return precioBase;
 	}
 
-	/**
-	 * @param precioBase the precioBase to set
-	 */
 	public void setPrecioBase(double precioBase) {
 		this.precioBase = precioBase;
 	}
 
-	/**
-	 * @return the disponibilidad
-	 */
 	public boolean isDisponibilidad() {
 		return disponibilidad;
 	}
 
-	/**
-	 * @param disponibilidad the disponibilidad to set
-	 */
 	public void setDisponibilidad(boolean disponibilidad) {
 		this.disponibilidad = disponibilidad;
 	}
 
-	/**
-	 * @return the categoria
-	 */
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
 	public Categoria getCategoria() {
 		return categoria;
 	}
 
-	/**
-	 * @param categoria the categoria to set
-	 */
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
+	}
+
+	public List<ItemCarrito> getItemsCarrito() {
+		return itemsCarrito;
+	}
+
+	public void setItemsCarrito(List<ItemCarrito> itemsCarrito) {
+		this.itemsCarrito = itemsCarrito;
+	}
+
+	public String getImagenURL() {
+		return imagenURL;
+	}
+
+	public void setImagenURL(String imagenURL) {
+		this.imagenURL = imagenURL;
 	}
 
 	@Override
 	public String toString() {
 		return "Producto [idProducto=" + idProducto + ", nombre=" + nombre + ", descripcion=" + descripcion
-				+ ", precioBase=" + precioBase + ", disponibilidad=" + disponibilidad + ", categoria=" + categoria
-				+ "]";
+				+ ", precioBase=" + precioBase + ", disponibilidad=" + disponibilidad + ", tipo=" + tipo
+				+ ", imagenURL=" + imagenURL + ", categoria=" + categoria + ", itemsCarrito=" + itemsCarrito + "]";
 	}
+
 
 }

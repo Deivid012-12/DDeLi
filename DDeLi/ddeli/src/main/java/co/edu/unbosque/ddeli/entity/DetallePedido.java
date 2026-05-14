@@ -6,6 +6,8 @@ import java.util.Objects;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
@@ -21,12 +23,15 @@ public class DetallePedido {
 	private double subtotal;
 
 	@ManyToOne
+	@JoinColumn(name = "id_pedido")
 	private Pedido pedido;
 
 	@ManyToOne
+	@JoinColumn(name = "id_producto")
 	private Producto producto;
 
 	@ManyToMany
+	@JoinTable(name = "detalle_opcion", joinColumns = @JoinColumn(name = "id_detalle"), inverseJoinColumns = @JoinColumn(name = "id_opcion"))
 	private List<OpcionPersonalizacion> opciones;
 
 	public DetallePedido() {
