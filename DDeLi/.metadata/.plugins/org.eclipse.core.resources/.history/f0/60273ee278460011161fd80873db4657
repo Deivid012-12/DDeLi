@@ -1,0 +1,14 @@
+package co.edu.unbosque.ddeli.entity;
+
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+public class PlanSuscripcion {
+
+	private @Id @GeneratedValue (strategy = GenerationType.SEQUENCE) int idPlan;
+	private String nombre;
+	private int costoAdicional;
+	private int precioMensual;
+	
+}

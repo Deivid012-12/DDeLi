@@ -1,0 +1,153 @@
+package co.edu.unbosque.ddeli.dto;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+@Entity
+public class Promocion {
+
+	@Id
+	@GeneratedValue
+	private Long idPromocion; // falta determinar la secuencia para generar automaticamente el id
+
+	private String nombre;
+	private double porcentajeDescuento;
+	private LocalDate fechaInicio;
+	private LocalDate fechaFin;
+
+	@OneToMany(mappedBy = "promocion")
+	private List<PedidoDTO> pedidos;
+
+	public Promocion() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Promocion(Long idPromocion, String nombre, double porcentajeDescuento, LocalDate fechaInicio,
+			LocalDate fechaFin, List<PedidoDTO> pedidos) {
+		super();
+		this.idPromocion = idPromocion;
+		this.nombre = nombre;
+		this.porcentajeDescuento = porcentajeDescuento;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+		this.pedidos = pedidos;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(fechaFin, fechaInicio, idPromocion, nombre, pedidos, porcentajeDescuento);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PromocionDTO other = (PromocionDTO) obj;
+		return Objects.equals(fechaFin, other.fechaFin) && Objects.equals(fechaInicio, other.fechaInicio)
+				&& Objects.equals(idPromocion, other.idPromocion) && Objects.equals(nombre, other.nombre)
+				&& Objects.equals(pedidos, other.pedidos)
+				&& Double.doubleToLongBits(porcentajeDescuento) == Double.doubleToLongBits(other.porcentajeDescuento);
+	}
+
+	/**
+	 * @return the idPromocion
+	 */
+	public Long getIdPromocion() {
+		return idPromocion;
+	}
+
+	/**
+	 * @param idPromocion the idPromocion to set
+	 */
+	public void setIdPromocion(Long idPromocion) {
+		this.idPromocion = idPromocion;
+	}
+
+	/**
+	 * @return the nombre
+	 */
+	public String getNombre() {
+		return nombre;
+	}
+
+	/**
+	 * @param nombre the nombre to set
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	/**
+	 * @return the porcentajeDescuento
+	 */
+	public double getPorcentajeDescuento() {
+		return porcentajeDescuento;
+	}
+
+	/**
+	 * @param porcentajeDescuento the porcentajeDescuento to set
+	 */
+	public void setPorcentajeDescuento(double porcentajeDescuento) {
+		this.porcentajeDescuento = porcentajeDescuento;
+	}
+
+	/**
+	 * @return the fechaInicio
+	 */
+	public LocalDate getFechaInicio() {
+		return fechaInicio;
+	}
+
+	/**
+	 * @param fechaInicio the fechaInicio to set
+	 */
+	public void setFechaInicio(LocalDate fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	/**
+	 * @return the fechaFin
+	 */
+	public LocalDate getFechaFin() {
+		return fechaFin;
+	}
+
+	/**
+	 * @param fechaFin the fechaFin to set
+	 */
+	public void setFechaFin(LocalDate fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+
+	/**
+	 * @return the pedidos
+	 */
+	public List<PedidoDTO> getPedidos() {
+		return pedidos;
+	}
+
+	/**
+	 * @param pedidos the pedidos to set
+	 */
+	public void setPedidos(List<PedidoDTO> pedidos) {
+		this.pedidos = pedidos;
+	}
+
+	@Override
+	public String toString() {
+		return "Promocion [idPromocion=" + idPromocion + ", nombre=" + nombre + ", porcentajeDescuento="
+				+ porcentajeDescuento + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", pedidos="
+				+ pedidos + "]";
+	}
+
+}

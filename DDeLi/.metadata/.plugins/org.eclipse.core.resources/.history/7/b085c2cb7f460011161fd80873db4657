@@ -1,0 +1,131 @@
+package co.edu.unbosque.ddeli.dto;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+public class PlanSuscripcionDTO {
+
+	private Long idPlan;
+	private String nombre;
+	private double precioMensual;
+	private double costoAdicional;
+	private ArrayList<SuscripcionDTO> suscripciones = new ArrayList<>();
+
+	public PlanSuscripcionDTO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public PlanSuscripcionDTO(Long idPlan, String nombre, double precioMensual, double costoAdicional,
+			ArrayList<SuscripcionDTO> suscripciones) {
+		super();
+		this.idPlan = idPlan;
+		this.nombre = nombre;
+		this.precioMensual = precioMensual;
+		this.costoAdicional = costoAdicional;
+		this.suscripciones = suscripciones;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(costoAdicional, idPlan, nombre, precioMensual, suscripciones);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PlanSuscripcionDTO other = (PlanSuscripcionDTO) obj;
+		return Double.doubleToLongBits(costoAdicional) == Double.doubleToLongBits(other.costoAdicional)
+				&& Objects.equals(idPlan, other.idPlan) && Objects.equals(nombre, other.nombre)
+				&& Double.doubleToLongBits(precioMensual) == Double.doubleToLongBits(other.precioMensual)
+				&& Objects.equals(suscripciones, other.suscripciones);
+	}
+
+	/**
+	 * @return the idPlan
+	 */
+	public Long getIdPlan() {
+		return idPlan;
+	}
+
+	/**
+	 * @param idPlan the idPlan to set
+	 */
+	public void setIdPlan(Long idPlan) {
+		this.idPlan = idPlan;
+	}
+
+	/**
+	 * @return the nombre
+	 */
+	public String getNombre() {
+		return nombre;
+	}
+
+	/**
+	 * @param nombre the nombre to set
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	/**
+	 * @return the precioMensual
+	 */
+	public double getPrecioMensual() {
+		return precioMensual;
+	}
+
+	/**
+	 * @param precioMensual the precioMensual to set
+	 */
+	public void setPrecioMensual(double precioMensual) {
+		this.precioMensual = precioMensual;
+	}
+
+	/**
+	 * @return the costoAdicional
+	 */
+	public double getCostoAdicional() {
+		return costoAdicional;
+	}
+
+	/**
+	 * @param costoAdicional the costoAdicional to set
+	 */
+	public void setCostoAdicional(double costoAdicional) {
+		this.costoAdicional = costoAdicional;
+	}
+
+	/**
+	 * @return the suscripciones
+	 */
+	public ArrayList<SuscripcionDTO> getSuscripciones() {
+		return suscripciones;
+	}
+
+	/**
+	 * @param suscripciones the suscripciones to set
+	 */
+	public void setSuscripciones(ArrayList<SuscripcionDTO> suscripciones) {
+		this.suscripciones = suscripciones;
+	}
+
+	@Override
+	public String toString() {
+		return "PlanSuscripcion [idPlan=" + idPlan + ", nombre=" + nombre + ", precioMensual=" + precioMensual
+				+ ", costoAdicional=" + costoAdicional + ", suscripciones=" + suscripciones + "]";
+	}
+
+}

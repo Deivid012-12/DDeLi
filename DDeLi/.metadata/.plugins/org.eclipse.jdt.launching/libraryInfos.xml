@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<libraryInfos>
+    <libraryInfo home="C:\Users\Danny\OneDrive\Danny\Programacion\Eclipse Java Standard 2024-06 JDK 22\Eclipse Java Standard 2024-06 JDK 22\eclipse\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_22.0.1.v20240426-1149\jre" version="22.0.1"/>
+    <libraryInfo home="C:\Users\Danny\OneDrive\Danny\Programacion\Eclipse Java Enterprise 2026-03 JDK 25\eclipse\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_25.0.2.v20260203-1141" version="25.0.2">
+        <bootpath>
+            <entry path="null"/>
+        </bootpath>
+        <extensionDirs>
+            <entry path="null"/>
+        </extensionDirs>
+        <endorsedDirs>
+            <entry path="null"/>
+        </endorsedDirs>
+    </libraryInfo>
+    <libraryInfo home="C:\Users\Danny\OneDrive\Danny\Programacion\Eclipse Java Standard 2024-06 JDK 22\Eclipse Java Standard 2024-06 JDK 22\eclipse\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_22.0.1.v20240426-1149" version="22.0.1">
+        <bootpath>
+            <entry path="null"/>
+        </bootpath>
+        <extensionDirs>
+            <entry path="null"/>
+        </extensionDirs>
+        <endorsedDirs>
+            <entry path="null"/>
+        </endorsedDirs>
+    </libraryInfo>
+    <libraryInfo home="C:\Users\Danny\OneDrive\Danny\Programacion\Eclipse Java Enterprise 2026-03 JDK 25\eclipse\plugins\org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_25.0.2.v20260203-1141\jre" version="25.0.2"/>
+</libraryInfos>

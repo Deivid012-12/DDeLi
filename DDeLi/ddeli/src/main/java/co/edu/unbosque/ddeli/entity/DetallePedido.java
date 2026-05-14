@@ -1,0 +1,179 @@
+package co.edu.unbosque.ddeli.entity;
+
+import java.util.List;
+import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+
+@Entity
+public class DetallePedido {
+
+	@Id
+	@GeneratedValue
+	private Long idDetalle; // falta determinar la secuencia para generar automaticamente el id
+
+	private int cantidad;
+	private double precioUnitario;
+	private double subtotal;
+
+	@ManyToOne
+	@JoinColumn(name = "id_pedido")
+	private Pedido pedido;
+
+	@ManyToOne
+	@JoinColumn(name = "id_producto")
+	private Producto producto;
+
+	@ManyToMany
+	@JoinTable(name = "detalle_opcion", joinColumns = @JoinColumn(name = "id_detalle"), inverseJoinColumns = @JoinColumn(name = "id_opcion"))
+	private List<OpcionPersonalizacion> opciones;
+
+	public DetallePedido() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public DetallePedido(Long idDetalle, int cantidad, double precioUnitario, double subtotal, Pedido pedido,
+			Producto producto, List<OpcionPersonalizacion> opciones) {
+		super();
+		this.idDetalle = idDetalle;
+		this.cantidad = cantidad;
+		this.precioUnitario = precioUnitario;
+		this.subtotal = subtotal;
+		this.pedido = pedido;
+		this.producto = producto;
+		this.opciones = opciones;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(cantidad, idDetalle, opciones, pedido, precioUnitario, producto, subtotal);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DetallePedido other = (DetallePedido) obj;
+		return cantidad == other.cantidad && Objects.equals(idDetalle, other.idDetalle)
+				&& Objects.equals(opciones, other.opciones) && Objects.equals(pedido, other.pedido)
+				&& Double.doubleToLongBits(precioUnitario) == Double.doubleToLongBits(other.precioUnitario)
+				&& Objects.equals(producto, other.producto)
+				&& Double.doubleToLongBits(subtotal) == Double.doubleToLongBits(other.subtotal);
+	}
+
+	/**
+	 * @return the idDetalle
+	 */
+	public Long getIdDetalle() {
+		return idDetalle;
+	}
+
+	/**
+	 * @param idDetalle the idDetalle to set
+	 */
+	public void setIdDetalle(Long idDetalle) {
+		this.idDetalle = idDetalle;
+	}
+
+	/**
+	 * @return the cantidad
+	 */
+	public int getCantidad() {
+		return cantidad;
+	}
+
+	/**
+	 * @param cantidad the cantidad to set
+	 */
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	/**
+	 * @return the precioUnitario
+	 */
+	public double getPrecioUnitario() {
+		return precioUnitario;
+	}
+
+	/**
+	 * @param precioUnitario the precioUnitario to set
+	 */
+	public void setPrecioUnitario(double precioUnitario) {
+		this.precioUnitario = precioUnitario;
+	}
+
+	/**
+	 * @return the subtotal
+	 */
+	public double getSubtotal() {
+		return subtotal;
+	}
+
+	/**
+	 * @param subtotal the subtotal to set
+	 */
+	public void setSubtotal(double subtotal) {
+		this.subtotal = subtotal;
+	}
+
+	/**
+	 * @return the pedido
+	 */
+	public Pedido getPedido() {
+		return pedido;
+	}
+
+	/**
+	 * @param pedido the pedido to set
+	 */
+	public void setPedido(Pedido pedido) {
+		this.pedido = pedido;
+	}
+
+	/**
+	 * @return the producto
+	 */
+	public Producto getProducto() {
+		return producto;
+	}
+
+	/**
+	 * @param producto the producto to set
+	 */
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+
+	/**
+	 * @return the opciones
+	 */
+	public List<OpcionPersonalizacion> getOpciones() {
+		return opciones;
+	}
+
+	/**
+	 * @param opciones the opciones to set
+	 */
+	public void setOpciones(List<OpcionPersonalizacion> opciones) {
+		this.opciones = opciones;
+	}
+
+	@Override
+	public String toString() {
+		return "DetallePedido [idDetalle=" + idDetalle + ", cantidad=" + cantidad + ", precioUnitario=" + precioUnitario
+				+ ", subtotal=" + subtotal + ", pedido=" + pedido + ", producto=" + producto + ", opciones=" + opciones
+				+ "]";
+	}
+
+}

@@ -1,0 +1,10 @@
+package co.edu.unbosque.ddeli.entity;
+
+public class PlanSuscripcion {
+
+	private @Id int idPlan;
+	private String nombre;
+	private int costoAdicional;
+	private int precioMensual;
+	
+}

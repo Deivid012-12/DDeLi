@@ -1,0 +1,34 @@
+package co.edu.unbosque.ddeli.entity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+@Entity
+public class PlanSuscripcion {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long idPlan;
+
+    private String nombre;
+    private double precioMensual;
+    private double costoAdicional;
+
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
+    private List<Suscripcion> suscripciones = new ArrayList<>();
+    
+    public PlanSuscripcion() {
+		// TODO Auto-generated constructor stub
+	}
+    
+    
+    
+    
+}
