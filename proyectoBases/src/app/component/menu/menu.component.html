@@ -1,0 +1,37 @@
+<div class="fondo">
+
+  <!-- ENCABEZADO -->
+  <div class="menu-header">
+    <h1 class="menu-titulo">🍰 Nuestro Menú</h1>
+    <p class="menu-subtitulo">Descubre todos nuestros postres artesanales</p>
+  </div>
+
+  <!-- FILTROS POR CATEGORÍA -->
+  <div class="categorias-wrapper">
+    <button
+      *ngFor="let cat of categorias"
+      class="btn-categoria"
+      [class.activo]="categoriaActiva === cat"
+      (click)="categoriaActiva = cat">
+      {{ cat }}
+    </button>
+  </div>
+
+  <!-- GRID DE PRODUCTOS -->
+  <div class="productos-section">
+    <div class="productos-grid">
+      <div class="tarjeta" *ngFor="let producto of productosFiltrados">
+        <div class="tarjeta-img" [style.background-image]="'url(' + producto.imagen + ')'"></div>
+        <div class="tarjeta-info">
+          <h3>{{ producto.nombre }}</h3>
+          <p>{{ producto.descripcion }}</p>
+          <span class="precio">$ {{ producto.precio | number:'1.0-0' }}</span>
+          <button (click)="agregarAlCarrito(producto)">
+            🛒 Añadir al carrito
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

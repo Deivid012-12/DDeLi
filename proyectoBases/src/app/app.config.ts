@@ -10,6 +10,7 @@ import { PrincipalComponent } from './component/principal/principal.component';
 import { RegistroComponent } from './component/registro/registro.component';
 import { PagarComponent} from './component/pagar/pagar.component';
 import { CarritoComponent } from './component/carrito/carrito.component';
+import { MenuComponent} from './component/menu/menu.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'principal', pathMatch: 'full' },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'registro', component: RegistroComponent },
   { path: 'pagar', component: PagarComponent },
   { path: 'carrito', component: CarritoComponent },
+  { path: 'menu', component: MenuComponent },
   { path: '**', redirectTo: 'principal' }
 
 ];

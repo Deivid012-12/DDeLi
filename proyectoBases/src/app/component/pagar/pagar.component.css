@@ -4,7 +4,7 @@
   align-items: flex-start;
   justify-content: center;
   padding: 110px 2rem 2rem 2rem;
-  background-image: url('../../../assets/registro2.jpg');
+  background-image: url('../../../assets/pagar.jpg');
   background-size: cover;
   background-position: center;
 }
@@ -13,7 +13,7 @@ a.btn-pagar {
   text-align: center;
   text-decoration: none;
   line-height: 46px;
-}a
+}
 
 .pago-wrapper {
   max-width: 1100px;
@@ -28,6 +28,7 @@ a.btn-pagar {
   border-radius: 16px;
   padding: 1.5rem 2rem;
   margin-bottom: 1.5rem;
+  align-content: center !important;
 }
 
 .pago-header h1 {
@@ -35,6 +36,7 @@ a.btn-pagar {
   font-weight: 700;
   color: #3d1515;
   font-family: 'Comic Sans MS', sans-serif;
+  align-content: center;
 }
 
 .pago-header p {

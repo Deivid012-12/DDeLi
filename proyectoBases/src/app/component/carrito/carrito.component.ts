@@ -1,70 +1,50 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Carrito, ItemCarrito } from '../../model/carrito.model';
-import { RouterLink, Router} from '@angular/router';
-
+import { RouterLink, Router } from '@angular/router';
+import { CarritoService } from '../../service/carrito.service';
 
 @Component({
   selector: 'app-carrito',
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './carrito.component.html',
-  styleUrls: ['./carrito.component.css'],
+  styleUrl: './carrito.component.css',
 })
 export class CarritoComponent implements OnInit {
+
   carrito: Carrito | null = null;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private carritoService: CarritoService
+  ) {}
 
   get items(): ItemCarrito[] {
     return this.carrito?.items ?? [];
   }
 
-  irAPagar(): void {
-    console.log('click funcionando');
-    this.router.navigate(['/pagar']);
-  }
   ngOnInit(): void {
+
     this.carrito = {
       idCarrito: 1,
       estado: 'activo',
       fechaCreacion: new Date().toISOString(),
-      items: [
-        {
-          idItem: 1,
-          cantidad: 2,
-          precioUnitario: 15000,
-          subtotal: 30000,
-          producto: {
-            idProducto: 1,
-            nombre: 'Brownie de chocolate',
-            descripcion: 'Delicioso brownie artesanal',
-            precio: 15000,
-            imagen: 'assets/brownie.jpg'
-          }
-        },
-        {
-          idItem: 2,
-          cantidad: 1,
-          precioUnitario: 25000,
-          subtotal: 25000,
-          producto: {
-            idProducto: 2,
-            nombre: 'Cheesecake de frutos rojos',
-            descripcion: 'Cheesecake cremoso con topping de frutos rojos',
-            precio: 25000,
-            imagen: 'assets/cheesecake.jpg'
-          }
-        }
-      ]
+      items: this.carritoService.obtenerItems()
     };
   }
-  aumentarCantidad(item: any) {
+
+  irAPagar(): void {
+    this.router.navigate(['/pagar']);
+  }
+
+  aumentarCantidad(item: ItemCarrito): void {
     item.cantidad++;
     item.subtotal = item.cantidad * item.precioUnitario;
   }
 
-  disminuirCantidad(item: any) {
+  disminuirCantidad(item: ItemCarrito): void {
+
     if (item.cantidad > 1) {
       item.cantidad--;
       item.subtotal = item.cantidad * item.precioUnitario;
@@ -72,11 +52,20 @@ export class CarritoComponent implements OnInit {
   }
 
   calcularTotal(): number {
-    return this.items.reduce((acc, item) => acc + item.subtotal, 0);
+
+    return this.items.reduce(
+      (acc, item) => acc + item.subtotal,
+      0
+    );
   }
 
   eliminarItem(idItem: number): void {
-    if (!this.carrito) return;
-    this.carrito.items = this.carrito.items.filter(i => i.idItem !== idItem);
+
+    this.carritoService.eliminarItem(idItem);
+
+    if (this.carrito) {
+      this.carrito.items =
+        this.carritoService.obtenerItems();
+    }
   }
 }

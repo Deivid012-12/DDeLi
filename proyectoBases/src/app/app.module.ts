@@ -11,6 +11,7 @@ import { CarritoComponent } from './component/carrito/carrito.component';
 import { TopBarComponent } from './component/top-bar/top-bar.component';
 import { FooterComponent } from './component/footer/footer.component';
 import { PagarComponent } from './component/pagar/pagar.component';
+import { MenuComponent } from './component/menu/menu.component';
 
 @NgModule({
   declarations: [],
@@ -23,7 +24,8 @@ import { PagarComponent } from './component/pagar/pagar.component';
     TopBarComponent,
     CarritoComponent,
     FooterComponent,
-    PagarComponent
+    PagarComponent,
+    MenuComponent
   ],
   providers: [],
   bootstrap: [],

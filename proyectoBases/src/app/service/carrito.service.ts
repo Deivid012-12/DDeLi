@@ -1,15 +1,52 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Carrito } from '../model/carrito.model';
+import { ItemCarrito, Producto } from '../model/carrito.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class CarritoService {
-  private url = 'http://localhost:8081/carrito';
 
-  constructor(private http: HttpClient) {}
+  items: ItemCarrito[] = [];
 
-  getCarrito(idCarrito: number): Observable<Carrito> {
-    return this.http.get<Carrito>(`${this.url}/${idCarrito}`);
+  agregarProducto(producto: Producto): void {
+
+    const itemExistente = this.items.find(
+      i => i.producto.idProducto === producto.idProducto
+    );
+
+    if (itemExistente) {
+
+      itemExistente.cantidad++;
+
+      itemExistente.subtotal =
+        itemExistente.cantidad * itemExistente.precioUnitario;
+
+    } else {
+
+      const nuevoItem: ItemCarrito = {
+        idItem: Date.now(),
+        cantidad: 1,
+        precioUnitario: producto.precio,
+        subtotal: producto.precio,
+        producto: producto
+      };
+
+      this.items.push(nuevoItem);
+    }
+  }
+
+  obtenerItems(): ItemCarrito[] {
+    return this.items;
+  }
+
+  eliminarItem(idItem: number): void {
+    this.items = this.items.filter(i => i.idItem !== idItem);
+  }
+
+  calcularTotal(): number {
+    return this.items.reduce(
+      (acc, item) => acc + item.subtotal,
+      0
+    );
   }
 }

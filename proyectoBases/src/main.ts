@@ -10,6 +10,7 @@ import { RegistroComponent} from './app/component/registro/registro.component';
 import { provideHttpClient } from '@angular/common/http';
 import { CarritoComponent}  from './app/component/carrito/carrito.component';
 import { PagarComponent } from './app/component/pagar/pagar.component';
+import { MenuComponent } from './app/component/menu/menu.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'principal', pathMatch: 'full' },
@@ -17,7 +18,8 @@ const routes: Routes = [
   { path: 'principal', component: PrincipalComponent},
   { path: 'registro', component: RegistroComponent},
   { path: 'carrito', component: CarritoComponent},
-  { path: 'pagar', component: PagarComponent}
+  { path: 'pagar', component: PagarComponent},
+  { path: 'menu', component: MenuComponent},
 ];
 
 bootstrapApplication(AppComponent, {
