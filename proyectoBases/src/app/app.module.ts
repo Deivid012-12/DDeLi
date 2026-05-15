@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CarritoComponent } from './component/carrito/carrito.component';
 import { TopBarComponent } from './component/top-bar/top-bar.component';
 import { FooterComponent } from './component/footer/footer.component';
+import { PagarComponent } from './component/pagar/pagar.component';
 
 @NgModule({
   declarations: [],
@@ -22,6 +23,7 @@ import { FooterComponent } from './component/footer/footer.component';
     TopBarComponent,
     CarritoComponent,
     FooterComponent,
+    PagarComponent
   ],
   providers: [],
   bootstrap: [],

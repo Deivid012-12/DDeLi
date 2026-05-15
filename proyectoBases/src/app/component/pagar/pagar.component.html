@@ -1,0 +1,247 @@
+<div class="fondo">
+  <div class="pago-wrapper">
+
+    <!-- ENCABEZADO -->
+    <div class="pago-header">
+      <h1>💳 Proceder al Pago</h1>
+      <p>Completa tu información para finalizar el pedido</p>
+    </div>
+
+    <div class="pago-body">
+
+      <!-- COLUMNA IZQUIERDA -->
+      <div class="pago-form-col">
+
+        <!-- DIRECCIÓN -->
+        <div class="seccion-card">
+          <h2 class="seccion-titulo">
+            <i class="pi pi-map-marker"></i>
+            Dirección de entrega
+          </h2>
+
+          <div class="form-group">
+            <label>Dirección</label>
+            <input
+              type="text"
+              [(ngModel)]="direccion"
+              placeholder="Calle, número, barrio"
+              class="form-input"
+            />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Ciudad</label>
+              <input
+                type="text"
+                [(ngModel)]="ciudad"
+                placeholder="Ciudad"
+                class="form-input"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Indicaciones adicionales</label>
+              <input
+                type="text"
+                [(ngModel)]="indicaciones"
+                placeholder="Apto, piso, referencia..."
+                class="form-input"
+              />
+            </div>
+          </div>
+
+          <!-- ENTREGA -->
+          <div class="form-group">
+            <label>Tipo de entrega</label>
+
+            <div class="opciones-entrega">
+
+              <div
+                class="opcion-card"
+                [class.activo]="tipoEntrega === 'domicilio'"
+                (click)="tipoEntrega = 'domicilio'"
+              >
+                <i class="pi pi-truck"></i>
+                <span>Domicilio</span>
+              </div>
+
+              <div
+                class="opcion-card"
+                [class.activo]="tipoEntrega === 'punto'"
+                (click)="tipoEntrega = 'punto'"
+              >
+                <i class="pi pi-shop"></i>
+                <span>Punto de entrega</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- MÉTODO DE PAGO -->
+        <div class="seccion-card">
+
+          <h2 class="seccion-titulo">
+            <i class="pi pi-credit-card"></i>
+            Método de pago
+          </h2>
+
+          <div class="metodos-pago">
+
+            <div
+              class="metodo-card"
+              [class.activo]="pago.metodoPago === 'tarjeta'"
+              (click)="pago.metodoPago = 'tarjeta'"
+            >
+              <i class="pi pi-credit-card"></i>
+              <span>Tarjeta</span>
+            </div>
+
+            <div
+              class="metodo-card"
+              [class.activo]="pago.metodoPago === 'transferencia'"
+              (click)="pago.metodoPago = 'transferencia'"
+            >
+              <i class="pi pi-building-columns"></i>
+              <span>Transferencia</span>
+            </div>
+
+            <div
+              class="metodo-card"
+              [class.activo]="pago.metodoPago === 'contraentrega'"
+              (click)="pago.metodoPago = 'contraentrega'"
+            >
+              <i class="pi pi-money-bill"></i>
+              <span>Contra entrega</span>
+            </div>
+
+          </div>
+
+          <!-- TARJETA -->
+          <div *ngIf="pago.metodoPago === 'tarjeta'" class="datos-tarjeta">
+
+            <div class="form-group">
+              <label>Número de tarjeta</label>
+              <input
+                type="text"
+                [(ngModel)]="numeroTarjeta"
+                placeholder="0000 0000 0000 0000"
+                class="form-input"
+                maxlength="19"
+              />
+            </div>
+
+            <div class="form-row">
+
+              <div class="form-group">
+                <label>Fecha de vencimiento</label>
+                <input
+                  type="text"
+                  [(ngModel)]="vencimiento"
+                  placeholder="MM/AA"
+                  class="form-input"
+                  maxlength="5"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>CVV</label>
+                <input
+                  type="text"
+                  [(ngModel)]="cvv"
+                  placeholder="000"
+                  class="form-input"
+                  maxlength="3"
+                />
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              <label>Nombre en la tarjeta</label>
+              <input
+                type="text"
+                [(ngModel)]="nombreTarjeta"
+                placeholder="Como aparece en la tarjeta"
+                class="form-input"
+              />
+            </div>
+
+          </div>
+
+          <!-- TRANSFERENCIA -->
+          <div *ngIf="pago.metodoPago === 'transferencia'" class="info-transferencia">
+            <p>📋 Realiza tu transferencia a:</p>
+            <p><strong>Banco:</strong> Bancolombia</p>
+            <p><strong>Cuenta:</strong> 123-456789-00</p>
+            <p><strong>NIT:</strong> 900.123.456-7</p>
+            <p class="nota">Envía el comprobante a <strong>pagos</strong></p>
+          </div>
+
+          <!-- CONTRA ENTREGA -->
+          <div *ngIf="pago.metodoPago === 'contraentrega'" class="info-contraentrega">
+            <p>🏍️ Pagarás al momento de recibir tu pedido.</p>
+            <p class="nota">Ten el valor exacto listo para el domiciliario.</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RESUMEN -->
+      <div class="resumen-card">
+
+        <h2>Resumen del pedido</h2>
+
+        <div class="resumen-items">
+
+          <div class="resumen-item" *ngFor="let item of items">
+            <span class="resumen-item-nombre">
+              {{ item.producto.nombre }} x{{ item.cantidad }}
+            </span>
+
+            <span class="resumen-item-precio">
+              $ {{ item.subtotal | number:'1.2-2' }}
+            </span>
+          </div>
+
+        </div>
+
+        <div class="resumen-divider"></div>
+
+        <div class="resumen-fila">
+          <span>Subtotal</span>
+          <span>$ {{ calcularTotal() | number:'1.2-2' }}</span>
+        </div>
+
+        <div class="resumen-fila">
+          <span>Envío</span>
+          <span>$ 5,000.00</span>
+        </div>
+
+        <div class="resumen-fila descuento">
+          <span>Descuento</span>
+          <span>$ 0.00</span>
+        </div>
+
+        <div class="resumen-divider"></div>
+
+        <div class="resumen-fila total">
+          <span>Total</span>
+          <span>$ {{ pedido.valorTotal | number:'1.2-2' }}</span>
+        </div>
+
+        <button class="btn-pagar" (click)="confirmarPago()">
+          Confirmar pedido
+        </button>
+
+        <a routerLink="/carrito" class="link-seguir">
+          ← Volver al carrito
+        </a>
+
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -8,12 +8,18 @@ import Aura from '@primeng/themes/aura';
 import { InicioComponent } from './component/inicio/inicio.component';
 import { PrincipalComponent } from './component/principal/principal.component';
 import { RegistroComponent } from './component/registro/registro.component';
+import { PagarComponent} from './component/pagar/pagar.component';
+import { CarritoComponent } from './component/carrito/carrito.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'principal', pathMatch: 'full' },
   { path: 'inicio', component: InicioComponent },
   { path: 'principal', component: PrincipalComponent },
-  { path: 'registro', component: RegistroComponent }
+  { path: 'registro', component: RegistroComponent },
+  { path: 'pagar', component: PagarComponent },
+  { path: 'carrito', component: CarritoComponent },
+  { path: '**', redirectTo: 'principal' }
+
 ];
 
 export const appConfig: ApplicationConfig = {

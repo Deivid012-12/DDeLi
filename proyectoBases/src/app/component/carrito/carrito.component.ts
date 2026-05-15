@@ -1,21 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Carrito, ItemCarrito } from '../../model/carrito.model';
+import { RouterLink, Router} from '@angular/router';
 
 @Component({
   selector: 'app-carrito',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './carrito.component.html',
-  styleUrl: './carrito.component.css',
+  styleUrls: ['./carrito.component.css'],
 })
 export class CarritoComponent implements OnInit {
   carrito: Carrito | null = null;
+
+  constructor(private router: Router) {}
 
   get items(): ItemCarrito[] {
     return this.carrito?.items ?? [];
   }
 
+  irAPagar(): void {
+    console.log('click funcionando');
+    this.router.navigate(['/pagar']);
+  }
   ngOnInit(): void {
     this.carrito = {
       idCarrito: 1,
@@ -50,6 +57,17 @@ export class CarritoComponent implements OnInit {
         }
       ]
     };
+  }
+  aumentarCantidad(item: any) {
+    item.cantidad++;
+    item.subtotal = item.cantidad * item.precioUnitario;
+  }
+
+  disminuirCantidad(item: any) {
+    if (item.cantidad > 1) {
+      item.cantidad--;
+      item.subtotal = item.cantidad * item.precioUnitario;
+    }
   }
 
   calcularTotal(): number {
