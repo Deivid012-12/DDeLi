@@ -13,10 +13,11 @@ export class UsuarioService {
 
   crearUsuario(usuario: Usuario): Observable<any> {
     const params = new HttpParams()
+      .set('nombre', usuario.nombre)
       .set('correo', usuario.correo)
-      .set('nombre', usuario.nombreUsuario)
-      .set('contrasenia', usuario.contrasenia)
       .set('telefono', usuario.telefono)
+      .set('contrasenia', usuario.contrasenia)
+
 
     return this.http.post(`${this.baseUrl}/crear`, null, {
       params: params,
@@ -32,8 +33,8 @@ export class UsuarioService {
 
   login(correo: string, contrasenia: string): Observable<any> {
     const params = new HttpParams()
-      .set('username', correo)
-      .set('password', contrasenia);
+      .set('correo', correo)
+      .set('contrasenia', contrasenia);
 
     return this.http.post(`${this.baseUrl}/checklogin`, null, {
       params: params,

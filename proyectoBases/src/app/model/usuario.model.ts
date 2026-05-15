@@ -1,13 +1,13 @@
 export interface Usuario {
   correo: string;
-  nombreUsuario: string;
+  nombre: string;
   contrasenia: string;
   telefono:string;
 }
 
 export interface UsuarioDTO {
   correo: string;
-  nombreUsuario: string;
+  nombre: string;
   telefono: string;
   contrasenia: string;
 }

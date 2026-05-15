@@ -13,6 +13,7 @@ import { PasswordModule } from 'primeng/password';
   styleUrls: ['./registro.component.css']
 })
 export class RegistroComponent {
+
   registerData = {
     username: '',
     password: '',
@@ -24,67 +25,109 @@ export class RegistroComponent {
   successMessage: string = '';
   isLoading: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   onSubmit() {
+
     this.errorMessage = '';
     this.successMessage = '';
 
-    if (!this.registerData.username || !this.registerData.password || !this.registerData.email || !this.registerData.telefono) {
+
+    if (
+      !this.registerData.username ||
+      !this.registerData.password ||
+      !this.registerData.email ||
+      !this.registerData.telefono
+    ) {
       this.errorMessage = 'Todos los campos son obligatorios';
       return;
     }
 
-    if (this.registerData.username.includes('>') || this.registerData.username.includes('<') || this.registerData.username.includes('/') || this.registerData.username.includes('*')) {
-      this.errorMessage = 'El nombre de usuario no puede contener caracteres especiales';
+
+    if (
+      this.registerData.username.includes('>') ||
+      this.registerData.username.includes('<') ||
+      this.registerData.username.includes('/') ||
+      this.registerData.username.includes('*')
+    ) {
+      this.errorMessage =
+        'El nombre de usuario no puede contener caracteres especiales';
       return;
     }
 
-    if (!this.registerData.email.match('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')) {
+
+    if (
+      !this.registerData.email.match(
+        '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
+      )
+    ) {
       this.errorMessage = 'Correo electrónico inválido';
       return;
     }
 
+
     if (!this.registerData.telefono.match('^[0-9]{7,15}$')) {
-      this.errorMessage = 'El teléfono debe contener solo números (7 a 15 dígitos)';
+      this.errorMessage =
+        'El teléfono debe contener solo números (7 a 15 dígitos)';
       return;
     }
 
     this.isLoading = true;
 
     const userToRegister = {
-      nombreUsuario: this.registerData.username,
+      nombre: this.registerData.username,
       contrasenia: this.registerData.password,
       correo: this.registerData.email,
       telefono: this.registerData.telefono
     };
 
+    console.log(userToRegister);
+
     this.authService.register(userToRegister).subscribe({
+
       next: (response) => {
+
         this.isLoading = false;
-        this.successMessage = 'Usuario registrado exitosamente 🎉';
+
+        this.successMessage =
+          'Usuario registrado exitosamente';
+
         setTimeout(() => {
           this.router.navigate(['/inicio']);
-        }, 100);
+        }, 1000);
       },
+
       error: (error) => {
         this.isLoading = false;
+        console.log(error);
         if (error.status === 409) {
-          this.errorMessage = 'El nombre de usuario o correo ya existe';
+          if (error.error === 'El correo ya existe') {
+            this.errorMessage =
+              'Ese correo ya está registrado';
+          } else if (
+            error.error ===
+            'El nombre de usuario ya existe'
+          ) {
+            this.errorMessage =
+              'Ese nombre de usuario ya existe';
+          } else {
+            this.errorMessage =
+              'El usuario ya existe';
+          }
         } else if (error.status === 400) {
-          this.errorMessage = 'Datos inválidos. Verifica la información';
+          this.errorMessage =
+            'Datos inválidos. Verifica la información';
         } else if (error.status === 401) {
-          this.errorMessage = 'No autorizado. Intenta de nuevo';
+          this.errorMessage =
+            'No autorizado';
         } else {
-          this.errorMessage = 'Error al registrar el usuario: ' + this.getErrorMessage(error);
+          this.errorMessage =
+            'Error al registrar el usuario';
         }
       }
     });
-  }
-
-  private getErrorMessage(error: any): string {
-    if (typeof error === 'string') return error;
-    if (error.error instanceof ProgressEvent) return 'Error de conexión con el servidor';
-    return error.error || error.message || 'Error desconocido';
   }
 }
