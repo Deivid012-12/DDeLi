@@ -29,7 +29,7 @@
 
           <div class="producto-img">
             <img
-              [src]="item.producto.imagen"
+              [src]="item.producto.imagenURL"
               [alt]="item.producto.nombre"
             >
           </div>
@@ -77,7 +77,7 @@
           <!-- ELIMINAR -->
           <button
             class="btn-eliminar"
-            (click)="eliminarItem(item.idItem)"
+            (click)="eliminarItem(item.idItem!)"
           >
             <i class="pi pi-trash"></i>
           </button>

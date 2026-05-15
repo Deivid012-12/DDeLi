@@ -1,52 +1,71 @@
 import { Injectable } from '@angular/core';
-import { ItemCarrito, Producto } from '../model/carrito.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { BehaviorSubject, Observable, switchMap } from 'rxjs';
+import { Carrito, ItemCarrito, Producto } from '../model/carrito.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CarritoService {
+  private apiUrl = 'http://localhost:8081/api/carrito';
+  private carritoSubject = new BehaviorSubject<Carrito | null>(null);
+  carrito$ = this.carritoSubject.asObservable();
 
-  items: ItemCarrito[] = [];
+  constructor(private http: HttpClient) {}
 
-  agregarProducto(producto: Producto): void {
-
-    const itemExistente = this.items.find(
-      i => i.producto.idProducto === producto.idProducto
+  obtenerOCrearCarrito(): Observable<Carrito> {
+    return this.http.get<Carrito>(
+      `${this.apiUrl}/verCarrito`,
+      { withCredentials: true }
     );
-
-    if (itemExistente) {
-
-      itemExistente.cantidad++;
-
-      itemExistente.subtotal =
-        itemExistente.cantidad * itemExistente.precioUnitario;
-
-    } else {
-
-      const nuevoItem: ItemCarrito = {
-        idItem: Date.now(),
-        cantidad: 1,
-        precioUnitario: producto.precio,
-        subtotal: producto.precio,
-        producto: producto
-      };
-
-      this.items.push(nuevoItem);
-    }
   }
 
-  obtenerItems(): ItemCarrito[] {
-    return this.items;
+
+  obtenerItems(idCarrito: number): Observable<ItemCarrito[]> {
+    return this.http.get<ItemCarrito[]>(`${this.apiUrl}/obtenerItems/${idCarrito}`);
   }
 
-  eliminarItem(idItem: number): void {
-    this.items = this.items.filter(i => i.idItem !== idItem);
+  // Agregar producto al carrito - VERSIÓN SIMPLIFICADA Y CORRECTA
+  agregarProducto(idCarrito: number, idProducto: number, cantidad: number = 1): Observable<any> {
+    const params = new HttpParams()
+      .set('idProducto', idProducto.toString())
+      .set('cantidad', cantidad.toString());
+
+    return this.http.post(`${this.apiUrl}/agregarProducto/${idCarrito}`, {}, { params });
   }
 
-  calcularTotal(): number {
-    return this.items.reduce(
-      (acc, item) => acc + item.subtotal,
-      0
+  agregarDesdeMenu(producto: Producto): Observable<any> {
+
+    return this.obtenerOCrearCarrito().pipe(
+
+      switchMap((carrito) =>
+
+        this.agregarProducto(
+          carrito.idCarrito,
+          producto.idProducto
+        )
+      )
     );
+  }
+
+  // Actualizar cantidad
+  actualizarCantidad(idItem: number, cantidad: number): Observable<any> {
+    const params = new HttpParams().set('cantidad', cantidad.toString());
+    return this.http.put(`${this.apiUrl}/actualizarCantidad/${idItem}`, {}, { params });
+  }
+
+  // Eliminar item
+  eliminarItem(idItem: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/eliminarProducto/${idItem}`);
+  }
+
+  // Obtener total
+  obtenerTotal(idCarrito: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/generarTotal/${idCarrito}`);
+  }
+
+  // Vaciar carrito
+  vaciarCarrito(idCarrito: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/vaciarCarrito/${idCarrito}`);
   }
 }

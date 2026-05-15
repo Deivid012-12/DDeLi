@@ -43,12 +43,14 @@ export class PagarComponent implements OnInit {
       cantidad: 2,
       precioUnitario: 15000,
       subtotal: 30000,
+      idCarrito: 1,
+      idProducto: 1,
       producto: {
         idProducto: 1,
         nombre: 'Brownie de chocolate',
         descripcion: 'Delicioso brownie artesanal',
-        precio: 15000,
-        imagen: 'assets/brownie.jpg'
+        precioBase: 15000,
+        imagenURL: 'assets/brownie.jpg'
       }
     },
     {
@@ -56,12 +58,14 @@ export class PagarComponent implements OnInit {
       cantidad: 1,
       precioUnitario: 25000,
       subtotal: 25000,
+      idCarrito: 1,
+      idProducto: 2,
       producto: {
         idProducto: 2,
         nombre: 'Cheesecake de frutos rojos',
         descripcion: 'Cheesecake cremoso con topping de frutos rojos',
-        precio: 25000,
-        imagen: 'assets/cheesecake.jpg'
+        precioBase: 25000,
+        imagenURL: 'assets/cheesecake.jpg'
       }
     }
   ];
