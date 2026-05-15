@@ -3,8 +3,11 @@ package co.edu.unbosque.ddeli.entity;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -13,13 +16,14 @@ import jakarta.persistence.OneToOne;
 public class Envio {
 
 	@Id
-	@GeneratedValue
-	private Long idEnvio; // falta determinar la secuencia para generar automaticamente el id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idEnvio;
 
 	private String estado;
 	private String tipoEntrega;
 	private LocalDate fechaEnvio;
 
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "id_pedido")
 	private Pedido pedido;
@@ -28,7 +32,7 @@ public class Envio {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Envio(Long idEnvio, String estado, String tipoEntrega, LocalDate fechaEnvio, Pedido pedido) {
+	public Envio(Long idEnvio, String estado, String tipoEntrega, LocalDate fechaEnvio,  Pedido pedido) {
 		super();
 		this.idEnvio = idEnvio;
 		this.estado = estado;

@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
@@ -14,13 +17,14 @@ import jakarta.persistence.OneToMany;
 public class PlanSuscripcion {
 
 	@Id
-	@GeneratedValue
-	private Long idPlan; // falta determinar la secuencia para generar automaticamente el id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idPlan;
 
 	private String nombre;
 	private double precioMensual;
 	private double costoAdicional;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
 	private List<Suscripcion> suscripciones = new ArrayList<>();
 

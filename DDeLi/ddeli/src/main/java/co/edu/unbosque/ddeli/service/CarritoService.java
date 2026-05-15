@@ -1,13 +1,17 @@
-// CarritoService.java
 package co.edu.unbosque.ddeli.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.edu.unbosque.ddeli.dto.CarritoDTO;
+import co.edu.unbosque.ddeli.dto.ItemCarritoDTO;
+import co.edu.unbosque.ddeli.dto.ProductoDTO;
 import co.edu.unbosque.ddeli.entity.Carrito;
 import co.edu.unbosque.ddeli.entity.ItemCarrito;
 import co.edu.unbosque.ddeli.entity.Producto;
@@ -20,7 +24,7 @@ import co.edu.unbosque.ddeli.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 
 @Service
-public class CarritoService {
+public class CarritoService implements CRUDOperation<CarritoDTO> {
 
 	@Autowired
 	private CarritoRepository carritoRepository;
@@ -34,117 +38,315 @@ public class CarritoService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	public Carrito obtenerOCrearCarrito(Long idUsuario) {
-		
-		Optional<Carrito> carritoExistente = carritoRepository.findByUsuarioIdUsuarioAndEstado(idUsuario, "ACTIVO");
+	@Autowired
+	private ModelMapper modelMapper;
 
-		if (carritoExistente.isPresent()) {
-			return carritoExistente.get();
+	public CarritoService() {
+
+	}
+
+	@Override
+	public int create(CarritoDTO newData) {
+
+		Optional<Usuario> usuarioOpt = usuarioRepository.findById(newData.getIdUsuario());
+
+		if (!usuarioOpt.isPresent()) {
+			return 1;
 		}
 
-		
-		Usuario usuario = usuarioRepository.findById(idUsuario)
-				.orElseThrow(() -> new RuntimeException("Usuario no encontrado: " + idUsuario));
+		Optional<Carrito> carritoExistente = carritoRepository.findByUsuarioIdUsuarioAndEstado(newData.getIdUsuario(),
+				"ACTIVO");
+
+		if (carritoExistente.isPresent()) {
+			return 2;
+		}
+
+		Carrito carrito = new Carrito();
+
+		carrito.setUsuario(usuarioOpt.get());
+		carrito.setEstado("ACTIVO");
+		carrito.setFechaCreacion(LocalDate.now());
+
+		carritoRepository.save(carrito);
+
+		return 0;
+	}
+
+	@Override
+	public List<CarritoDTO> getAll() {
+
+		List<Carrito> entityList = carritoRepository.findAll();
+
+		List<CarritoDTO> dtoList = new ArrayList<>();
+
+		for (Carrito entity : entityList) {
+
+			CarritoDTO dto = modelMapper.map(entity, CarritoDTO.class);
+
+			dtoList.add(dto);
+		}
+
+		return dtoList;
+	}
+
+	@Override
+	public int deleteByID(Long id) {
+
+		Optional<Carrito> found = carritoRepository.findById(id);
+
+		if (found.isPresent()) {
+
+			carritoRepository.deleteById(id);
+
+			return 0;
+		}
+
+		return 1;
+	}
+
+	@Override
+	public int updateByID(Long id, CarritoDTO newData) {
+
+		Optional<Carrito> found = carritoRepository.findById(id);
+
+		if (found.isPresent()) {
+
+			Carrito temp = found.get();
+
+			temp.setEstado(newData.getEstado());
+
+			carritoRepository.save(temp);
+
+			return 0;
+		}
+
+		return 1;
+	}
+
+	public CarritoDTO obtenerOCrearCarritoPorCorreo(String correo) {
+
+		Usuario usuario = usuarioRepository.findByCorreo(correo)
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+		Optional<Carrito> carritoExistente = carritoRepository.findByUsuarioIdUsuarioAndEstado(usuario.getIdUsuario(),
+				"ACTIVO");
+
+		if (carritoExistente.isPresent()) {
+
+			CarritoDTO dto = modelMapper.map(carritoExistente.get(), CarritoDTO.class);
+
+			dto.setItems(obtenerItems(carritoExistente.get().getIdCarrito()));
+
+			return dto;
+		}
 
 		Carrito nuevoCarrito = new Carrito();
+
 		nuevoCarrito.setUsuario(usuario);
 		nuevoCarrito.setEstado("ACTIVO");
 		nuevoCarrito.setFechaCreacion(LocalDate.now());
 
-		return carritoRepository.save(nuevoCarrito);
+		Carrito saved = carritoRepository.save(nuevoCarrito);
+
+		CarritoDTO dto = modelMapper.map(saved, CarritoDTO.class);
+
+		dto.setItems(new ArrayList<>());
+
+		return dto;
 	}
 
-	
-	public List<ItemCarrito> obtenerItems(Long idCarrito) {
-		return itemCarritoRepository.findByCarritoIdCarrito(idCarrito);
+	public List<ItemCarritoDTO> obtenerItems(Long idCarrito) {
+		List<ItemCarrito> items = itemCarritoRepository.findByCarritoIdCarrito(idCarrito);
+		List<ItemCarritoDTO> dtoList = new ArrayList<>();
+
+		for (ItemCarrito item : items) {
+			ItemCarritoDTO dto = modelMapper.map(item, ItemCarritoDTO.class);
+
+			if (item.getProducto() != null) {
+				ProductoDTO productoDTO = new ProductoDTO();
+				productoDTO.setIdProducto(item.getProducto().getIdProducto());
+				productoDTO.setNombre(item.getProducto().getNombre());
+				productoDTO.setDescripcion(item.getProducto().getDescripcion());
+				productoDTO.setPrecioBase(item.getProducto().getPrecioBase());
+				productoDTO.setImagenURL(item.getProducto().getImagenURL());
+				productoDTO.setTipo(item.getProducto().getTipo());
+
+			}
+
+			dtoList.add(dto);
+		}
+		return dtoList;
 	}
 
-	
 	@Transactional
-	public ItemCarrito agregarProducto(Long idCarrito, Long idProducto, int cantidad) {
+	public int agregarProducto(Long idCarrito, Long idProducto, int cantidad) {
 
-		Carrito carrito = carritoRepository.findById(idCarrito)
-				.orElseThrow(() -> new RuntimeException("Carrito no encontrado: " + idCarrito));
+		Optional<Carrito> carritoOpt = carritoRepository.findById(idCarrito);
 
-		Producto producto = productoRepository.findById(idProducto)
-				.orElseThrow(() -> new RuntimeException("Producto no encontrado: " + idProducto));
+		if (!carritoOpt.isPresent()) {
+			return 1;
+		}
 
-	
+		Optional<Producto> productoOpt = productoRepository.findById(idProducto);
+
+		if (!productoOpt.isPresent()) {
+			return 2;
+		}
+
+		Carrito carrito = carritoOpt.get();
+
+		Producto producto = productoOpt.get();
+
 		Optional<ItemCarrito> itemExistente = itemCarritoRepository
 				.findByCarritoIdCarritoAndProductoIdProducto(idCarrito, idProducto);
 
 		if (itemExistente.isPresent()) {
-			
+
 			ItemCarrito item = itemExistente.get();
+
 			item.setCantidad(item.getCantidad() + cantidad);
+
 			item.setSubtotal(item.getPrecioUnitario() * item.getCantidad());
-			return itemCarritoRepository.save(item);
+
+			itemCarritoRepository.save(item);
+
+			return 0;
 		}
 
-	
 		ItemCarrito nuevoItem = new ItemCarrito();
+
 		nuevoItem.setCarrito(carrito);
 		nuevoItem.setProducto(producto);
 		nuevoItem.setCantidad(cantidad);
 		nuevoItem.setPrecioUnitario(producto.getPrecioBase());
 		nuevoItem.setSubtotal(producto.getPrecioBase() * cantidad);
 
-		return itemCarritoRepository.save(nuevoItem);
+		itemCarritoRepository.save(nuevoItem);
+
+		return 0;
 	}
 
-
 	@Transactional
-	public ItemCarrito actualizarCantidad(Long idItem, int nuevaCantidad) {
+	public int actualizarCantidad(Long idItem, int nuevaCantidad) {
 
 		if (nuevaCantidad <= 0) {
-			throw new RuntimeException("La cantidad debe ser mayor a 0");
+			return 1;
 		}
 
-		ItemCarrito item = itemCarritoRepository.findById(idItem)
-				.orElseThrow(() -> new RuntimeException("Item no encontrado: " + idItem));
+		Optional<ItemCarrito> itemOpt = itemCarritoRepository.findById(idItem);
+
+		if (!itemOpt.isPresent()) {
+			return 2;
+		}
+
+		ItemCarrito item = itemOpt.get();
 
 		item.setCantidad(nuevaCantidad);
+
 		item.setSubtotal(item.getPrecioUnitario() * nuevaCantidad);
 
-		return itemCarritoRepository.save(item);
+		itemCarritoRepository.save(item);
+
+		return 0;
 	}
 
-	
 	@Transactional
-	public void eliminarProducto(Long idItem) {
-		if (!itemCarritoRepository.existsById(idItem)) {
-			throw new RuntimeException("Item no encontrado: " + idItem);
+	public int eliminarProducto(Long idItem) {
+
+		Optional<ItemCarrito> itemOpt = itemCarritoRepository.findById(idItem);
+
+		if (itemOpt.isPresent()) {
+
+			itemCarritoRepository.deleteById(idItem);
+
+			return 0;
 		}
-		itemCarritoRepository.deleteById(idItem);
+
+		return 1;
 	}
 
-	
 	@Transactional
-	public void vaciarCarrito(Long idCarrito) {
-		itemCarritoRepository.deleteByCarritoIdCarrito(idCarrito);
+	public int vaciarCarrito(Long idCarrito) {
+
+		Optional<Carrito> carritoOpt = carritoRepository.findById(idCarrito);
+
+		if (carritoOpt.isPresent()) {
+
+			itemCarritoRepository.deleteByCarritoIdCarrito(idCarrito);
+
+			return 0;
+		}
+
+		return 1;
 	}
 
-	
 	public double calcularTotal(Long idCarrito) {
+
 		List<ItemCarrito> items = itemCarritoRepository.findByCarritoIdCarrito(idCarrito);
-		return items.stream().mapToDouble(ItemCarrito::getSubtotal).sum();
+
+		double total = 0;
+
+		for (ItemCarrito item : items) {
+
+			total += item.getSubtotal();
+		}
+
+		return total;
 	}
 
-	
 	@Transactional
-	public void confirmarCarrito(Long idCarrito) {
-		Carrito carrito = carritoRepository.findById(idCarrito)
-				.orElseThrow(() -> new RuntimeException("Carrito no encontrado: " + idCarrito));
-		carrito.setEstado("CONFIRMADO");
-		carritoRepository.save(carrito);
+	public int confirmarCarrito(Long idCarrito) {
+
+		Optional<Carrito> carritoOpt = carritoRepository.findById(idCarrito);
+
+		if (carritoOpt.isPresent()) {
+
+			Carrito carrito = carritoOpt.get();
+
+			carrito.setEstado("CONFIRMADO");
+
+			carritoRepository.save(carrito);
+
+			return 0;
+		}
+
+		return 1;
 	}
 
-	
 	@Transactional
-	public void abandonarCarrito(Long idCarrito) {
-		Carrito carrito = carritoRepository.findById(idCarrito)
-				.orElseThrow(() -> new RuntimeException("Carrito no encontrado: " + idCarrito));
-		carrito.setEstado("ABANDONADO");
-		carritoRepository.save(carrito);
+	public int abandonarCarrito(Long idCarrito) {
+
+		Optional<Carrito> carritoOpt = carritoRepository.findById(idCarrito);
+
+		if (carritoOpt.isPresent()) {
+
+			Carrito carrito = carritoOpt.get();
+
+			carrito.setEstado("ABANDONADO");
+
+			carritoRepository.save(carrito);
+
+			return 0;
+		}
+
+		return 1;
+	}
+
+	public boolean exist(Long id) {
+
+		return carritoRepository.existsById(id);
+	}
+
+	public long count() {
+
+		return carritoRepository.count();
+	}
+
+	public CarritoDTO obtenerPorId(Long id) {
+
+		Carrito carrito = carritoRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Carrito no encontrado"));
+
+		return modelMapper.map(carrito, CarritoDTO.class);
 	}
 }

@@ -1,13 +1,18 @@
-// DetallePedidoDTO.java
+
 package co.edu.unbosque.ddeli.dto;
+
+import java.util.List;
 
 public class DetallePedidoDTO {
 
 	private Long idDetalle;
+	private Long idPedido;
 	private String nombreProducto;
+	private String imagenProducto;
 	private int cantidad;
 	private double precioUnitario;
 	private double subtotal;
+	private List<String> nombresOpciones;
 
 	public DetallePedidoDTO() {
 	}
@@ -20,12 +25,28 @@ public class DetallePedidoDTO {
 		this.idDetalle = idDetalle;
 	}
 
+	public Long getIdPedido() {
+		return idPedido;
+	}
+
+	public void setIdPedido(Long idPedido) {
+		this.idPedido = idPedido;
+	}
+
 	public String getNombreProducto() {
 		return nombreProducto;
 	}
 
 	public void setNombreProducto(String nombreProducto) {
 		this.nombreProducto = nombreProducto;
+	}
+
+	public String getImagenProducto() {
+		return imagenProducto;
+	}
+
+	public void setImagenProducto(String imagenProducto) {
+		this.imagenProducto = imagenProducto;
 	}
 
 	public int getCantidad() {
@@ -50,6 +71,14 @@ public class DetallePedidoDTO {
 
 	public void setSubtotal(double subtotal) {
 		this.subtotal = subtotal;
+	}
+
+	public List<String> getNombresOpciones() {
+		return nombresOpciones;
+	}
+
+	public void setNombresOpciones(List<String> nombresOpciones) {
+		this.nombresOpciones = nombresOpciones;
 	}
 
 	@Override

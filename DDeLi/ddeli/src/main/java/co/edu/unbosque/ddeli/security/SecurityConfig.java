@@ -42,17 +42,38 @@ public class SecurityConfig {
 
 				.authorizeHttpRequests(auth -> auth
 
-						.requestMatchers("/auth/login", "/auth/register", "/usuario/login",
-								"/carrito/{idCarrito}/agregar", "/usuario/crear", "/usuario/verificar",
+						.requestMatchers("/auth/login", "/auth/register",
+
+								"/usuario/login", "/usuario/crear", "/usuario/createjson", "/usuario/verificar",
+
 								"/swagger-ui/**", "/v3/api-docs/**")
 						.permitAll()
 
-						.requestMatchers("/admin/**").hasRole("ADMIN")
+						.requestMatchers("/producto/getall", "/producto/getbyid/**", "/producto/disponibles",
+								"/producto/obtenerPorTipo/**", "/producto/obtenerPorCategoria/**", "/producto/buscar")
+						.permitAll()
 
-						.requestMatchers("/pedido/**", "/producto/**", "/categoria/**", "/evento/**", "/direccion/**")
-						.hasAnyRole("CLIENTE", "ADMIN")
+						.requestMatchers("/api/carrito/**").permitAll()
 
-						.anyRequest().authenticated())
+						.requestMatchers("/pedido/**").hasAnyRole("CLIENTE", "ADMIN")
+
+						.requestMatchers("/direccion/**").hasAnyRole("CLIENTE", "ADMIN")
+
+						.requestMatchers("/evento/**").hasAnyRole("CLIENTE", "ADMIN")
+
+						.requestMatchers("/api/detalles/**").hasAnyRole("CLIENTE", "ADMIN")
+
+						.requestMatchers("/pago/**", "/envio/**").hasAnyRole("CLIENTE", "ADMIN")
+
+						.requestMatchers("/categoria/**", "/promocion/**", "/plan/**", "/tipo-personalizacion/**",
+								"/opcion/**")
+						.hasRole("ADMIN")
+
+						.requestMatchers("/producto/crear", "/producto/createjson", "/producto/actualizar/**",
+								"/producto/deletebyid/**")
+						.hasRole("ADMIN")
+
+						.anyRequest().permitAll())
 
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 

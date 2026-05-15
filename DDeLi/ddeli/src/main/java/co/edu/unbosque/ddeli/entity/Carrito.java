@@ -24,6 +24,7 @@ public class Carrito {
 
 	private String estado;
 	private LocalDate fechaCreacion;
+	private String sessionId;
 
 	@OneToOne
 	@JoinColumn(name = "id_usuario")
@@ -36,12 +37,18 @@ public class Carrito {
 	public Carrito() {
 	}
 
-	public Carrito(Long idCarrito, String estado, LocalDate fechaCreacion, Usuario usuario) {
+	
+	public Carrito(Long idCarrito, String estado, LocalDate fechaCreacion, String sessionId, Usuario usuario,
+			List<ItemCarrito> items) {
+		super();
 		this.idCarrito = idCarrito;
 		this.estado = estado;
 		this.fechaCreacion = fechaCreacion;
+		this.sessionId = sessionId;
 		this.usuario = usuario;
+		this.items = items;
 	}
+
 
 	@Override
 	public int hashCode() {
@@ -99,6 +106,17 @@ public class Carrito {
 	public void setItems(List<ItemCarrito> items) {
 		this.items = items;
 	}
+	
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
 
 	@Override
 	public String toString() {

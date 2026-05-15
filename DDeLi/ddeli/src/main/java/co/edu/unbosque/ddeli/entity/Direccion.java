@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -12,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 public class Direccion {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idDireccion;
 
 	private String calle;
@@ -41,7 +42,7 @@ public class Direccion {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(calle, ciudad, usuario, codigoPostal, departamento, idDireccion);
+		return Objects.hash(calle, ciudad, codigoPostal, departamento, idDireccion, usuario);
 	}
 
 	@Override
@@ -54,8 +55,8 @@ public class Direccion {
 			return false;
 		Direccion other = (Direccion) obj;
 		return Objects.equals(calle, other.calle) && Objects.equals(ciudad, other.ciudad)
-				&& Objects.equals(usuario, other.usuario) && Objects.equals(codigoPostal, other.codigoPostal)
-				&& Objects.equals(departamento, other.departamento) && Objects.equals(idDireccion, other.idDireccion);
+				&& Objects.equals(codigoPostal, other.codigoPostal) && Objects.equals(departamento, other.departamento)
+				&& Objects.equals(idDireccion, other.idDireccion) && Objects.equals(usuario, other.usuario);
 	}
 
 	/**

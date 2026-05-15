@@ -4,8 +4,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
@@ -13,14 +16,14 @@ import jakarta.persistence.OneToMany;
 public class Promocion {
 
 	@Id
-	@GeneratedValue
-	private Long idPromocion; // falta determinar la secuencia para generar automaticamente el id
-
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idPromocion;
 	private String nombre;
 	private double porcentajeDescuento;
 	private LocalDate fechaInicio;
 	private LocalDate fechaFin;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "promocion")
 	private List<Pedido> pedidos;
 

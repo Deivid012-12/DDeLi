@@ -32,11 +32,11 @@ public class Pedido {
 
 	@ManyToOne
 	@JoinColumn(name = "id_evento")
-	private Evento evento; // nullable, opcional
+	private Evento evento;
 
 	@ManyToOne
 	@JoinColumn(name = "id_promocion")
-	private Promocion promocion; // nullable, opcional
+	private Promocion promocion;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)

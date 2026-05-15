@@ -1,4 +1,4 @@
-// CategoriaDTO.java
+
 package co.edu.unbosque.ddeli.dto;
 
 import java.util.Objects;

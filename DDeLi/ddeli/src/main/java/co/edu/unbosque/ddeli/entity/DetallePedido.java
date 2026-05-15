@@ -3,8 +3,11 @@ package co.edu.unbosque.ddeli.entity;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -14,166 +17,83 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class DetallePedido {
 
-	@Id
-	@GeneratedValue
-	private Long idDetalle; // falta determinar la secuencia para generar automaticamente el id
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idDetalle;
 
-	private int cantidad;
-	private double precioUnitario;
-	private double subtotal;
+    private int cantidad;
+    private double precioUnitario;
+    private double subtotal;
 
-	@ManyToOne
-	@JoinColumn(name = "id_pedido")
-	private Pedido pedido;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "id_pedido")
+    private Pedido pedido;
 
-	@ManyToOne
-	@JoinColumn(name = "id_producto")
-	private Producto producto;
+    @ManyToOne
+    @JoinColumn(name = "id_producto")
+    private Producto producto;
 
-	@ManyToMany
-	@JoinTable(name = "detalle_opcion", joinColumns = @JoinColumn(name = "id_detalle"), inverseJoinColumns = @JoinColumn(name = "id_opcion"))
-	private List<OpcionPersonalizacion> opciones;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "detalle_opcion",
+        joinColumns = @JoinColumn(name = "id_detalle"),
+        inverseJoinColumns = @JoinColumn(name = "id_opcion"))
+    private List<OpcionPersonalizacion> opciones;
 
-	public DetallePedido() {
-		// TODO Auto-generated constructor stub
-	}
+    public DetallePedido() {
+    }
 
-	public DetallePedido(Long idDetalle, int cantidad, double precioUnitario, double subtotal, Pedido pedido,
-			Producto producto, List<OpcionPersonalizacion> opciones) {
-		super();
-		this.idDetalle = idDetalle;
-		this.cantidad = cantidad;
-		this.precioUnitario = precioUnitario;
-		this.subtotal = subtotal;
-		this.pedido = pedido;
-		this.producto = producto;
-		this.opciones = opciones;
-	}
+    public DetallePedido(Long idDetalle, int cantidad, double precioUnitario, double subtotal,
+                         Pedido pedido, Producto producto, List<OpcionPersonalizacion> opciones) {
+        this.idDetalle = idDetalle;
+        this.cantidad = cantidad;
+        this.precioUnitario = precioUnitario;
+        this.subtotal = subtotal;
+        this.pedido = pedido;
+        this.producto = producto;
+        this.opciones = opciones;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(cantidad, idDetalle, opciones, pedido, precioUnitario, producto, subtotal);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(idDetalle);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		DetallePedido other = (DetallePedido) obj;
-		return cantidad == other.cantidad && Objects.equals(idDetalle, other.idDetalle)
-				&& Objects.equals(opciones, other.opciones) && Objects.equals(pedido, other.pedido)
-				&& Double.doubleToLongBits(precioUnitario) == Double.doubleToLongBits(other.precioUnitario)
-				&& Objects.equals(producto, other.producto)
-				&& Double.doubleToLongBits(subtotal) == Double.doubleToLongBits(other.subtotal);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        DetallePedido other = (DetallePedido) obj;
+        return Objects.equals(idDetalle, other.idDetalle);
+    }
 
-	/**
-	 * @return the idDetalle
-	 */
-	public Long getIdDetalle() {
-		return idDetalle;
-	}
+    public Long getIdDetalle() { return idDetalle; }
+    public void setIdDetalle(Long idDetalle) { this.idDetalle = idDetalle; }
 
-	/**
-	 * @param idDetalle the idDetalle to set
-	 */
-	public void setIdDetalle(Long idDetalle) {
-		this.idDetalle = idDetalle;
-	}
+    public int getCantidad() { return cantidad; }
+    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
 
-	/**
-	 * @return the cantidad
-	 */
-	public int getCantidad() {
-		return cantidad;
-	}
+    public double getPrecioUnitario() { return precioUnitario; }
+    public void setPrecioUnitario(double precioUnitario) { this.precioUnitario = precioUnitario; }
 
-	/**
-	 * @param cantidad the cantidad to set
-	 */
-	public void setCantidad(int cantidad) {
-		this.cantidad = cantidad;
-	}
+    public double getSubtotal() { return subtotal; }
+    public void setSubtotal(double subtotal) { this.subtotal = subtotal; }
 
-	/**
-	 * @return the precioUnitario
-	 */
-	public double getPrecioUnitario() {
-		return precioUnitario;
-	}
+    public Pedido getPedido() { return pedido; }
+    public void setPedido(Pedido pedido) { this.pedido = pedido; }
 
-	/**
-	 * @param precioUnitario the precioUnitario to set
-	 */
-	public void setPrecioUnitario(double precioUnitario) {
-		this.precioUnitario = precioUnitario;
-	}
+    public Producto getProducto() { return producto; }
+    public void setProducto(Producto producto) { this.producto = producto; }
 
-	/**
-	 * @return the subtotal
-	 */
-	public double getSubtotal() {
-		return subtotal;
-	}
+    public List<OpcionPersonalizacion> getOpciones() { return opciones; }
+    public void setOpciones(List<OpcionPersonalizacion> opciones) { this.opciones = opciones; }
 
-	/**
-	 * @param subtotal the subtotal to set
-	 */
-	public void setSubtotal(double subtotal) {
-		this.subtotal = subtotal;
-	}
-
-	/**
-	 * @return the pedido
-	 */
-	public Pedido getPedido() {
-		return pedido;
-	}
-
-	/**
-	 * @param pedido the pedido to set
-	 */
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
-
-	/**
-	 * @return the producto
-	 */
-	public Producto getProducto() {
-		return producto;
-	}
-
-	/**
-	 * @param producto the producto to set
-	 */
-	public void setProducto(Producto producto) {
-		this.producto = producto;
-	}
-
-	/**
-	 * @return the opciones
-	 */
-	public List<OpcionPersonalizacion> getOpciones() {
-		return opciones;
-	}
-
-	/**
-	 * @param opciones the opciones to set
-	 */
-	public void setOpciones(List<OpcionPersonalizacion> opciones) {
-		this.opciones = opciones;
-	}
-
-	@Override
-	public String toString() {
-		return "DetallePedido [idDetalle=" + idDetalle + ", cantidad=" + cantidad + ", precioUnitario=" + precioUnitario
-				+ ", subtotal=" + subtotal + ", pedido=" + pedido + ", producto=" + producto + ", opciones=" + opciones
-				+ "]";
-	}
-
+    @Override
+    public String toString() {
+        return "DetallePedido [idDetalle=" + idDetalle + ", cantidad=" + cantidad +
+               ", precioUnitario=" + precioUnitario + ", subtotal=" + subtotal +
+               ", producto=" + producto + "]";
+    }
 }
