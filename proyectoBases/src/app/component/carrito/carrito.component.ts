@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Carrito, ItemCarrito } from '../../model/carrito.model';
 import { RouterLink, Router} from '@angular/router';
 
+
 @Component({
   selector: 'app-carrito',
   standalone: true,

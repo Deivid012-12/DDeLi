@@ -3,26 +3,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { ItemCarrito } from '../../model/carrito.model';
-
-export interface Pago {
-  cantidadPago: number;
-  metodoPago: string;
-  estadoTransaccion: string;
-  fechaPago: string;
-}
-
-export interface Pedido {
-  fechaPedido: string;
-  valorTotal: number;
-}
+import { Pago, Pedido } from '../../model/pagar.model';
 
 @Component({
   selector: 'app-pagar',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './pagar.component.html',
-  styleUrls: ['./pagar.component.css'],
+  styleUrl: './pagar.component.css',
 })
+
 export class PagarComponent implements OnInit {
 
   pedido: Pedido = {
