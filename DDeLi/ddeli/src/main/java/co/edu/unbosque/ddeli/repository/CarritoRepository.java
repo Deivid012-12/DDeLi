@@ -1,4 +1,3 @@
-
 package co.edu.unbosque.ddeli.repository;
 
 import java.util.Optional;
@@ -13,5 +12,8 @@ public interface CarritoRepository extends JpaRepository<Carrito, Long> {
 
 	boolean existsByUsuarioIdUsuario(Long idUsuario);
 
-	Optional<Carrito> findBySessionIdAndEstado(String sessionId, String estado);
+	Optional<Carrito> findTopByUsuarioIdUsuarioOrderByIdCarritoDesc(Long idUsuario);
+
+
+
 }

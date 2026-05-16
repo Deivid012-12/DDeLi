@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,16 +36,16 @@ public class PedidoController {
 		}
 	}
 
-	@GetMapping(path = "/obtenerPorUsuario/{idUsuario}")
-	public ResponseEntity<List<PedidoDTO>> obtenerPorUsuario(@PathVariable Long idUsuario) {
-		List<PedidoDTO> pedidos = pedidoSer.obtenerPorUsuario(idUsuario);
-		if (pedidos.isEmpty()) {
-			return new ResponseEntity<>(pedidos, HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(pedidos, HttpStatus.OK);
-		}
+	@GetMapping(path = "/misPedidos")
+	public ResponseEntity<List<PedidoDTO>> obtenerMisPedidos(Authentication authentication) {
+	    String correo = authentication.getName();
+	    List<PedidoDTO> pedidos = pedidoSer.obtenerPorCorreo(correo);
+	    if (pedidos.isEmpty()) {
+	        return new ResponseEntity<>(pedidos, HttpStatus.NO_CONTENT);
+	    } else {
+	        return new ResponseEntity<>(pedidos, HttpStatus.OK);
+	    }
 	}
-
 	@GetMapping(path = "/getbyid/{id}")
 	public ResponseEntity<PedidoDTO> getById(@PathVariable Long id) {
 		return pedidoSer.obtenerPorId(id).map(pedido -> new ResponseEntity<>(pedido, HttpStatus.OK))
@@ -61,6 +62,7 @@ public class PedidoController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
+
 
 	@PostMapping(path = "/confirmarjson/{idCarrito}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> confirmarCarritoJSON(@PathVariable Long idCarrito,

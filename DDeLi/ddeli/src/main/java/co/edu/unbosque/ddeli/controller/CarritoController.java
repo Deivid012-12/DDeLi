@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import co.edu.unbosque.ddeli.dto.CarritoDTO;
 import co.edu.unbosque.ddeli.dto.ItemCarritoDTO;
 import co.edu.unbosque.ddeli.service.CarritoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/api/carrito")
@@ -23,11 +23,11 @@ public class CarritoController {
 	private CarritoService carritoService;
 
 	@GetMapping("/verCarrito")
-	public ResponseEntity<CarritoDTO> obtenerCarrito(HttpSession session) {
+	public ResponseEntity<CarritoDTO> obtenerCarrito(Authentication authentication) {
 
-		String sessionId = session.getId();
+		String correo = authentication.getName();
 
-		CarritoDTO carrito = carritoService.obtenerOCrearCarritoPorCorreo(sessionId);
+		CarritoDTO carrito = carritoService.obtenerOCrearCarritoPorCorreo(correo);
 
 		return ResponseEntity.ok(carrito);
 	}
@@ -42,18 +42,16 @@ public class CarritoController {
 
 	@PostMapping("/agregarProducto/{idCarrito}")
 	public ResponseEntity<String> agregarProducto(@PathVariable Long idCarrito, @RequestParam Long idProducto,
-			@RequestParam int cantidad) {
+			@RequestParam int cantidad, @RequestParam(required = false) List<Long> idOpciones) {
 
-		int resultado = carritoService.agregarProducto(idCarrito, idProducto, cantidad);
+		int resultado = carritoService.agregarProducto(idCarrito, idProducto, cantidad, idOpciones);
 
 		if (resultado == 0) {
 			return ResponseEntity.status(HttpStatus.CREATED).body("Producto agregado al carrito");
 		}
-
 		if (resultado == 1) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Carrito no encontrado");
 		}
-
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
 	}
 

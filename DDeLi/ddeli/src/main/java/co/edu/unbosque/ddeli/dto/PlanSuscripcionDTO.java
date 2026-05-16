@@ -1,4 +1,3 @@
-// PlanSuscripcionDTO.java
 package co.edu.unbosque.ddeli.dto;
 
 public class PlanSuscripcionDTO {

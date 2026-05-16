@@ -1,5 +1,7 @@
 package co.edu.unbosque.ddeli.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
@@ -7,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -27,6 +31,10 @@ public class ItemCarrito {
 	@ManyToOne
 	@JoinColumn(name = "id_producto")
 	private Producto producto;
+
+	@ManyToMany
+	@JoinTable(name = "item_opcion", joinColumns = @JoinColumn(name = "id_item"), inverseJoinColumns = @JoinColumn(name = "id_opcion"))
+	private List<OpcionPersonalizacion> opciones = new ArrayList<>();
 
 	public ItemCarrito() {
 	}
@@ -104,6 +112,14 @@ public class ItemCarrito {
 
 	public void setProducto(Producto producto) {
 		this.producto = producto;
+	}
+
+	public List<OpcionPersonalizacion> getOpciones() {
+		return opciones;
+	}
+
+	public void setOpciones(List<OpcionPersonalizacion> opciones) {
+		this.opciones = opciones;
 	}
 
 	@Override

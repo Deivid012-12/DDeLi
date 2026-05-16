@@ -1,4 +1,3 @@
-// EnvioDTO.java
 package co.edu.unbosque.ddeli.dto;
 
 import java.time.LocalDate;
@@ -10,7 +9,8 @@ public class EnvioDTO {
 	private String tipoEntrega;
 	private LocalDate fechaEnvio;
 	private Long idPedido;
-
+	private Long idDireccion;
+	
 	public EnvioDTO() {
 	}
 
@@ -60,6 +60,14 @@ public class EnvioDTO {
 
 	public void setIdPedido(Long idPedido) {
 		this.idPedido = idPedido;
+	}
+
+	public Long getIdDireccion() {
+		return idDireccion;
+	}
+
+	public void setIdDireccion(Long idDireccion) {
+		this.idDireccion = idDireccion;
 	}
 
 	@Override

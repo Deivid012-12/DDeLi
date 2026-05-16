@@ -53,7 +53,7 @@ public class SecurityConfig {
 								"/producto/obtenerPorTipo/**", "/producto/obtenerPorCategoria/**", "/producto/buscar")
 						.permitAll()
 
-						.requestMatchers("/api/carrito/**").permitAll()
+						.requestMatchers("/api/carrito/**").hasAnyRole("CLIENTE", "ADMIN")
 
 						.requestMatchers("/pedido/**").hasAnyRole("CLIENTE", "ADMIN")
 
@@ -65,9 +65,11 @@ public class SecurityConfig {
 
 						.requestMatchers("/pago/**", "/envio/**").hasAnyRole("CLIENTE", "ADMIN")
 
-						.requestMatchers("/categoria/**", "/promocion/**", "/plan/**", "/tipo-personalizacion/**",
-								"/opcion/**")
-						.hasRole("ADMIN")
+						.requestMatchers("/tipo-personalizacion/getall", "/tipo-personalizacion/getbyid/**",
+								"/opcion/getall", "/opcion/obtenerPorTipo/**")
+						.hasAnyRole("CLIENTE", "ADMIN")
+
+						.requestMatchers("/tipo-personalizacion/**", "/opcion/**").hasRole("ADMIN")
 
 						.requestMatchers("/producto/crear", "/producto/createjson", "/producto/actualizar/**",
 								"/producto/deletebyid/**")

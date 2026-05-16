@@ -20,6 +20,7 @@ public class Direccion {
 	private String ciudad;
 	private String codigoPostal;
 	private String departamento;
+	private String indicaciones;
 
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
@@ -30,13 +31,14 @@ public class Direccion {
 	}
 
 	public Direccion(Long idDireccion, String calle, String ciudad, String codigoPostal, String departamento,
-			Usuario usuario) {
+			String indicaciones, Usuario usuario) {
 		super();
 		this.idDireccion = idDireccion;
 		this.calle = calle;
 		this.ciudad = ciudad;
 		this.codigoPostal = codigoPostal;
 		this.departamento = departamento;
+		this.indicaciones = indicaciones;
 		this.usuario = usuario;
 	}
 
@@ -57,6 +59,14 @@ public class Direccion {
 		return Objects.equals(calle, other.calle) && Objects.equals(ciudad, other.ciudad)
 				&& Objects.equals(codigoPostal, other.codigoPostal) && Objects.equals(departamento, other.departamento)
 				&& Objects.equals(idDireccion, other.idDireccion) && Objects.equals(usuario, other.usuario);
+	}
+
+	public String getIndicaciones() {
+		return indicaciones;
+	}
+
+	public void setIndicaciones(String indicaciones) {
+		this.indicaciones = indicaciones;
 	}
 
 	/**

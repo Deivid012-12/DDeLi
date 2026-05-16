@@ -16,4 +16,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 	List<Pedido> findByPromocionIdPromocion(Long idPromocion);
 
 	List<Pedido> findByEventoIdEvento(Long idEvento);
+
+	List<Pedido> findByUsuarioCorreo(String correo);
 }

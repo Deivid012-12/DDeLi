@@ -7,18 +7,20 @@ public class DireccionDTO {
 	private String ciudad;
 	private String codigoPostal;
 	private String departamento;
+	private String indicaciones;
 	private Long idUsuario;
 
 	public DireccionDTO() {
 	}
 
 	public DireccionDTO(Long idDireccion, String calle, String ciudad, String codigoPostal, String departamento,
-			Long idUsuario) {
+			String indicaciones, Long idUsuario) {
 		this.idDireccion = idDireccion;
 		this.calle = calle;
 		this.ciudad = ciudad;
 		this.codigoPostal = codigoPostal;
 		this.departamento = departamento;
+		this.indicaciones = indicaciones;
 		this.idUsuario = idUsuario;
 	}
 
@@ -62,6 +64,14 @@ public class DireccionDTO {
 		this.departamento = departamento;
 	}
 
+	public String getIndicaciones() {
+		return indicaciones;
+	}
+
+	public void setIndicaciones(String indicaciones) {
+		this.indicaciones = indicaciones;
+	}
+
 	public Long getIdUsuario() {
 		return idUsuario;
 	}
@@ -73,6 +83,6 @@ public class DireccionDTO {
 	@Override
 	public String toString() {
 		return "DireccionDTO [idDireccion=" + idDireccion + ", calle=" + calle + ", ciudad=" + ciudad
-				+ ", departamento=" + departamento + "]";
+				+ ", departamento=" + departamento + ", indicaciones=" + indicaciones + "]";
 	}
 }

@@ -1,6 +1,7 @@
 package co.edu.unbosque.ddeli.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,12 +9,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class Carrito {
@@ -24,31 +28,31 @@ public class Carrito {
 
 	private String estado;
 	private LocalDate fechaCreacion;
-	private String sessionId;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 
+	@ManyToMany
+	@JoinTable(name = "item_opcion", joinColumns = @JoinColumn(name = "id_item"), inverseJoinColumns = @JoinColumn(name = "id_opcion"))
+	private List<OpcionPersonalizacion> opciones = new ArrayList<>();
+
 	@JsonIgnore
-	@OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<ItemCarrito> items;
 
 	public Carrito() {
 	}
 
-	
 	public Carrito(Long idCarrito, String estado, LocalDate fechaCreacion, String sessionId, Usuario usuario,
 			List<ItemCarrito> items) {
 		super();
 		this.idCarrito = idCarrito;
 		this.estado = estado;
 		this.fechaCreacion = fechaCreacion;
-		this.sessionId = sessionId;
 		this.usuario = usuario;
 		this.items = items;
 	}
-
 
 	@Override
 	public int hashCode() {
@@ -106,17 +110,14 @@ public class Carrito {
 	public void setItems(List<ItemCarrito> items) {
 		this.items = items;
 	}
-	
 
-	public String getSessionId() {
-		return sessionId;
+	public List<OpcionPersonalizacion> getOpciones() {
+		return opciones;
 	}
 
-
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
+	public void setOpciones(List<OpcionPersonalizacion> opciones) {
+		this.opciones = opciones;
 	}
-
 
 	@Override
 	public String toString() {

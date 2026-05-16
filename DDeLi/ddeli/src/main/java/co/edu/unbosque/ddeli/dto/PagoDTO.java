@@ -1,4 +1,3 @@
-// PagoDTO.java
 package co.edu.unbosque.ddeli.dto;
 
 import java.time.LocalDate;

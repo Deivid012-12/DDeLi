@@ -111,14 +111,19 @@ public class AuthController {
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			String jwt = jwtUtil.generateToken(userDetails);
 
-			// Obtener el rol de userDetails si es nuestra clase User
 			String role = null;
+			String nombre = null;
+
 			if (userDetails instanceof Usuario) {
+
 				Usuario user = (Usuario) userDetails;
+
 				role = user.getRol().name();
+
+				nombre = user.getNombre();
 			}
 
-			return ResponseEntity.ok(new AuthResponse(jwt, role));
+			return ResponseEntity.ok(new AuthResponse(jwt, role, nombre));
 		} catch (AuthenticationException e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -191,17 +196,7 @@ public class AuthController {
 
 		/** Rol del usuario autenticado. */
 		private final String role;
-
-		/**
-		 * Constructor con solo token.
-		 *
-		 * @param token Token JWT generado
-		 */
-		public AuthResponse(String token) {
-			this.token = token;
-
-			this.role = null; // Se establecerá en el constructor con el parámetro de rol
-		}
+		private final String nombre;
 
 		/**
 		 * Constructor con token y rol.
@@ -209,9 +204,11 @@ public class AuthController {
 		 * @param token Token JWT generado
 		 * @param role  Rol del usuario
 		 */
-		public AuthResponse(String token, String role) {
+		public AuthResponse(String token, String role, String nombre) {
+			super();
 			this.token = token;
 			this.role = role;
+			this.nombre = nombre;
 		}
 
 		/**
@@ -221,6 +218,13 @@ public class AuthController {
 		 */
 		public String getToken() {
 			return token;
+		}
+
+		/**
+		 * @return the nombre
+		 */
+		public String getNombre() {
+			return nombre;
 		}
 
 		/**

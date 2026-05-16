@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -28,11 +29,15 @@ public class Envio {
 	@JoinColumn(name = "id_pedido")
 	private Pedido pedido;
 
+	@ManyToOne
+	@JoinColumn(name = "id_direccion")
+	private Direccion direccion;
+
 	public Envio() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Envio(Long idEnvio, String estado, String tipoEntrega, LocalDate fechaEnvio,  Pedido pedido) {
+	public Envio(Long idEnvio, String estado, String tipoEntrega, LocalDate fechaEnvio, Pedido pedido) {
 		super();
 		this.idEnvio = idEnvio;
 		this.estado = estado;
@@ -128,6 +133,15 @@ public class Envio {
 	 */
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
+	}
+	
+
+	public Direccion getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(Direccion direccion) {
+		this.direccion = direccion;
 	}
 
 	@Override

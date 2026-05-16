@@ -14,7 +14,7 @@ import co.edu.unbosque.ddeli.dto.DetallePedidoDTO;
 import co.edu.unbosque.ddeli.dto.PedidoDTO;
 import co.edu.unbosque.ddeli.entity.Carrito;
 import co.edu.unbosque.ddeli.entity.DetallePedido;
-
+import co.edu.unbosque.ddeli.entity.Direccion;
 import co.edu.unbosque.ddeli.entity.Pedido;
 import co.edu.unbosque.ddeli.entity.Promocion;
 import co.edu.unbosque.ddeli.repository.CarritoRepository;
@@ -140,6 +140,9 @@ public class PedidoService implements CRUDOperation<PedidoDTO> {
 			detalle.setCantidad(item.getCantidad());
 			detalle.setPrecioUnitario(item.getPrecioUnitario());
 			detalle.setSubtotal(item.getSubtotal());
+			if (item.getOpciones() != null && !item.getOpciones().isEmpty()) {
+				detalle.setOpciones(new ArrayList<>(item.getOpciones()));
+			}
 			return detalle;
 		}).collect(Collectors.toList());
 
@@ -151,7 +154,7 @@ public class PedidoService implements CRUDOperation<PedidoDTO> {
 		}
 
 		pedido.setDetalles(detalles);
-		pedido.setValorTotal(total);
+		pedido.setValorTotal(total + 8000);
 
 		Pedido guardado = pedidoRepository.save(pedido);
 		carritoService.confirmarCarrito(idCarrito);
@@ -162,7 +165,6 @@ public class PedidoService implements CRUDOperation<PedidoDTO> {
 	private PedidoDTO mapToDTO(Pedido p) {
 		PedidoDTO dto = modelMapper.map(p, PedidoDTO.class);
 
-		// Mapping especial mantenido exactamente igual
 		dto.setIdUsuario(p.getUsuario().getIdUsuario());
 		dto.setNombreUsuario(p.getUsuario().getNombre());
 
@@ -172,6 +174,15 @@ public class PedidoService implements CRUDOperation<PedidoDTO> {
 		if (p.getPromocion() != null) {
 			dto.setIdPromocion(p.getPromocion().getIdPromocion());
 			dto.setNombrePromocion(p.getPromocion().getNombre());
+		}
+		if (p.getEnvio() != null) {
+			dto.setEstadoEnvio(p.getEnvio().getEstado());
+			dto.setTipoEntrega(p.getEnvio().getTipoEntrega());
+
+			if (p.getEnvio().getDireccion() != null) {
+				Direccion d = p.getEnvio().getDireccion();
+				dto.setDireccionEntrega(d.getCalle() + ", " + d.getCiudad() + ", " + d.getDepartamento());
+			}
 		}
 
 		if (p.getDetalles() != null) {
@@ -185,5 +196,9 @@ public class PedidoService implements CRUDOperation<PedidoDTO> {
 		DetallePedidoDTO dto = modelMapper.map(d, DetallePedidoDTO.class);
 		dto.setNombreProducto(d.getProducto().getNombre());
 		return dto;
+	}
+
+	public List<PedidoDTO> obtenerPorCorreo(String correo) {
+		return pedidoRepository.findByUsuarioCorreo(correo).stream().map(this::mapToDTO).collect(Collectors.toList());
 	}
 }
