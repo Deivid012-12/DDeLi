@@ -1,4 +1,3 @@
-// CarritoController.java
 package co.edu.unbosque.ddeli.controller;
 
 import java.util.List;
@@ -6,60 +5,101 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import co.edu.unbosque.ddeli.entity.Carrito;
-import co.edu.unbosque.ddeli.entity.ItemCarrito;
+import co.edu.unbosque.ddeli.dto.CarritoDTO;
+import co.edu.unbosque.ddeli.dto.ItemCarritoDTO;
 import co.edu.unbosque.ddeli.service.CarritoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api/carrito")
 @Tag(name = "Carrito")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 public class CarritoController {
 
 	@Autowired
 	private CarritoService carritoService;
 
-	@GetMapping("/usuario/{idUsuario}")
-	public ResponseEntity<Carrito> obtenerCarrito(@PathVariable Long idUsuario) {
-		Carrito carrito = carritoService.obtenerOCrearCarrito(idUsuario);
+	@GetMapping("/verCarrito")
+	public ResponseEntity<CarritoDTO> obtenerCarrito(Authentication authentication) {
+
+		String correo = authentication.getName();
+
+		CarritoDTO carrito = carritoService.obtenerOCrearCarritoPorCorreo(correo);
+
 		return ResponseEntity.ok(carrito);
 	}
 
-	@GetMapping("/{idCarrito}/items")
-	public ResponseEntity<List<ItemCarrito>> obtenerItems(@PathVariable Long idCarrito) {
-		return ResponseEntity.ok(carritoService.obtenerItems(idCarrito));
+	@GetMapping("/obtenerItems/{idCarrito}")
+	public ResponseEntity<List<ItemCarritoDTO>> obtenerItems(@PathVariable Long idCarrito) {
+
+		List<ItemCarritoDTO> items = carritoService.obtenerItems(idCarrito);
+
+		return ResponseEntity.ok(items);
 	}
 
-	@PostMapping("/{idCarrito}/agregar")
-	public ResponseEntity<ItemCarrito> agregarProducto(@PathVariable Long idCarrito, @RequestParam Long idProducto,
-			@RequestParam int cantidad) {
-		ItemCarrito item = carritoService.agregarProducto(idCarrito, idProducto, cantidad);
-		return ResponseEntity.status(HttpStatus.CREATED).body(item);
+	@PostMapping("/agregarProducto/{idCarrito}")
+	public ResponseEntity<String> agregarProducto(@PathVariable Long idCarrito, @RequestParam Long idProducto,
+			@RequestParam int cantidad, @RequestParam(required = false) List<Long> idOpciones) {
+
+		int resultado = carritoService.agregarProducto(idCarrito, idProducto, cantidad, idOpciones);
+
+		if (resultado == 0) {
+			return ResponseEntity.status(HttpStatus.CREATED).body("Producto agregado al carrito");
+		}
+		if (resultado == 1) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Carrito no encontrado");
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
 	}
 
-	@PutMapping("/item/{idItem}")
-	public ResponseEntity<ItemCarrito> actualizarCantidad(@PathVariable Long idItem, @RequestParam int cantidad) {
-		ItemCarrito item = carritoService.actualizarCantidad(idItem, cantidad);
-		return ResponseEntity.ok(item);
+	@PutMapping("/actualizarCantidad/{idItem}")
+	public ResponseEntity<String> actualizarCantidad(@PathVariable Long idItem, @RequestParam int cantidad) {
+
+		int resultado = carritoService.actualizarCantidad(idItem, cantidad);
+
+		if (resultado == 0) {
+			return ResponseEntity.ok("Cantidad actualizada");
+		}
+
+		if (resultado == 1) {
+			return ResponseEntity.badRequest().body("La cantidad debe ser mayor a 0");
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item no encontrado");
 	}
 
-	@DeleteMapping("/item/{idItem}")
-	public ResponseEntity<Void> eliminarProducto(@PathVariable Long idItem) {
-		carritoService.eliminarProducto(idItem);
-		return ResponseEntity.noContent().build();
+	@DeleteMapping("/eliminarProducto/{idItem}")
+	public ResponseEntity<String> eliminarProducto(@PathVariable Long idItem) {
+
+		int resultado = carritoService.eliminarProducto(idItem);
+
+		if (resultado == 0) {
+			return ResponseEntity.ok("Producto eliminado");
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item no encontrado");
 	}
 
-	@DeleteMapping("/{idCarrito}/vaciar")
-	public ResponseEntity<Void> vaciarCarrito(@PathVariable Long idCarrito) {
-		carritoService.vaciarCarrito(idCarrito);
-		return ResponseEntity.noContent().build();
+	@DeleteMapping("/vaciarCarrito/{idCarrito}")
+	public ResponseEntity<String> vaciarCarrito(@PathVariable Long idCarrito) {
+
+		int resultado = carritoService.vaciarCarrito(idCarrito);
+
+		if (resultado == 0) {
+			return ResponseEntity.ok("Carrito vaciado");
+		}
+
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Carrito no encontrado");
 	}
 
-	@GetMapping("/{idCarrito}/total")
+	@GetMapping("/generarTotal/{idCarrito}")
 	public ResponseEntity<Double> obtenerTotal(@PathVariable Long idCarrito) {
-		return ResponseEntity.ok(carritoService.calcularTotal(idCarrito));
+
+		double total = carritoService.calcularTotal(idCarrito);
+
+		return ResponseEntity.ok(total);
 	}
 }

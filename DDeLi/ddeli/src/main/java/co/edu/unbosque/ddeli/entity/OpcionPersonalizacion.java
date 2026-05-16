@@ -7,18 +7,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class OpcionPersonalizacion {
 
 	@Id
-	@GeneratedValue
-	private Long idOpcion; // falta determinar la secuencia para generar automaticamente el id
-
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idOpcion;
 	private String nombre;
 	private double costoAdicional;
+	@ManyToOne
+	@JoinColumn(name = "id_tipo")
+	private TipoPersonalizacion tipoPersonalizacion;
 
 	@JsonIgnore
 	@ManyToMany(mappedBy = "opciones")
@@ -88,6 +93,14 @@ public class OpcionPersonalizacion {
 	 */
 	public double getCostoAdicional() {
 		return costoAdicional;
+	}
+
+	public TipoPersonalizacion getTipoPersonalizacion() {
+		return tipoPersonalizacion;
+	}
+
+	public void setTipoPersonalizacion(TipoPersonalizacion tipoPersonalizacion) {
+		this.tipoPersonalizacion = tipoPersonalizacion;
 	}
 
 	/**

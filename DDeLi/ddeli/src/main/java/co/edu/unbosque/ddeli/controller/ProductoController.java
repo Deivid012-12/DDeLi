@@ -4,66 +4,128 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import co.edu.unbosque.ddeli.dto.ProductoDTO;
-import co.edu.unbosque.ddeli.entity.Producto;
 import co.edu.unbosque.ddeli.service.ProductoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/api/productos")
-@Tag(name = "Productos(Postres)")
-@CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/producto")
+@CrossOrigin(origins = { "http://localhost:4200" })
+@Transactional
+@Tag(name = "Gestión de Productos", description = "Endpoints para administrar productos")
+@SecurityRequirement(name = "bearerAuth")
 public class ProductoController {
 
 	@Autowired
-	private ProductoService productoService;
+	private ProductoService productoSer;
 
-	@GetMapping
-	public ResponseEntity<List<ProductoDTO>> obtenerTodos() {
-		return ResponseEntity.ok(productoService.obtenerTodos());
+	@GetMapping(path = "/getall")
+	public ResponseEntity<List<ProductoDTO>> getAll() {
+		List<ProductoDTO> productos = productoSer.getAll();
+		if (productos.isEmpty()) {
+			return new ResponseEntity<>(productos, HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(productos, HttpStatus.OK);
+		}
 	}
 
-	@GetMapping("/disponibles")
+	@GetMapping(path = "/disponibles")
 	public ResponseEntity<List<ProductoDTO>> obtenerDisponibles() {
-		return ResponseEntity.ok(productoService.obtenerDisponibles());
+		List<ProductoDTO> productos = productoSer.obtenerDisponibles();
+		if (productos.isEmpty()) {
+			return new ResponseEntity<>(productos, HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(productos, HttpStatus.OK);
+		}
 	}
 
-	@GetMapping("/tipo/{tipo}")
+	@GetMapping(path = "/obtenerPorTipo/{tipo}")
 	public ResponseEntity<List<ProductoDTO>> obtenerPorTipo(@PathVariable String tipo) {
-		return ResponseEntity.ok(productoService.obtenerPorTipo(tipo));
+		List<ProductoDTO> productos = productoSer.obtenerPorTipo(tipo);
+		if (productos.isEmpty()) {
+			return new ResponseEntity<>(productos, HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(productos, HttpStatus.OK);
+		}
 	}
 
-	@GetMapping("/categoria/{idCategoria}")
+	@GetMapping(path = "/obtenerPorCategoria/{idCategoria}")
 	public ResponseEntity<List<ProductoDTO>> obtenerPorCategoria(@PathVariable Long idCategoria) {
-		return ResponseEntity.ok(productoService.obtenerPorCategoria(idCategoria));
+		List<ProductoDTO> productos = productoSer.obtenerPorCategoria(idCategoria);
+		if (productos.isEmpty()) {
+			return new ResponseEntity<>(productos, HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(productos, HttpStatus.OK);
+		}
 	}
 
-	@GetMapping("/buscar")
+	@GetMapping(path = "/buscar")
 	public ResponseEntity<List<ProductoDTO>> buscarPorNombre(@RequestParam String nombre) {
-		return ResponseEntity.ok(productoService.buscarPorNombre(nombre));
+		List<ProductoDTO> productos = productoSer.buscarPorNombre(nombre);
+		if (productos.isEmpty()) {
+			return new ResponseEntity<>(productos, HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(productos, HttpStatus.OK);
+		}
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<ProductoDTO> obtenerPorId(@PathVariable Long id) {
-		return productoService.obtenerPorId(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+	@GetMapping(path = "/getbyid/{id}")
+	public ResponseEntity<ProductoDTO> getById(@PathVariable Long id) {
+		return productoSer.obtenerPorId(id).map(producto -> new ResponseEntity<>(producto, HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
-	@PostMapping
-	public ResponseEntity<ProductoDTO> crear(@RequestBody Producto producto) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(productoService.crear(producto));
+	@PostMapping(path = "/crear")
+	public ResponseEntity<String> crear(@RequestBody ProductoDTO newProducto) {
+		int status = productoSer.create(newProducto);
+
+		if (status == 0) {
+			return new ResponseEntity<>("Producto creado con éxito", HttpStatus.CREATED);
+		} else if (status == 2) {
+			return new ResponseEntity<>("Categoría no encontrada", HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<>("Error al crear el producto", HttpStatus.BAD_REQUEST);
+		}
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<ProductoDTO> actualizar(@PathVariable Long id, @RequestBody Producto producto) {
-		return ResponseEntity.ok(productoService.actualizar(id, producto));
+	@PostMapping(path = "/createjson", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> createNewWithJSON(@RequestBody ProductoDTO newProducto) {
+		int status = productoSer.create(newProducto);
+
+		if (status == 0) {
+			return new ResponseEntity<>("Producto creado correctamente", HttpStatus.CREATED);
+		} else if (status == 2) {
+			return new ResponseEntity<>("Categoría no encontrada", HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<>("Error al crear el producto", HttpStatus.BAD_REQUEST);
+		}
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-		productoService.eliminar(id);
-		return ResponseEntity.noContent().build();
+	@PutMapping(path = "/actualizar/{id}")
+	public ResponseEntity<String> actualizar(@PathVariable Long id, @RequestBody ProductoDTO newProducto) {
+		int status = productoSer.updateByID(id, newProducto);
+
+		if (status == 0) {
+			return new ResponseEntity<>("Producto actualizado correctamente", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("Producto no encontrado", HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@DeleteMapping(path = "/deletebyid/{id}")
+	public ResponseEntity<String> deleteById(@PathVariable Long id) {
+		int status = productoSer.deleteByID(id);
+
+		if (status == 0) {
+			return new ResponseEntity<>("Producto eliminado correctamente", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("Producto no encontrado", HttpStatus.NOT_FOUND);
+		}
 	}
 }

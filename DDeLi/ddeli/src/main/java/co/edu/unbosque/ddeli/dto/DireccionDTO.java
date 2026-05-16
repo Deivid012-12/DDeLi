@@ -1,7 +1,5 @@
 package co.edu.unbosque.ddeli.dto;
 
-import java.util.Objects;
-
 public class DireccionDTO {
 
 	private Long idDireccion;
@@ -9,130 +7,82 @@ public class DireccionDTO {
 	private String ciudad;
 	private String codigoPostal;
 	private String departamento;
-	private UsuarioDTO cliente;
+	private String indicaciones;
+	private Long idUsuario;
 
 	public DireccionDTO() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public DireccionDTO(Long idDireccion, String calle, String ciudad, String codigoPostal, String departamento,
-			UsuarioDTO cliente) {
-		super();
+			String indicaciones, Long idUsuario) {
 		this.idDireccion = idDireccion;
 		this.calle = calle;
 		this.ciudad = ciudad;
 		this.codigoPostal = codigoPostal;
 		this.departamento = departamento;
-		this.cliente = cliente;
+		this.indicaciones = indicaciones;
+		this.idUsuario = idUsuario;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(calle, ciudad, cliente, codigoPostal, departamento, idDireccion);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		DireccionDTO other = (DireccionDTO) obj;
-		return Objects.equals(calle, other.calle) && Objects.equals(ciudad, other.ciudad)
-				&& Objects.equals(cliente, other.cliente) && Objects.equals(codigoPostal, other.codigoPostal)
-				&& Objects.equals(departamento, other.departamento) && Objects.equals(idDireccion, other.idDireccion);
-	}
-
-	/**
-	 * @return the idDireccion
-	 */
 	public Long getIdDireccion() {
 		return idDireccion;
 	}
 
-	/**
-	 * @param idDireccion the idDireccion to set
-	 */
 	public void setIdDireccion(Long idDireccion) {
 		this.idDireccion = idDireccion;
 	}
 
-	/**
-	 * @return the calle
-	 */
 	public String getCalle() {
 		return calle;
 	}
 
-	/**
-	 * @param calle the calle to set
-	 */
 	public void setCalle(String calle) {
 		this.calle = calle;
 	}
 
-	/**
-	 * @return the ciudad
-	 */
 	public String getCiudad() {
 		return ciudad;
 	}
 
-	/**
-	 * @param ciudad the ciudad to set
-	 */
 	public void setCiudad(String ciudad) {
 		this.ciudad = ciudad;
 	}
 
-	/**
-	 * @return the codigoPostal
-	 */
 	public String getCodigoPostal() {
 		return codigoPostal;
 	}
 
-	/**
-	 * @param codigoPostal the codigoPostal to set
-	 */
 	public void setCodigoPostal(String codigoPostal) {
 		this.codigoPostal = codigoPostal;
 	}
 
-	/**
-	 * @return the departamento
-	 */
 	public String getDepartamento() {
 		return departamento;
 	}
 
-	/**
-	 * @param departamento the departamento to set
-	 */
 	public void setDepartamento(String departamento) {
 		this.departamento = departamento;
 	}
 
-	/**
-	 * @return the cliente
-	 */
-	public UsuarioDTO getCliente() {
-		return cliente;
+	public String getIndicaciones() {
+		return indicaciones;
 	}
 
-	/**
-	 * @param cliente the cliente to set
-	 */
-	public void setCliente(UsuarioDTO cliente) {
-		this.cliente = cliente;
+	public void setIndicaciones(String indicaciones) {
+		this.indicaciones = indicaciones;
+	}
+
+	public Long getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(Long idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 
 	@Override
 	public String toString() {
-		return "Direccion [idDireccion=" + idDireccion + ", calle=" + calle + ", ciudad=" + ciudad + ", codigoPostal="
-				+ codigoPostal + ", departamento=" + departamento + ", cliente=" + cliente + "]";
+		return "DireccionDTO [idDireccion=" + idDireccion + ", calle=" + calle + ", ciudad=" + ciudad
+				+ ", departamento=" + departamento + ", indicaciones=" + indicaciones + "]";
 	}
-
 }

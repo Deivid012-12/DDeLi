@@ -3,8 +3,11 @@ package co.edu.unbosque.ddeli.entity;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -13,14 +16,15 @@ import jakarta.persistence.OneToOne;
 public class Pago {
 
 	@Id
-	@GeneratedValue
-	private Long idPago; // falta determinar la secuencia para generar automaticamente el id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idPago;
 
 	private double cantidadPago;
 	private String metodoPago;
 	private String estadoTransaccion;
 	private LocalDate fechaPago;
 
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "id_pedido")
 	private Pedido pedido;

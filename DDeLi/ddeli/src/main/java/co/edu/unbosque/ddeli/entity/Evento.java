@@ -5,21 +5,23 @@ import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Evento {
 
 	@Id
-	@GeneratedValue
-	private Long idEvento; // falta determinar la secuencia para generar automaticamente el id
-
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idEvento;
 	private LocalDate fechaEvento;
 	private int numeroPersonas;
 	private String tipoEvento;
 
 	@ManyToOne
+	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 
 	public Evento() {

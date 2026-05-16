@@ -1,109 +1,68 @@
 package co.edu.unbosque.ddeli.dto;
 
-import java.util.ArrayList;
-import java.util.Objects;
-
-import co.edu.unbosque.ddeli.entity.DetallePedido;
-
 public class OpcionPersonalizacionDTO {
 
 	private Long idOpcion;
 	private String nombre;
 	private double costoAdicional;
-	private ArrayList<DetallePedido> detalles;
+	private Long idTipo;
+	private String nombreTipo;
 
 	public OpcionPersonalizacionDTO() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public OpcionPersonalizacionDTO(Long idOpcion, String nombre, double costoAdicional,
-			ArrayList<DetallePedido> detalles) {
-		super();
+	public OpcionPersonalizacionDTO(Long idOpcion, String nombre, double costoAdicional, Long idTipo,
+			String nombreTipo) {
 		this.idOpcion = idOpcion;
 		this.nombre = nombre;
 		this.costoAdicional = costoAdicional;
-		this.detalles = detalles;
+		this.idTipo = idTipo;
+		this.nombreTipo = nombreTipo;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(costoAdicional, detalles, idOpcion, nombre);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		OpcionPersonalizacionDTO other = (OpcionPersonalizacionDTO) obj;
-		return Double.doubleToLongBits(costoAdicional) == Double.doubleToLongBits(other.costoAdicional)
-				&& Objects.equals(detalles, other.detalles) && Objects.equals(idOpcion, other.idOpcion)
-				&& Objects.equals(nombre, other.nombre);
-	}
-
-	/**
-	 * @return the idOpcion
-	 */
 	public Long getIdOpcion() {
 		return idOpcion;
 	}
 
-	/**
-	 * @param idOpcion the idOpcion to set
-	 */
 	public void setIdOpcion(Long idOpcion) {
 		this.idOpcion = idOpcion;
 	}
 
-	/**
-	 * @return the nombre
-	 */
 	public String getNombre() {
 		return nombre;
 	}
 
-	/**
-	 * @param nombre the nombre to set
-	 */
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-	/**
-	 * @return the costoAdicional
-	 */
 	public double getCostoAdicional() {
 		return costoAdicional;
 	}
 
-	/**
-	 * @param costoAdicional the costoAdicional to set
-	 */
 	public void setCostoAdicional(double costoAdicional) {
 		this.costoAdicional = costoAdicional;
 	}
 
-	/**
-	 * @return the detalles
-	 */
-	public ArrayList<DetallePedido> getDetalles() {
-		return detalles;
+	public Long getIdTipo() {
+		return idTipo;
 	}
 
-	/**
-	 * @param detalles the detalles to set
-	 */
-	public void setDetalles(ArrayList<DetallePedido> detalles) {
-		this.detalles = detalles;
+	public void setIdTipo(Long idTipo) {
+		this.idTipo = idTipo;
+	}
+
+	public String getNombreTipo() {
+		return nombreTipo;
+	}
+
+	public void setNombreTipo(String nombreTipo) {
+		this.nombreTipo = nombreTipo;
 	}
 
 	@Override
 	public String toString() {
-		return "OpcionPersonalizacion [idOpcion=" + idOpcion + ", nombre=" + nombre + ", costoAdicional="
-				+ costoAdicional + ", detalles=" + detalles + "]";
+		return "OpcionPersonalizacionDTO [idOpcion=" + idOpcion + ", nombre=" + nombre + ", costoAdicional="
+				+ costoAdicional + ", nombreTipo=" + nombreTipo + "]";
 	}
-
 }

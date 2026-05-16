@@ -1,4 +1,3 @@
-// PedidoDTO.java
 package co.edu.unbosque.ddeli.dto;
 
 import java.time.LocalDate;
@@ -16,14 +15,17 @@ public class PedidoDTO {
 	private Long idPromocion;
 	private String nombrePromocion;
 	private List<DetallePedidoDTO> detalles;
+	private String estadoEnvio;
+	private String tipoEntrega;
+	private String direccionEntrega;
 
 	public PedidoDTO() {
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(detalles, fechaPedido, idEvento, idPedido, idPromocion, idUsuario, nombrePromocion,
-				nombreUsuario, valorTotal);
+		return Objects.hash(detalles, direccionEntrega, estadoEnvio, fechaPedido, idEvento, idPedido, idPromocion,
+				idUsuario, nombrePromocion, nombreUsuario, tipoEntrega, valorTotal);
 	}
 
 	@Override
@@ -35,11 +37,12 @@ public class PedidoDTO {
 		if (getClass() != obj.getClass())
 			return false;
 		PedidoDTO other = (PedidoDTO) obj;
-		return Objects.equals(detalles, other.detalles) && Objects.equals(fechaPedido, other.fechaPedido)
+		return Objects.equals(detalles, other.detalles) && Objects.equals(direccionEntrega, other.direccionEntrega)
+				&& Objects.equals(estadoEnvio, other.estadoEnvio) && Objects.equals(fechaPedido, other.fechaPedido)
 				&& Objects.equals(idEvento, other.idEvento) && Objects.equals(idPedido, other.idPedido)
 				&& Objects.equals(idPromocion, other.idPromocion) && Objects.equals(idUsuario, other.idUsuario)
 				&& Objects.equals(nombrePromocion, other.nombrePromocion)
-				&& Objects.equals(nombreUsuario, other.nombreUsuario)
+				&& Objects.equals(nombreUsuario, other.nombreUsuario) && Objects.equals(tipoEntrega, other.tipoEntrega)
 				&& Double.doubleToLongBits(valorTotal) == Double.doubleToLongBits(other.valorTotal);
 	}
 
@@ -113,6 +116,30 @@ public class PedidoDTO {
 
 	public void setDetalles(List<DetallePedidoDTO> detalles) {
 		this.detalles = detalles;
+	}
+
+	public String getEstadoEnvio() {
+		return estadoEnvio;
+	}
+
+	public void setEstadoEnvio(String estadoEnvio) {
+		this.estadoEnvio = estadoEnvio;
+	}
+
+	public String getTipoEntrega() {
+		return tipoEntrega;
+	}
+
+	public void setTipoEntrega(String tipoEntrega) {
+		this.tipoEntrega = tipoEntrega;
+	}
+
+	public String getDireccionEntrega() {
+		return direccionEntrega;
+	}
+
+	public void setDireccionEntrega(String direccionEntrega) {
+		this.direccionEntrega = direccionEntrega;
 	}
 
 	@Override

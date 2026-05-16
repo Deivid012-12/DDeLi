@@ -1,10 +1,10 @@
-// CategoriaService.java
 package co.edu.unbosque.ddeli.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,47 +13,92 @@ import co.edu.unbosque.ddeli.entity.Categoria;
 import co.edu.unbosque.ddeli.repository.CategoriaRepository;
 
 @Service
-public class CategoriaService {
+public class CategoriaService implements CRUDOperation<CategoriaDTO> {
 
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 
-	private CategoriaDTO toDTO(Categoria c) {
-		return new CategoriaDTO(c.getIdCategoria(), c.getNombre(), c.getDescripcion());
+	@Autowired
+	private ModelMapper modelMapper;
+
+	public CategoriaService() {
+
 	}
 
-	public List<CategoriaDTO> obtenerTodas() {
-		return categoriaRepository.findAll().stream().map(this::toDTO).collect(Collectors.toList());
+	@Override
+	public int create(CategoriaDTO newData) {
+		if (existsByNombre(newData.getNombre())) {
+			return 1; 
+		}
+
+		Categoria categoria = modelMapper.map(newData, Categoria.class);
+		categoriaRepository.save(categoria);
+		return 0;
+	}
+
+	@Override
+	public List<CategoriaDTO> getAll() {
+		List<Categoria> entityList = categoriaRepository.findAll();
+		List<CategoriaDTO> dtoList = new ArrayList<>();
+
+		entityList.forEach(entity -> {
+			CategoriaDTO dto = modelMapper.map(entity, CategoriaDTO.class);
+			dtoList.add(dto);
+		});
+
+		return dtoList;
+	}
+
+	@Override
+	public int deleteByID(Long id) {
+		if (categoriaRepository.findById(id).isPresent()) {
+			categoriaRepository.deleteById(id);
+			return 0;
+		}
+		return 1;
+	}
+
+	@Override
+	public int updateByID(Long id, CategoriaDTO newData) {
+		Optional<Categoria> found = categoriaRepository.findById(id);
+
+		if (found.isPresent()) {
+			Categoria temp = found.get();
+			temp.setNombre(newData.getNombre());
+			temp.setDescripcion(newData.getDescripcion());
+			categoriaRepository.save(temp);
+			return 0;
+		}
+		return 1;
+	}
+
+	public boolean existsByNombre(String nombre) {
+		return categoriaRepository.existsByNombre(nombre);
+	}
+
+	public boolean exist(Long id) {
+		return categoriaRepository.existsById(id);
+	}
+
+	public long count() {
+		return categoriaRepository.count();
+	}
+
+	public int deleteById(Long id) {
+		Optional<Categoria> found = categoriaRepository.findById(id);
+		if (found.isPresent()) {
+			categoriaRepository.delete(found.get());
+			return 0;
+		}
+		return 1;
 	}
 
 	public Optional<CategoriaDTO> obtenerPorId(Long id) {
-		return categoriaRepository.findById(id).map(this::toDTO);
-	}
-
-	public CategoriaDTO crear(CategoriaDTO dto) {
-		if (categoriaRepository.existsByNombre(dto.getNombre())) {
-			throw new RuntimeException("Ya existe una categoría con el nombre: " + dto.getNombre());
+		Optional<Categoria> found = categoriaRepository.findById(id);
+		if (found.isPresent()) {
+			CategoriaDTO dto = modelMapper.map(found.get(), CategoriaDTO.class);
+			return Optional.of(dto);
 		}
-		Categoria categoria = new Categoria();
-		categoria.setNombre(dto.getNombre());
-		categoria.setDescripcion(dto.getDescripcion());
-		return toDTO(categoriaRepository.save(categoria));
-	}
-
-	public CategoriaDTO actualizar(Long id, CategoriaDTO dto) {
-		Categoria existente = categoriaRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Categoría no encontrada: " + id));
-
-		existente.setNombre(dto.getNombre());
-		existente.setDescripcion(dto.getDescripcion());
-
-		return toDTO(categoriaRepository.save(existente));
-	}
-
-	public void eliminar(Long id) {
-		if (!categoriaRepository.existsById(id)) {
-			throw new RuntimeException("Categoría no encontrada: " + id);
-		}
-		categoriaRepository.deleteById(id);
+		return Optional.empty();
 	}
 }

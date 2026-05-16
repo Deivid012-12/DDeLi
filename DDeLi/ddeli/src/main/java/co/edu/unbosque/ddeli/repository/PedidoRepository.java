@@ -1,15 +1,12 @@
-// PedidoRepository.java
 package co.edu.unbosque.ddeli.repository;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import co.edu.unbosque.ddeli.entity.Pedido;
 
-@Repository
 public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 
 	List<Pedido> findByUsuarioIdUsuario(Long idUsuario);
@@ -19,4 +16,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
 	List<Pedido> findByPromocionIdPromocion(Long idPromocion);
 
 	List<Pedido> findByEventoIdEvento(Long idEvento);
+
+	List<Pedido> findByUsuarioCorreo(String correo);
 }
