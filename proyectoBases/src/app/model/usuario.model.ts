@@ -20,4 +20,5 @@ export interface UsuarioLogin {
 export interface AuthResponse {
   token: string;
   role: string;
+  nombre: string;
 }

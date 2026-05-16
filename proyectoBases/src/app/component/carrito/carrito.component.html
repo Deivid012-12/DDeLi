@@ -19,7 +19,6 @@
 
         <div *ngIf="items.length === 0" class="carrito-vacio">
           <p>Tu carrito está vacío</p>
-
           <a routerLink="/principal" class="link-accent">
             ← Seguir comprando
           </a>
@@ -29,18 +28,19 @@
 
           <div class="producto-img">
             <img
-              [src]="item.producto.imagenURL"
-              [alt]="item.producto.nombre"
+              [src]="item.producto?.imagenURL || 'https://placehold.co/300x200?text=' + item.producto?.nombre"
+              [alt]="item.producto?.nombre"
+              (error)="onImageError($event)"
             >
           </div>
 
           <div class="producto-info">
             <h3 class="producto-nombre">
-              {{ item.producto.nombre }}
+              {{ item.producto?.nombre }}
             </h3>
 
             <p class="producto-desc">
-              {{ item.producto.descripcion }}
+              {{ item.producto?.descripcion }}
             </p>
 
             <span class="producto-precio">
@@ -96,10 +96,7 @@
 
         <div class="resumen-fila">
           <span>Subtotal</span>
-
-          <span>
-            $ {{ calcularTotal() | number:'1.2-2' }}
-          </span>
+          <span>$ {{ calcularTotal() | number:'1.2-2' }}</span>
         </div>
 
         <div class="resumen-fila descuento">
@@ -111,10 +108,7 @@
 
         <div class="resumen-fila total">
           <span>Total</span>
-
-          <span>
-            $ {{ calcularTotal() | number:'1.2-2' }}
-          </span>
+          <span>$ {{ calcularTotal() | number:'1.2-2' }}</span>
         </div>
 
         <button class="btn-pagar" (click)="irAPagar()">

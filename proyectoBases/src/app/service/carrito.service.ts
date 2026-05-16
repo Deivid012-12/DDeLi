@@ -14,10 +14,11 @@ export class CarritoService {
   constructor(private http: HttpClient) {}
 
   obtenerOCrearCarrito(): Observable<Carrito> {
+
     return this.http.get<Carrito>(
-      `${this.apiUrl}/verCarrito`,
-      { withCredentials: true }
+      `${this.apiUrl}/verCarrito`
     );
+
   }
 
 
@@ -35,28 +36,31 @@ export class CarritoService {
   }
 
   agregarDesdeMenu(producto: Producto): Observable<any> {
-
     return this.obtenerOCrearCarrito().pipe(
-
-      switchMap((carrito) =>
-
-        this.agregarProducto(
-          carrito.idCarrito,
-          producto.idProducto
+      switchMap(carrito =>
+        this.http.post(
+          `${this.apiUrl}/agregarProducto/${carrito.idCarrito}?idProducto=${producto.idProducto}&cantidad=1`,
+          {},
+          { responseType: 'text' }
         )
       )
     );
   }
 
-  // Actualizar cantidad
   actualizarCantidad(idItem: number, cantidad: number): Observable<any> {
     const params = new HttpParams().set('cantidad', cantidad.toString());
-    return this.http.put(`${this.apiUrl}/actualizarCantidad/${idItem}`, {}, { params });
+    return this.http.put(
+      `${this.apiUrl}/actualizarCantidad/${idItem}`,
+      {},
+      { params, responseType: 'text' }   // ← agregar esto
+    );
   }
 
-  // Eliminar item
   eliminarItem(idItem: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/eliminarProducto/${idItem}`);
+    return this.http.delete(
+      `${this.apiUrl}/eliminarProducto/${idItem}`,
+      { responseType: 'text' }           // ← agregar esto
+    );
   }
 
   // Obtener total

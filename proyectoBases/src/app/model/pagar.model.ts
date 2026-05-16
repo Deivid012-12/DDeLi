@@ -1,4 +1,5 @@
 export interface Pago {
+  idPedido: number;
   cantidadPago: number;
   metodoPago: string;
   estadoTransaccion: string;
@@ -6,6 +7,7 @@ export interface Pago {
 }
 
 export interface Pedido {
+  idPedido?: number;
   fechaPedido: string;
   valorTotal: number;
 }

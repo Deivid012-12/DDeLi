@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router, ActivatedRoute } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { Carrito, ItemCarrito } from '../../model/carrito.model';
 import { CarritoService } from '../../service/carrito.service';
 
@@ -12,49 +12,38 @@ import { CarritoService } from '../../service/carrito.service';
   styleUrl: './carrito.component.css',
 })
 export class CarritoComponent implements OnInit {
-  carrito: Carrito| null = null;
+  carrito: Carrito | null = null;
+  items: ItemCarrito[] = [];
   loading = true;
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
-    private carritoService: CarritoService
+    private carritoService: CarritoService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.cargarCarrito();
-  }
-
-  cargarCarrito(): void {
     this.carritoService.obtenerOCrearCarrito().subscribe({
       next: (carrito) => {
         this.carrito = carrito;
-        this.cargarItems(carrito.idCarrito);
+        this.carritoService.obtenerItems(carrito.idCarrito).subscribe({
+          next: (items) => {
+            this.items = items;
+            this.loading = false;
+            this.cdr.detectChanges();
+            console.log('Items en componente:', this.items.length);
+          },
+          error: (err) => {
+            console.error(err);
+            this.loading = false;
+          }
+        });
       },
-      error: (error) => {
-        console.error('Error cargando carrito:', error);
+      error: (err) => {
+        console.error(err);
         this.loading = false;
       }
     });
-  }
-
-  cargarItems(idCarrito: number): void {
-    this.carritoService.obtenerItems(idCarrito).subscribe({
-      next: (items) => {
-        if (this.carrito) {
-          this.carrito.items = items;
-        }
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error cargando items:', error);
-        this.loading = false;
-      }
-    });
-  }
-
-  get items(): ItemCarrito[] {
-    return this.carrito?.items ?? [];
   }
 
   irAPagar(): void {
@@ -66,6 +55,7 @@ export class CarritoComponent implements OnInit {
       next: () => {
         item.cantidad++;
         item.subtotal = item.cantidad * item.precioUnitario;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -76,6 +66,7 @@ export class CarritoComponent implements OnInit {
         next: () => {
           item.cantidad--;
           item.subtotal = item.cantidad * item.precioUnitario;
+          this.cdr.detectChanges();
         }
       });
     }
@@ -88,12 +79,14 @@ export class CarritoComponent implements OnInit {
   eliminarItem(idItem: number): void {
     this.carritoService.eliminarItem(idItem).subscribe({
       next: () => {
-        if (this.carrito) {
-          this.carrito.items = (this.carrito.items ?? []).filter(
-            item => item.idItem !== idItem
-          );
-        }
+        this.items = this.items.filter(item => item.idItem !== idItem);
+        this.cdr.detectChanges();
       }
     });
+  }
+
+  onImageError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'https://placehold.co/300x200?text=Sin+imagen';
   }
 }

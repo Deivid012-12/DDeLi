@@ -1,16 +1,18 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideRouter, Routes } from '@angular/router';
+import { provideRouter, Routes, withRouterConfig } from '@angular/router';  // ← agregar withRouterConfig
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { AppComponent } from './app/app.component';
 import { InicioComponent } from './app/component/inicio/inicio.component';
 import { PrincipalComponent} from './app/component/principal/principal.component';
 import { RegistroComponent} from './app/component/registro/registro.component';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { CarritoComponent}  from './app/component/carrito/carrito.component';
 import { PagarComponent } from './app/component/pagar/pagar.component';
 import { MenuComponent } from './app/component/menu/menu.component';
+import { PerfilComponent } from './app/component/perfil/perfil.component';
+import { authInterceptor } from './app/service/auth.interceptor';
 
 const routes: Routes = [
   { path: '', redirectTo: 'principal', pathMatch: 'full' },
@@ -20,17 +22,20 @@ const routes: Routes = [
   { path: 'carrito', component: CarritoComponent},
   { path: 'pagar', component: PagarComponent},
   { path: 'menu', component: MenuComponent},
+  { path: 'perfil', component: PerfilComponent}
 ];
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
+    provideHttpClient(
+      withInterceptors([authInterceptor])
+    ),
     providePrimeNG({
       theme: {
         preset: Aura
       }
     }),
-    provideHttpClient(),
     provideAnimations(),
   ]
 });

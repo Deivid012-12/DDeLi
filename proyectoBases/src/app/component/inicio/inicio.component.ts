@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PasswordModule } from 'primeng/password';
+
 
 @Component({
   selector: 'app-inicio',
@@ -12,7 +13,7 @@ import { PasswordModule } from 'primeng/password';
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']
 })
-export class InicioComponent {
+export class InicioComponent implements OnInit {
   loginData = {
     email: '',
     password: ''
@@ -24,7 +25,13 @@ export class InicioComponent {
     private authService: AuthService,
     private router: Router
   ) {}
+  ngOnInit(): void {
 
+    if(this.authService.isLoggedIn()) {
+
+      this.router.navigate(['/principal']);
+    }
+  }
   onSubmit() {
     if (!this.loginData.email || !this.loginData.password) {
       alert('Por favor, completa todos los campos');

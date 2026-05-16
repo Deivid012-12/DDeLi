@@ -1,0 +1,84 @@
+<div class="fondo">
+  <div class="perfil-wrapper">
+
+    <!-- CARD DE USUARIO -->
+    <div class="perfil-card">
+      <div class="avatar">
+        {{ usuario?.nombre?.charAt(0).toUpperCase() }}
+      </div>
+      <h1 class="perfil-nombre">¡Bienvenid@ {{ usuario?.nombre }}!</h1>
+      <button class="btn-logout" (click)="logout()">
+        <i class="pi pi-sign-out"></i>
+        Cerrar sesión
+      </button>
+    </div>
+
+    <!-- MIS PEDIDOS -->
+    <div class="pedidos-section">
+
+      <h2 class="pedidos-titulo">
+        <i class="pi pi-list"></i>
+        Mis pedidos
+      </h2>
+
+      <div *ngIf="loading" class="loading-state">
+        <p>Cargando tus pedidos...</p>
+      </div>
+
+      <div *ngIf="!loading && pedidos.length === 0" class="pedidos-vacio">
+        <p>Aún no tienes pedidos.</p>
+        <a routerLink="/menu">¡Haz tu primer pedido aquí!</a>
+      </div>
+
+      <div class="pedido-card" *ngFor="let pedido of pedidos">
+
+        <!-- ENCABEZADO DEL PEDIDO -->
+        <div class="pedido-header" (click)="togglePedido(pedido.idPedido)">
+          <div class="pedido-info">
+            <span class="pedido-id">Pedido #{{ pedido.idPedido }}</span>
+            <span class="pedido-fecha">{{ pedido.fechaPedido | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="pedido-header-right">
+            <span class="pedido-total">$ {{ pedido.valorTotal | number:'1.2-2' }}</span>
+            <i class="pi"
+               [class.pi-chevron-down]="pedidoExpandido !== pedido.idPedido"
+               [class.pi-chevron-up]="pedidoExpandido === pedido.idPedido">
+            </i>
+          </div>
+        </div>
+
+        <!-- DETALLES DEL PEDIDO -->
+        <div class="pedido-detalles" *ngIf="pedidoExpandido === pedido.idPedido">
+
+          <div class="envio-info" *ngIf="pedido.estadoEnvio">
+            <div class="envio-fila">
+              <i class="pi pi-truck"></i>
+              <span>{{ pedido.tipoEntrega === 'domicilio' ? 'Domicilio' : 'Punto de entrega' }}</span>
+              <span class="envio-estado">{{ pedido.estadoEnvio }}</span>
+            </div>
+            <div class="envio-fila" *ngIf="pedido.direccionEntrega">
+              <i class="pi pi-map-marker"></i>
+              <span>{{ pedido.direccionEntrega }}</span>
+            </div>
+          </div>
+          <div class="detalle-item" *ngFor="let detalle of pedido.detalles">
+            <span class="detalle-nombre">{{ detalle.nombreProducto }}</span>
+            <span class="detalle-cantidad">x{{ detalle.cantidad }}</span>
+            <span class="detalle-subtotal">$ {{ detalle.subtotal | number:'1.2-2' }}</span>
+          </div>
+
+          <div class="detalle-divider"></div>
+
+          <div class="detalle-total">
+            <span>Total</span>
+            <span>$ {{ pedido.valorTotal | number:'1.2-2' }}</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>

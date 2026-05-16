@@ -7,7 +7,12 @@
       <p>Completa tu información para finalizar el pedido</p>
     </div>
 
-    <div class="pago-body">
+    <!-- LOADING -->
+    <div *ngIf="loading" class="loading-state">
+      <p>Cargando tu pedido...</p>
+    </div>
+
+    <div class="pago-body" *ngIf="!loading">
 
       <!-- COLUMNA IZQUIERDA -->
       <div class="pago-form-col">
@@ -35,11 +40,31 @@
               <input
                 type="text"
                 [(ngModel)]="ciudad"
-                placeholder="Ciudad"
+                placeholder="Ej: Bogotá"
                 class="form-input"
               />
             </div>
+            <div class="form-group">
+              <label>Departamento</label>
+              <input
+                type="text"
+                [(ngModel)]="departamento"
+                placeholder="Ej: Cundinamarca"
+                class="form-input"
+              />
+            </div>
+          </div>
 
+          <div class="form-row">
+            <div class="form-group">
+              <label>Código postal</label>
+              <input
+                type="text"
+                [(ngModel)]="codigoPostal"
+                placeholder="Ej: 110111"
+                class="form-input"
+              />
+            </div>
             <div class="form-group">
               <label>Indicaciones adicionales</label>
               <input
@@ -133,7 +158,6 @@
             </div>
 
             <div class="form-row">
-
               <div class="form-group">
                 <label>Fecha de vencimiento</label>
                 <input
@@ -144,7 +168,6 @@
                   maxlength="5"
                 />
               </div>
-
               <div class="form-group">
                 <label>CVV</label>
                 <input
@@ -155,7 +178,6 @@
                   maxlength="3"
                 />
               </div>
-
             </div>
 
             <div class="form-group">
@@ -196,11 +218,14 @@
 
         <div class="resumen-items">
 
+          <div *ngIf="items.length === 0" class="resumen-vacio">
+            <p>No hay productos en el carrito</p>
+          </div>
+
           <div class="resumen-item" *ngFor="let item of items">
             <span class="resumen-item-nombre">
-              {{ item.producto.nombre }} x{{ item.cantidad }}
+              {{ item.producto?.nombre }} x{{ item.cantidad }}
             </span>
-
             <span class="resumen-item-precio">
               $ {{ item.subtotal | number:'1.2-2' }}
             </span>
@@ -217,7 +242,7 @@
 
         <div class="resumen-fila">
           <span>Envío</span>
-          <span>$ 5,000.00</span>
+          <span>$ 8,000.00</span>
         </div>
 
         <div class="resumen-fila descuento">
@@ -232,8 +257,12 @@
           <span>$ {{ pedido.valorTotal | number:'1.2-2' }}</span>
         </div>
 
-        <button class="btn-pagar" (click)="confirmarPago()">
-          Confirmar pedido
+        <button
+          class="btn-pagar"
+          (click)="confirmarPago()"
+          [disabled]="procesando || loading"
+        >
+          {{ procesando ? 'Procesando...' : 'Confirmar pedido' }}
         </button>
 
         <a routerLink="/carrito" class="link-seguir">

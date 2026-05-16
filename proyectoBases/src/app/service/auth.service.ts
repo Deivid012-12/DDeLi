@@ -15,8 +15,19 @@ export class AuthService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, user, { headers }).pipe(
       tap(response => {
+
+
         localStorage.setItem('token', response.token);
+
         localStorage.setItem('userRole', response.role);
+
+        localStorage.setItem('nombre', response.nombre);
+
+        localStorage.setItem(
+          'usuario',
+          JSON.stringify(response)
+        );
+
         console.log('Token guardado:', response.token);
       })
     );
@@ -37,7 +48,6 @@ export class AuthService {
   }
 
   logout(): void {
-    // Limpiar todo del localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
 
@@ -67,12 +77,19 @@ export class AuthService {
       isLoggedIn: this.isLoggedIn()
     };
   }
-
+  getUsuario(): any {
+    const usuario = localStorage.getItem('usuario');
+    return usuario ? JSON.parse(usuario) : null;
+  }
 
   isTokenValid(): boolean {
     const token = this.getToken();
     if (!token) return false;
     return token.length > 10;
   }
+  getUserName(): string | null {
+    return localStorage.getItem('nombre')
+  }
+
 
 }
