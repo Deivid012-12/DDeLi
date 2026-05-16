@@ -8,6 +8,14 @@ export interface Producto {
   nombreCategoria?: string;
 }
 
+export interface OpcionPersonalizacion {
+  idOpcion: number;
+  nombre: string;
+  costoAdicional: number;
+  idTipo: number;
+  nombreTipo: string;
+}
+
 export interface ItemCarrito {
   idItem?: number;
   cantidad: number;
@@ -16,6 +24,7 @@ export interface ItemCarrito {
   idCarrito: number;
   idProducto: number;
   producto: Producto;
+  opciones?: OpcionPersonalizacion[];
 }
 
 export interface Carrito {
@@ -25,3 +34,4 @@ export interface Carrito {
   idUsuario?: number;
   items?: ItemCarrito[];
 }
+

@@ -7,7 +7,6 @@
         <i class="pi pi-shopping-cart"></i>
         Mi Carrito
       </h1>
-
       <p>{{ items.length }} producto(s) en tu carrito</p>
     </div>
 
@@ -39,9 +38,18 @@
               {{ item.producto?.nombre }}
             </h3>
 
-            <p class="producto-desc">
-              {{ item.producto?.descripcion }}
-            </p>
+            <!-- Descripción normal para productos sin personalización -->
+            <div *ngIf="!item.opciones || item.opciones.length === 0" class="opciones-lista">
+              <span class="opcion-tag">{{ item.producto?.descripcion }}</span>
+            </div>
+
+            <!-- Opciones de personalización -->
+            <div *ngIf="item.opciones && item.opciones.length > 0" class="opciones-lista">
+              <span class="opcion-tag" *ngFor="let opcion of item.opciones">
+                {{ opcion.nombreTipo }}: {{ opcion.nombre }}
+                 <span *ngIf="opcion.costoAdicional > 0">(+$ {{ opcion.costoAdicional | number:'1.0-0' }})</span>
+              </span>
+            </div>
 
             <span class="producto-precio">
               $ {{ item.precioUnitario | number:'1.2-2' }}
@@ -50,23 +58,13 @@
 
           <!-- CANTIDAD -->
           <div class="producto-cantidad">
-
-            <button
-              class="btn-cantidad"
-              (click)="disminuirCantidad(item)"
-            >
+            <button class="btn-cantidad" (click)="disminuirCantidad(item)">
               <i class="pi pi-minus"></i>
             </button>
-
             <span>{{ item.cantidad }}</span>
-
-            <button
-              class="btn-cantidad"
-              (click)="aumentarCantidad(item)"
-            >
+            <button class="btn-cantidad" (click)="aumentarCantidad(item)">
               <i class="pi pi-plus"></i>
             </button>
-
           </div>
 
           <!-- TOTAL -->
@@ -75,10 +73,7 @@
           </div>
 
           <!-- ELIMINAR -->
-          <button
-            class="btn-eliminar"
-            (click)="eliminarItem(item.idItem!)"
-          >
+          <button class="btn-eliminar" (click)="eliminarItem(item.idItem!)">
             <i class="pi pi-trash"></i>
           </button>
 

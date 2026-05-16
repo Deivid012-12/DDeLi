@@ -237,3 +237,20 @@
   display: inline-block;
   margin-top: 0.5rem;
 }
+.opciones-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.opcion-tag {
+  background: #fdf0f3;
+  color: #c87a8a;
+  border: 1px solid #f5c6d0;
+  border-radius: 12px;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}

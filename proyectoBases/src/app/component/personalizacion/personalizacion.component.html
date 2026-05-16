@@ -1,0 +1,131 @@
+<div class="fondo">
+  <div class="personalizacion-wrapper">
+
+    <div class="personalizacion-header">
+      <h1 class="titulo">🎂 Personaliza tu postre</h1>
+      <p class="subtitulo">Crea el postre de tus sueños eligiendo cada detalle</p>
+    </div>
+
+    <div *ngIf="loading" class="loading-state">
+      <p>Cargando opciones...</p>
+    </div>
+
+    <div class="personalizacion-body" *ngIf="!loading">
+
+      <!-- OPCIONES POR TIPO -->
+      <div class="opciones-section">
+
+        <div class="tipo-card" *ngFor="let tipo of tipos">
+
+          <h2 class="tipo-titulo">
+            <span *ngIf="tipo.nombre === 'Sabor'">🍓</span>
+            <span *ngIf="tipo.nombre === 'Topping'">🍫</span>
+            <span *ngIf="tipo.nombre === 'Decoración'">🎨</span>
+            <span *ngIf="tipo.nombre === 'Tamaño'">📏</span>
+            {{ tipo.nombre }}
+          </h2>
+
+          <div class="opciones-grid">
+            <div
+              class="opcion-card"
+              *ngFor="let opcion of opcionesPorTipo[tipo.idTipo]"
+              [class.activo]="estaSeleccionada(tipo.idTipo, opcion.idOpcion)"
+              (click)="seleccionarOpcion(tipo.idTipo, opcion.idOpcion)"
+            >
+              <span class="opcion-nombre">{{ opcion.nombre }}</span>
+              <span class="opcion-costo" *ngIf="opcion.costoAdicional > 0">
+                + $ {{ opcion.costoAdicional | number:'1.0-0' }}
+              </span>
+              <span class="opcion-gratis" *ngIf="opcion.costoAdicional === 0">
+                Incluido
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- NOTA PERSONAL -->
+        <div class="tipo-card">
+          <h2 class="tipo-titulo">✏️ Nota personal</h2>
+          <textarea
+            [(ngModel)]="notaPersonal"
+            placeholder="Escribe un mensaje especial, indicaciones de decoración, dedicatoria..."
+            class="nota-input"
+            rows="4"
+          ></textarea>
+        </div>
+
+      </div>
+
+      <!-- RESUMEN -->
+      <div class="resumen-card">
+
+        <h2>Tu postre</h2>
+
+        <div class="resumen-opciones">
+          <div *ngFor="let tipo of tipos" class="resumen-fila">
+            <span class="resumen-tipo">{{ tipo.nombre }}</span>
+            <span class="resumen-opcion" *ngIf="getOpcionSeleccionada(tipo.idTipo)">
+              {{ getOpcionSeleccionada(tipo.idTipo)?.nombre }}
+              <span *ngIf="getOpcionSeleccionada(tipo.idTipo)?.costoAdicional! > 0">
+                (+ $ {{ getOpcionSeleccionada(tipo.idTipo)?.costoAdicional | number:'1.0-0' }})
+              </span>
+            </span>
+            <span class="resumen-opcion sin-seleccion" *ngIf="!getOpcionSeleccionada(tipo.idTipo)">
+              Sin seleccionar
+            </span>
+          </div>
+
+          <div class="resumen-fila" *ngIf="notaPersonal">
+            <span class="resumen-tipo">Nota</span>
+            <span class="resumen-opcion">{{ notaPersonal }}</span>
+          </div>
+        </div>
+
+        <div class="resumen-divider"></div>
+
+        <!-- CANTIDAD -->
+        <div class="cantidad-wrapper">
+          <span>Cantidad</span>
+          <div class="cantidad-controles">
+            <button (click)="cantidad = cantidad - 1" [disabled]="cantidad <= 1" class="btn-cantidad">−</button>
+            <span>{{ cantidad }}</span>
+            <button (click)="cantidad = cantidad + 1" class="btn-cantidad">+</button>
+          </div>
+        </div>
+
+        <div class="resumen-divider"></div>
+
+        <div class="resumen-precio">
+          <span>Precio base</span>
+          <span>$ 25,000</span>
+        </div>
+        <div class="resumen-precio" *ngIf="calcularCostoOpciones() > 0">
+          <span>Personalizaciones</span>
+          <span>+ $ {{ calcularCostoOpciones() | number:'1.0-0' }}</span>
+        </div>
+
+        <div class="resumen-divider"></div>
+
+        <div class="resumen-total">
+          <span>Total</span>
+          <span>$ {{ calcularTotal() | number:'1.0-0' }}</span>
+        </div>
+
+        <button
+          class="btn-agregar"
+          (click)="agregarAlCarrito()"
+          [disabled]="agregando"
+        >
+          {{ agregando ? 'Agregando...' : '🛒 Agregar al carrito' }}
+        </button>
+
+        <a routerLink="/menu" class="link-volver">
+          ← Volver al menú
+        </a>
+
+      </div>
+
+    </div>
+  </div>
+</div>

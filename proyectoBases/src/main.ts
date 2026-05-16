@@ -13,6 +13,7 @@ import { PagarComponent } from './app/component/pagar/pagar.component';
 import { MenuComponent } from './app/component/menu/menu.component';
 import { PerfilComponent } from './app/component/perfil/perfil.component';
 import { authInterceptor } from './app/service/auth.interceptor';
+import { PersonalizacionComponent } from './app/component/personalizacion/personalizacion.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'principal', pathMatch: 'full' },
@@ -22,7 +23,8 @@ const routes: Routes = [
   { path: 'carrito', component: CarritoComponent},
   { path: 'pagar', component: PagarComponent},
   { path: 'menu', component: MenuComponent},
-  { path: 'perfil', component: PerfilComponent}
+  { path: 'perfil', component: PerfilComponent},
+  { path: 'personalizacion', component: PersonalizacionComponent }
 ];
 
 bootstrapApplication(AppComponent, {

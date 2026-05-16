@@ -1,0 +1,295 @@
+.fondo {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 110px;
+  padding-bottom: 60px;
+}
+
+.fondo::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-image: url("../../../assets/podria2.jpg");
+  background-size: cover;
+  background-position: center 60%;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+.personalizacion-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.personalizacion-header {
+  text-align: center;
+}
+
+.titulo {
+  font-size: 36px;
+  color: #7a3b4b;
+  font-family: 'Press Start 2P', cursive;
+  margin-bottom: 10px;
+}
+
+.subtitulo {
+  font-size: 14px;
+  color: #c87a8a;
+  font-family: 'Poppins', sans-serif;
+}
+
+.loading-state {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+  color: #c87a8a;
+  font-family: 'Poppins', sans-serif;
+}
+
+.personalizacion-body {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 30px;
+  align-items: start;
+}
+
+/* TIPOS */
+.opciones-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tipo-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 15px rgba(0,0,0,0.1);
+}
+
+.tipo-titulo {
+  font-size: 16px;
+  color: #7a3b4b;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.opciones-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.opcion-card {
+  padding: 10px 18px;
+  border-radius: 20px;
+  border: 2px solid #c87a8a;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.opcion-card:hover {
+  background: #fdf0f3;
+}
+
+.opcion-card.activo {
+  background: #c87a8a;
+  color: white;
+}
+
+.opcion-nombre {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.opcion-costo {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.opcion-gratis {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+.nota-input {
+  width: 100%;
+  border: 2px solid #f5e6d3;
+  border-radius: 12px;
+  padding: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #7a3b4b;
+  resize: none;
+  outline: none;
+  transition: border 0.2s;
+  box-sizing: border-box;
+}
+
+.nota-input:focus {
+  border-color: #c87a8a;
+}
+
+/* RESUMEN */
+.resumen-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 15px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.resumen-card h2 {
+  font-size: 18px;
+  color: #7a3b4b;
+  font-family: 'Press Start 2P', cursive;
+  margin-bottom: 8px;
+}
+
+.resumen-opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resumen-fila {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+}
+
+.resumen-tipo {
+  color: #999;
+  font-weight: 600;
+}
+
+.resumen-opcion {
+  color: #7a3b4b;
+  font-weight: 600;
+  text-align: right;
+  max-width: 60%;
+}
+
+.sin-seleccion {
+  color: #ccc;
+  font-style: italic;
+}
+
+.resumen-divider {
+  height: 1px;
+  background: #f5e6d3;
+}
+
+.cantidad-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #7a3b4b;
+  font-weight: 600;
+}
+
+.cantidad-controles {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-cantidad {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #c87a8a;
+  background: white;
+  color: #c87a8a;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-cantidad:hover {
+  background: #c87a8a;
+  color: white;
+}
+
+.resumen-precio {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #7a3b4b;
+}
+
+.resumen-total {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #7a3b4b;
+}
+
+.btn-agregar {
+  background: #c87a8a;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.3s;
+  width: 100%;
+}
+
+.btn-agregar:hover:not(:disabled) {
+  background: #7a3b4b;
+}
+
+.btn-agregar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.link-volver {
+  text-align: center;
+  color: #c87a8a;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link-volver:hover {
+  color: #7a3b4b;
+}
