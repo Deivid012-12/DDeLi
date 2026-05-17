@@ -11,7 +11,12 @@
         <div class="tarjeta-info">
           <h3>Tortas</h3>
           <p>Deliciosas tortas artesanales para toda ocasión</p>
-          <button routerLink="/menu">Ver más</button>
+
+          <button
+            [routerLink]="['/menu']"
+            [queryParams]="{ categoria: 'Tortas' }">
+            Ver más
+          </button>
         </div>
       </div>
 
@@ -20,7 +25,12 @@
         <div class="tarjeta-info">
           <h3>Brownies</h3>
           <p>Brownies esponjosos con el mejor chocolate</p>
-          <button routerLink="/menu">Ver más</button>
+
+          <button
+            [routerLink]="['/menu']"
+            [queryParams]="{ categoria: 'Brownies' }">
+            Ver más
+          </button>
         </div>
       </div>
 
@@ -29,7 +39,12 @@
         <div class="tarjeta-info">
           <h3>Cheesecakes</h3>
           <p>Cremosos cheesecakes con frutas frescas</p>
-          <button routerLink="/menu">Ver más</button>
+
+          <button
+            [routerLink]="['/menu']"
+            [queryParams]="{ categoria: 'Cheesecakes' }">
+            Ver más
+          </button>
         </div>
       </div>
 
@@ -38,7 +53,12 @@
         <div class="tarjeta-info">
           <h3>Cupcakes</h3>
           <p>Cupcakes decorados para cada momento especial</p>
-          <button routerLink="/menu">Ver más</button>
+
+          <button
+            [routerLink]="['/menu']"
+            [queryParams]="{ categoria: 'Tortas' }">
+            Ver más
+          </button>
         </div>
       </div>
 
@@ -47,7 +67,12 @@
         <div class="tarjeta-info">
           <h3>Postres Especiales</h3>
           <p>Creaciones únicas para eventos y celebraciones</p>
-          <button routerLink="/menu">Ver más</button>
+
+          <button
+            [routerLink]="['/menu']"
+            [queryParams]="{ categoria: 'Postres Especiales' }">
+            Ver más
+          </button>
         </div>
       </div>
 

@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 import { CarritoService } from '../../service/carrito.service';
 import { Producto } from '../../model/carrito.model';
 
@@ -21,25 +22,30 @@ export class MenuComponent implements OnInit {
     'Cheesecakes',
     'Tortas'
   ];
-
   productosFiltrados: Producto[] = [];
   productos: Producto[] = [];
 
   constructor(
     private http: HttpClient,
     private carritoService: CarritoService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.cargarProductos();
+    this.route.queryParams.subscribe(params => {
+      if (params['categoria']) {
+        this.categoriaActiva = params['categoria'];
+      }
+      this.cargarProductos();
+    });
   }
-
   cargarProductos(): void {
     this.http.get<Producto[]>('http://localhost:8081/producto/getall').subscribe({
       next: (data) => {
         this.productos = data;
-        this.productosFiltrados = data;
+        const cat = this.categoriaActiva;
+        this.productosFiltrados = cat === 'Todos' ? data : data.filter(p => p.nombreCategoria === cat);
         this.cdr.detectChanges();
       },
       error: (error) => {
@@ -50,7 +56,6 @@ export class MenuComponent implements OnInit {
 
   filtrarCategoria(categoria: string): void {
     this.categoriaActiva = categoria;
-
     if (categoria === 'Todos') {
       this.productosFiltrados = [...this.productos];
     } else {

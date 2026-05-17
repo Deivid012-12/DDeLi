@@ -39,6 +39,11 @@
   width: 1500px !important ;
   height: 600px !important;
   align-content: center;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-top: 140px !important;
 }
 

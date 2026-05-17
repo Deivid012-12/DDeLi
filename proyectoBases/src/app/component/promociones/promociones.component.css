@@ -1,0 +1,226 @@
+.fondo {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 110px;
+  padding-bottom: 60px;
+}
+
+.fondo::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../../assets/podria2.jpg");
+  background-size: cover;
+  background-position: center 60%;
+  background-repeat: no-repeat;
+  z-index: -1;
+}
+
+/* ENCABEZADO */
+.menu-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.menu-titulo {
+  font-size: 40px;
+  color: #7a3b4b;
+  font-family: 'Press Start 2P', cursive;
+  margin-bottom: 10px;
+}
+
+.menu-subtitulo {
+  font-size: 14px;
+  color: #c87a8a;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* SIN PROMOS */
+.sin-promos {
+  text-align: center;
+  padding: 3rem;
+  background: rgba(255,255,255,0.8);
+  border-radius: 16px;
+  font-family: 'Poppins', sans-serif;
+  color: #9e5050;
+  font-size: 16px;
+  line-height: 2;
+}
+
+/* WRAPPER */
+.promos-wrapper {
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 20px;
+  margin-bottom: 60px;
+}
+
+/* SECCION */
+.promo-seccion {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+  padding: 2rem;
+  border: 1px solid #f0c8c8;
+}
+
+/* CABECERA */
+.promo-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.promo-badge {
+  background: #c87a8a;
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  font-family: 'Press Start 2P', cursive;
+  padding: 16px 20px;
+  border-radius: 16px;
+  white-space: nowrap;
+}
+
+.promo-nombre {
+  font-size: 22px;
+  color: #7a3b4b;
+  font-family: 'Press Start 2P', cursive;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.promo-fechas {
+  font-size: 13px;
+  color: #9e5050;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* GRID */
+.productos-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+/* TARJETA */
+.tarjeta {
+  width: 250px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 20px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+  position: relative;
+}
+
+.tarjeta:hover {
+  transform: translateY(-8px);
+}
+
+/* RIBBON */
+.promo-ribbon {
+  position: absolute;
+  top: 12px;
+  right: -8px;
+  background: #c87a8a;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  padding: 4px 14px;
+  border-radius: 4px 0 0 4px;
+  z-index: 1;
+}
+
+.promo-ribbon::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -8px;
+  border-width: 8px 8px 0 0;
+  border-style: solid;
+  border-color: #7a3b4b transparent transparent transparent;
+}
+
+.tarjeta-img {
+  width: 100%;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  background-color: #f5e6d3;
+}
+
+.tarjeta-info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.tarjeta-info h3 {
+  color: #7a3b4b;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-family: 'Press Start 2P', cursive;
+  line-height: 1.3;
+}
+
+.tarjeta-info p {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.4;
+}
+
+/* PRECIOS */
+.precios {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.precio-original {
+  font-size: 13px;
+  color: #aaa;
+  text-decoration: line-through;
+  font-family: 'Poppins', sans-serif;
+}
+
+.precio-descuento {
+  font-size: 20px;
+  font-weight: 700;
+  color: #c87a8a;
+  font-family: 'Poppins', sans-serif;
+}
+
+.tarjeta-info button {
+  background: #c87a8a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  width: 100%;
+}
+
+.tarjeta-info button:hover {
+  background: #7a3b4b;
+}

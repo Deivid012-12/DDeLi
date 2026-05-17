@@ -1,0 +1,50 @@
+<div class="fondo">
+
+  <!-- ENCABEZADO -->
+  <div class="menu-header">
+    <h1 class="menu-titulo">🎉 Promociones</h1>
+    <p class="menu-subtitulo">Aprovecha nuestras ofertas especiales por tiempo limitado</p>
+  </div>
+
+  <!-- SIN PROMOCIONES -->
+  <div *ngIf="promociones.length === 0" class="sin-promos">
+    <p>😢 No hay promociones vigentes en este momento.</p>
+    <p>¡Vuelve pronto para descubrir nuestras ofertas!</p>
+  </div>
+
+  <!-- SECCIONES POR PROMOCION -->
+  <div class="promos-wrapper" *ngFor="let promo of promociones">
+    <div class="promo-seccion">
+
+      <!-- CABECERA DE PROMOCION -->
+      <div class="promo-header">
+        <div class="promo-badge">-{{ promo.porcentajeDescuento }}%</div>
+        <div class="promo-info">
+          <h2 class="promo-nombre">{{ promo.nombre }}</h2>
+          <p class="promo-fechas">
+            Válida del {{ promo.fechaInicio }} al {{ promo.fechaFin }}
+          </p>
+        </div>
+      </div>
+
+      <!-- PRODUCTOS CON DESCUENTO -->
+      <div class="productos-grid">
+        <div class="tarjeta" *ngFor="let producto of productos">
+          <div class="promo-ribbon">-{{ promo.porcentajeDescuento }}%</div>
+          <div class="tarjeta-img" [style.background-image]="'url(' + producto.imagenURL + ')'"></div>
+          <div class="tarjeta-info">
+            <h3>{{ producto.nombre }}</h3>
+            <p>{{ producto.descripcion }}</p>
+            <div class="precios">
+              <span class="precio-original">$ {{ producto.precioBase | number:'1.0-0' }}</span>
+              <span class="precio-descuento">$ {{ precioConDescuento(producto.precioBase, promo.porcentajeDescuento) | number:'1.0-0' }}</span>
+            </div>
+            <button>🛒 Añadir al carrito</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

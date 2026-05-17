@@ -2,12 +2,12 @@ export interface Producto {
   idProducto: number;
   nombre: string;
   descripcion: string;
-  precioBase: number;
-  imagenURL?: string;
-  tipo?: string;
-  nombreCategoria?: string;
+  precioBase: number;      // ← era precio, ahora es precioBase
+  disponibilidad: boolean; // ← agregar
+  tipo: string;            // ← agregar
+  nombreCategoria: string; // ← agregar
+  imagenURL: string;       // ← era imagen, ahora es imagenURL
 }
-
 export interface OpcionPersonalizacion {
   idOpcion: number;
   nombre: string;

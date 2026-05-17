@@ -19,6 +19,7 @@ import { RegistroComponent } from './component/registro/registro.component';
 import { PagarComponent } from './component/pagar/pagar.component';
 import { CarritoComponent } from './component/carrito/carrito.component';
 import { MenuComponent } from './component/menu/menu.component';
+import { PromocionesComponent } from './component/promociones/promociones.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'principal', pathMatch: 'full' },
@@ -28,7 +29,7 @@ const routes: Routes = [
   { path: 'pagar', component: PagarComponent },
   { path: 'carrito', component: CarritoComponent },
   { path: 'menu', component: MenuComponent },
-  { path: '**', redirectTo: 'principal' }
+  { path: 'promociones', component: PromocionesComponent }
 ];
 
 export const appConfig: ApplicationConfig = {
