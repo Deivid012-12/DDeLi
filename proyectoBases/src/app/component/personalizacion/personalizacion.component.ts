@@ -30,14 +30,12 @@ export class PersonalizacionComponent implements OnInit {
 
   tipos: TipoDTO[] = [];
   opcionesPorTipo: { [idTipo: number]: OpcionDTO[] } = {};
-  seleccionadas: { [idTipo: number]: number } = {}; // una opcion por tipo
+  seleccionadas: { [idTipo: number]: number } = {};
   notaPersonal: string = '';
-  cantidad!: number ;
+  cantidad!: number;
   loading = true;
   agregando = false;
-
-  // Producto base para personalización (id fijo o puedes crear uno en la BD)
-  readonly ID_PRODUCTO_PERSONALIZADO = 15; // cambia esto al id del producto base
+  idProductoPersonalizado: number = 0;
 
   constructor(
     private http: HttpClient,
@@ -48,14 +46,27 @@ export class PersonalizacionComponent implements OnInit {
 
   ngOnInit(): void {
     this.cantidad = 1;
+    this.cargarProductoPersonalizado();
     this.cargarTipos();
+  }
+
+  cargarProductoPersonalizado(): void {
+    this.http.get<any[]>('http://localhost:8081/producto/getall').subscribe({
+      next: (productos) => {
+        const personalizado = productos.find(p => p.tipo === 'PERSONALIZADO');
+        if (personalizado) {
+          this.idProductoPersonalizado = personalizado.idProducto;
+        }
+      },
+      error: (err) => console.error('Error cargando producto personalizado:', err)
+    });
   }
 
   cargarTipos(): void {
     this.http.get<TipoDTO[]>('http://localhost:8081/tipo-personalizacion/getall').subscribe({
       next: (tipos) => {
-        this.tipos = tipos;
-        this.cargarOpciones(tipos);
+        this.tipos = tipos ?? [];
+        this.cargarOpciones(this.tipos);
       },
       error: (err) => {
         console.error('Error cargando tipos:', err);
@@ -75,7 +86,7 @@ export class PersonalizacionComponent implements OnInit {
     tipos.forEach(tipo => {
       this.http.get<OpcionDTO[]>(`http://localhost:8081/opcion/obtenerPorTipo/${tipo.idTipo}`).subscribe({
         next: (opciones) => {
-          this.opcionesPorTipo[tipo.idTipo] = opciones ?? [];  // ← proteger contra null
+          this.opcionesPorTipo[tipo.idTipo] = opciones ?? [];
           pendientes--;
           if (pendientes === 0) {
             this.loading = false;
@@ -116,7 +127,7 @@ export class PersonalizacionComponent implements OnInit {
   }
 
   calcularTotal(): number {
-    const precioBase = 25000; // precio base del postre personalizado
+    const precioBase = 25000;
     return (precioBase + this.calcularCostoOpciones()) * this.cantidad;
   }
 
@@ -135,20 +146,21 @@ export class PersonalizacionComponent implements OnInit {
       return;
     }
 
+    if (this.idProductoPersonalizado === 0) {
+      alert('Error: no se encontró el producto personalizado. Intenta de nuevo.');
+      return;
+    }
+
     this.agregando = true;
 
     this.carritoService.obtenerOCrearCarrito().subscribe({
       next: (carrito) => {
-        const params = new URLSearchParams();
-        params.set('idProducto', this.ID_PRODUCTO_PERSONALIZADO.toString());
-        params.set('cantidad', this.cantidad.toString());
-        idOpciones.forEach(id => params.append('idOpciones', id.toString()));
+        let url = `http://localhost:8081/api/carrito/agregarProducto/${carrito.idCarrito}?idProducto=${this.idProductoPersonalizado}&cantidad=${this.cantidad}`;
+        idOpciones.forEach(id => {
+          url += `&idOpciones=${id}`;
+        });
 
-        this.http.post(
-          `http://localhost:8081/api/carrito/agregarProducto/${carrito.idCarrito}?${params.toString()}`,
-          {},
-          { responseType: 'text' }
-        ).subscribe({
+        this.http.post(url, {}, { responseType: 'text' }).subscribe({
           next: () => {
             this.agregando = false;
             alert('¡Postre personalizado agregado al carrito! 🎂');
