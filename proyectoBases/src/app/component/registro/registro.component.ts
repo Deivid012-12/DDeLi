@@ -47,14 +47,8 @@ export class RegistroComponent {
     }
 
 
-    if (
-      this.registerData.username.includes('>') ||
-      this.registerData.username.includes('<') ||
-      this.registerData.username.includes('/') ||
-      this.registerData.username.includes('*')
-    ) {
-      this.errorMessage =
-        'El nombre de usuario no puede contener caracteres especiales';
+    if (!this.registerData.username.match(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)) {
+      this.errorMessage = 'El nombre no debe contener caracteres especiales';
       return;
     }
 
@@ -103,29 +97,15 @@ export class RegistroComponent {
       error: (error) => {
         this.isLoading = false;
         console.log(error);
+
         if (error.status === 409) {
-          if (error.error === 'El correo ya existe') {
-            this.errorMessage =
-              'Ese correo ya está registrado';
-          } else if (
-            error.error ===
-            'El nombre de usuario ya existe'
-          ) {
-            this.errorMessage =
-              'Ese nombre de usuario ya existe';
-          } else {
-            this.errorMessage =
-              'El usuario ya existe';
-          }
+          this.errorMessage = 'Ese correo ya está registrado. Intenta con otro.';
         } else if (error.status === 400) {
-          this.errorMessage =
-            'Datos inválidos. Verifica la información';
+          this.errorMessage = 'Datos inválidos. Verifica la información.';
         } else if (error.status === 401) {
-          this.errorMessage =
-            'No autorizado';
+          this.errorMessage = 'No autorizado.';
         } else {
-          this.errorMessage =
-            'Error al registrar el usuario';
+          this.errorMessage = 'Error al registrar el usuario. Intenta de nuevo.';
         }
       }
     });

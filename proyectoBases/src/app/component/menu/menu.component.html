@@ -21,14 +21,22 @@
   <div class="productos-section">
     <div class="productos-grid">
       <div class="tarjeta" *ngFor="let producto of productosFiltrados">
-        <div class="tarjeta-img" [style.background-image]="'url(' + producto.imagenURL + ')'"></div>
+        <div class="tarjeta-img" [style.background-image]="'url(/' + producto.imagenURL + ')'"></div>
         <div class="tarjeta-info">
           <h3>{{ producto.nombre }}</h3>
           <p>{{ producto.descripcion }}</p>
           <span class="precio">$ {{ producto.precioBase | number:'1.0-0' }}</span>
-          <button (click)="agregarAlCarrito(producto)">
+
+
+          <button *ngIf="producto.tipo !== 'PERSONALIZADO'" (click)="agregarAlCarrito(producto)">
             🛒 Añadir al carrito
           </button>
+
+
+          <button *ngIf="producto.tipo === 'PERSONALIZADO'" (click)="irAPersonalizar()" class="btn-personalizar">
+            🎂 Personalizar
+          </button>
+
         </div>
       </div>
     </div>

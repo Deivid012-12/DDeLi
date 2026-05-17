@@ -1,78 +1,111 @@
-
 .fondo {
   position: relative;
   width: 100%;
   min-height: 100vh;
+
   display: flex;
   flex-direction: column;
+  align-items: center;
+
   margin: 0;
   padding: 0;
+
+  overflow-x: hidden;
 }
+
 .fondo::before {
   content: "";
   position: fixed;
   top: 0;
   left: 0;
+
   width: 100vw;
   height: 100vh;
+
   background-image: url("../../../assets/podria2.jpg");
   background-size: cover !important;
-  background-position:center 60%;
+  background-position: center 60%;
   background-repeat: no-repeat;
+
   z-index: -1;
 }
+
+/* DIVISION SUPERIOR */
 .division1 {
   width: 100%;
   height: 800px;
-  flex-shrink: 4;
+
   background-image: url("../../../assets/division1.png");
   background-size: cover;
   background-position: center;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   margin-top: -180px;
-
 }
-.info{
+
+/* CONTENEDOR INFO */
+.info {
   background-color: #cda9ae !important;
-  width: 1500px !important ;
+
+  width: 1500px !important;
   height: 600px !important;
-  align-content: center;
-  background-size: cover;
-  background-position: center;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   margin-top: 140px !important;
+
+  border-radius: 20px;
 }
 
+/* PRODUCTOS */
 .productos-section {
   padding: 40px 20px;
   text-align: center;
+
+  width: 100%;
 }
 
+/* TITULO */
 .productos-titulo {
   font-size: 40px;
   color: #7a3b4b;
+
   margin-bottom: 40px;
+
   font-family: 'Press Start 2P',"Bold Italic Art", cursive;
+
   margin-top: -50px !important;
+
+  text-align: center;
 }
 
+/* GRID */
 .productos-grid {
   display: flex;
   flex-wrap: wrap;
+
   gap: 50px;
+
   justify-content: center;
+  align-items: center;
 }
 
+/* TARJETA */
 .tarjeta {
   width: 250px;
+
   border-radius: 16px;
   overflow: hidden;
+
   background: white;
+
   box-shadow: 0 20px 15px rgba(0,0,0,0.1);
+
   transition: transform 0.3s;
 }
 
@@ -80,41 +113,61 @@
   transform: translateY(-8px);
 }
 
+/* IMAGEN TARJETA */
 .tarjeta-img {
   width: 100%;
   height: 200px;
+
   background-size: cover;
   background-position: center;
 }
 
+/* INFO TARJETA */
 .tarjeta-info {
   padding: 16px;
+
   font-family: 'Press Start 2P',"Bold Italic Art", cursive;
+
+  text-align: center;
 }
 
+/* TITULO TARJETA */
 .tarjeta-info h3 {
   color: #7a3b4b;
+
   margin-bottom: 8px;
+
   font-size: 28px;
+
   font-family: 'Press Start 2P',"Bold Italic Art", cursive;
+
   margin-top: -15px;
 }
 
+/* TEXTO */
 .tarjeta-info p {
   font-size: 16px;
   color: #666;
-  margin-bottom: 12px;
 
+  margin-bottom: 12px;
 }
 
+/* BOTON */
 .tarjeta-info button {
   background: #c87a8a;
+
   color: white;
+
   border: none;
+
   padding: 8px 20px;
+
   border-radius: 20px;
+
   cursor: pointer;
+
   transition: background 0.3s;
+
   margin-top: 10px;
 }
 
@@ -122,84 +175,134 @@
   background: #7a3b4b;
 }
 
-.espacio{
-  margin-top: 100px;
-}
-.personalizacion-section {
-  display: flex;
-  align-items: center;
-  background-color: #c87a8a;
-  border-radius: 20px;
-  margin: 40px auto;
-  width: 100%;
-  height: 450px;
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+/* ESPACIO */
+.espacio {
   margin-top: 100px;
 }
 
+/* PERSONALIZACION */
+.personalizacion-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #c87a8a;
+
+  border-radius: 20px;
+
+  margin: 40px auto;
+
+  width: 100%;
+  height: 450px;
+
+  overflow: hidden;
+
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+
+  margin-top: 100px;
+}
+
+/* IMAGEN */
 .personalizacion-img {
   flex: 1;
+
   min-width: 250px !important;
   height: 400px;
+
   overflow: hidden;
+
   margin-left: 30px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .personalizacion-img img {
   width: 90%;
   height: 100%;
+
   object-fit: cover;
 }
 
+/* TEXTO */
 .personalizacion-texto {
   flex: 1;
+
   color: white;
+
   margin-left: -20px !important;
+
+  text-align: center;
 }
 
+/* TITULO */
 .personalizacion-texto h2 {
   font-size: 38px;
+
   margin-bottom: 30px;
+
   font-family: 'Press Start 2P', cursive;
+
   line-height: 1.4;
+
   margin-top: -20px !important;
 }
 
+/* PARRAFOS */
 .personalizacion-texto p {
   font-size: 25px;
+
   margin-bottom: 16px;
+
   font-family: 'Press Start 2P', cursive;
 }
 
+/* LISTA */
 .personalizacion-texto ul {
   list-style: none;
+
   padding: 0;
+
   margin-bottom: 24px;
+
   font-family: 'Press Start 2P', cursive;
 }
 
 .personalizacion-texto ul li {
   font-size: 20px;
+
   margin-bottom: 10px;
+
   font-family: 'Press Start 2P', cursive;
 }
 
 .personalizacion-texto ul li span {
   font-weight: bold;
+
   font-family: 'Press Start 2P', cursive;
 }
 
+/* BOTON */
 .personalizacion-texto button {
   background: white;
+
   color: #c87a8a;
+
   border: none;
+
   padding: 12px 28px;
+
   border-radius: 25px;
+
   font-size: 16px;
+
   font-weight: bold;
+
   cursor: pointer;
+
   transition: 0.3s;
+
   font-family: 'Press Start 2P', cursive;
 }
 
@@ -208,3 +311,40 @@
   color: white;
 }
 
+/* RESPONSIVE SOLO CENTRADO */
+@media (max-width: 1600px) {
+
+  .info {
+    width: 95% !important;
+  }
+
+}
+
+@media (max-width: 900px) {
+
+  .personalizacion-section {
+    flex-direction: column;
+    height: auto;
+
+    padding: 30px 0;
+  }
+
+  .personalizacion-img {
+    margin-left: 0;
+  }
+
+  .personalizacion-texto {
+    margin-left: 0 !important;
+
+    padding: 20px;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .productos-grid {
+    justify-content: center;
+  }
+
+}

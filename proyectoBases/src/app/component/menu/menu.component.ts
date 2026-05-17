@@ -1,9 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CarritoService } from '../../service/carrito.service';
 import { Producto } from '../../model/carrito.model';
+
 
 @Component({
   selector: 'app-menu',
@@ -29,7 +30,8 @@ export class MenuComponent implements OnInit {
     private http: HttpClient,
     private carritoService: CarritoService,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router:Router
   ) {}
 
   ngOnInit(): void {
@@ -76,5 +78,8 @@ export class MenuComponent implements OnInit {
         alert('Debes iniciar sesión');
       }
     });
+  }
+  irAPersonalizar(): void {
+    this.router.navigate(['/personalizacion']);
   }
 }
