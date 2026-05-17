@@ -1,0 +1,278 @@
+.fondo {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 110px;
+  padding-bottom: 60px;
+}
+
+.fondo::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-image: url("../../../assets/podria2.jpg");
+  background-size: cover;
+  background-position: center 60%;
+  z-index: -1;
+}
+
+/* ENCABEZADO */
+.menu-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.menu-titulo {
+  font-size: 36px;
+  color: #7a3b4b;
+  font-family: 'Press Start 2P', cursive;
+  margin-bottom: 10px;
+}
+
+.menu-subtitulo {
+  font-size: 14px;
+  color: #c87a8a;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* MENSAJES */
+.mensaje-exito {
+  background: #eafaf1;
+  border: 1px solid #a9dfbf;
+  color: #1e8449;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.mensaje-error {
+  background: #fdf0f3;
+  border: 1px solid #f5c6d0;
+  color: #c0392b;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* BANNER SUSCRIPCIÓN ACTIVA */
+.suscripcion-activa-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.9);
+  border: 2px solid #c87a8a;
+  border-radius: 16px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: 900px;
+  gap: 1rem;
+  flex-wrap: wrap;
+  backdrop-filter: blur(6px);
+}
+
+.banner-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.banner-icon {
+  font-size: 28px;
+}
+
+.banner-titulo {
+  font-size: 16px;
+  font-weight: 700;
+  color: #7a3b4b;
+  font-family: 'Poppins', sans-serif;
+}
+
+.banner-fecha {
+  font-size: 13px;
+  color: #9e5050;
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn-cancelar {
+  background: white;
+  color: #c0392b;
+  border: 2px solid #c0392b;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  transition: all 0.25s ease;
+}
+
+.btn-cancelar:hover {
+  background: #c0392b;
+  color: white;
+}
+
+.btn-cancelar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* PLANES */
+.planes-wrapper {
+  width: 100%;
+  max-width: 1100px;
+  padding: 0 20px;
+}
+
+.sin-planes {
+  text-align: center;
+  padding: 3rem;
+  background: rgba(255,255,255,0.8);
+  border-radius: 16px;
+  font-family: 'Poppins', sans-serif;
+  color: #9e5050;
+  font-size: 16px;
+}
+
+.planes-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+/* TARJETA DE PLAN */
+.plan-card {
+  width: 280px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(6px);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  border: 1.5px solid #f0c8c8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.plan-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(200, 122, 138, 0.2);
+}
+
+.plan-card.plan-activo {
+  border-color: #c87a8a;
+  border-width: 2px;
+  box-shadow: 0 8px 24px rgba(200, 122, 138, 0.25);
+}
+
+.plan-card.plan-destacado {
+  border-color: #7a3b4b;
+  background: rgba(255, 245, 248, 0.95);
+}
+
+/* BADGE ACTIVO */
+.plan-badge-activo {
+  position: absolute;
+  top: -14px;
+  background: #c87a8a;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  padding: 4px 16px;
+  border-radius: 20px;
+}
+
+/* NOMBRE */
+.plan-nombre {
+  font-size: 18px;
+  color: #7a3b4b;
+  font-family: 'Press Start 2P', cursive;
+  line-height: 1.4;
+  margin-top: 10px;
+}
+
+/* PRECIO */
+.plan-precio {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.precio-monto {
+  font-size: 32px;
+  font-weight: 700;
+  color: #c87a8a;
+  font-family: 'Poppins', sans-serif;
+}
+
+.precio-periodo {
+  font-size: 14px;
+  color: #9e5050;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* DETALLE */
+.plan-detalle {
+  font-size: 13px;
+  color: #9e5050;
+  font-family: 'Poppins', sans-serif;
+  background: #fdf0f3;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #f5c6d0;
+}
+
+.plan-detalle.sin-costo {
+  color: #1e8449;
+  background: #eafaf1;
+  border-color: #a9dfbf;
+}
+
+/* BOTÓN SUSCRIBIRSE */
+.btn-suscribirse {
+  width: 100%;
+  height: 44px;
+  border-radius: 20px;
+  border: none;
+  background: #c87a8a;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(200, 122, 138, 0.3);
+  margin-top: auto;
+}
+
+.btn-suscribirse:hover:not(:disabled) {
+  background: #7a3b4b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(122, 59, 75, 0.35);
+}
+
+.btn-suscribirse:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-suscribirse.btn-activo {
+  background: #7a3b4b;
+  cursor: default;
+}

@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { ItemCarrito } from '../../model/carrito.model';
 import { Pago, Pedido } from '../../model/pagar.model';
 import { CarritoService } from '../../service/carrito.service';
-import { switchMap } from 'rxjs/operators';
+import { PromocionService, PromocionSeleccionada } from '../../service/promocion.service';
 
 @Component({
   selector: 'app-pagar',
@@ -47,14 +47,20 @@ export class PagarComponent implements OnInit {
   loading = true;
   procesando = false;
 
+  promoActiva: PromocionSeleccionada | null = null;
+
   constructor(
     private router: Router,
     private http: HttpClient,
     private carritoService: CarritoService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private promocionService: PromocionService
   ) {}
 
   ngOnInit(): void {
+    // Lee la promo activa
+    this.promoActiva = this.promocionService.obtenerPromo();
+
     this.carritoService.obtenerOCrearCarrito().subscribe({
       next: (carrito) => {
         this.idCarrito = carrito.idCarrito;
@@ -79,8 +85,18 @@ export class PagarComponent implements OnInit {
     });
   }
 
-  calcularTotal(): number {
+  calcularSubtotal(): number {
     return this.items.reduce((acc, item) => acc + item.subtotal, 0);
+  }
+
+  calcularDescuento(): number {
+    if (!this.promoActiva) return 0;
+    const subtotal = this.calcularSubtotal();
+    return subtotal * this.promoActiva.porcentajeDescuento / 100;
+  }
+
+  calcularTotal(): number {
+    return this.calcularSubtotal() - this.calcularDescuento();
   }
 
   confirmarPago(): void {
@@ -98,7 +114,7 @@ export class PagarComponent implements OnInit {
 
     this.procesando = true;
 
-
+    // Paso 1: crear dirección
     const direccionData = {
       calle: this.direccion,
       ciudad: this.ciudad,
@@ -115,12 +131,13 @@ export class PagarComponent implements OnInit {
       next: (respDireccion) => {
         const idDireccion = Number(respDireccion.split('ID: ')[1]);
 
-        // Paso 2: confirmar carrito → crea el pedido
-        this.http.post(
-          `http://localhost:8081/pedido/confirmarCarrito/${this.idCarrito}`,
-          {},
-          { responseType: 'text' }
-        ).subscribe({
+        // Paso 2: confirmar carrito → con idPromocion si hay promo activa
+        const idPromocion = this.promoActiva?.idPromocion;
+        const urlConfirmar = idPromocion
+          ? `http://localhost:8081/pedido/confirmarCarrito/${this.idCarrito}?idPromocion=${idPromocion}`
+          : `http://localhost:8081/pedido/confirmarCarrito/${this.idCarrito}`;
+
+        this.http.post(urlConfirmar, {}, { responseType: 'text' }).subscribe({
           next: (respPedido) => {
             const idPedido = Number(respPedido.split('ID: ')[1]);
 
@@ -141,7 +158,7 @@ export class PagarComponent implements OnInit {
                 // Paso 4: crear pago
                 const pagoData = {
                   idPedido,
-                  cantidadPago: this.pago.cantidadPago,
+                  cantidadPago: this.calcularTotal() + 8000,
                   metodoPago: this.pago.metodoPago,
                   estadoTransaccion: 'aprobado',
                   fechaPago: new Date().toISOString().split('T')[0],
@@ -153,6 +170,8 @@ export class PagarComponent implements OnInit {
                   { responseType: 'text' }
                 ).subscribe({
                   next: () => {
+                    // Limpia la promo después de pagar
+                    this.promocionService.limpiar();
                     this.procesando = false;
                     alert('¡Pedido confirmado! Gracias por tu compra 🎉');
                     this.router.navigate(['/principal']);

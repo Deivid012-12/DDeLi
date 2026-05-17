@@ -13,6 +13,8 @@ import { FooterComponent } from './component/footer/footer.component';
 import { PagarComponent } from './component/pagar/pagar.component';
 import { MenuComponent } from './component/menu/menu.component';
 import { PromocionesComponent } from './component/promociones/promociones.component';
+import { SuscripcionComponent } from './component/suscripcion/suscripcion.component';
+import { PerfilComponent } from './component/perfil/perfil.component';
 
 @NgModule({
   declarations: [],
@@ -28,6 +30,8 @@ import { PromocionesComponent } from './component/promociones/promociones.compon
     PagarComponent,
     PromocionesComponent,
     MenuComponent,
+    SuscripcionComponent,
+    PerfilComponent,
   ],
   providers: [],
   bootstrap: [],

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { Carrito, ItemCarrito } from '../../model/carrito.model';
 import { CarritoService } from '../../service/carrito.service';
+import { PromocionService, PromocionSeleccionada } from '../../service/promocion.service';
 
 @Component({
   selector: 'app-carrito',
@@ -15,14 +16,23 @@ export class CarritoComponent implements OnInit {
   carrito: Carrito | null = null;
   items: ItemCarrito[] = [];
   loading = true;
+  promoActiva: PromocionSeleccionada | null = null;
 
   constructor(
     private router: Router,
     private carritoService: CarritoService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private promocionService: PromocionService
   ) {}
 
   ngOnInit(): void {
+    // Lee la promo activa
+    this.promocionService.promo$.subscribe(promo => {
+      this.promoActiva = promo;
+      this.cdr.detectChanges();
+    });
+
+    // Carga el carrito
     this.carritoService.obtenerOCrearCarrito().subscribe({
       next: (carrito) => {
         this.carrito = carrito;
@@ -72,8 +82,22 @@ export class CarritoComponent implements OnInit {
     }
   }
 
-  calcularTotal(): number {
+  calcularSubtotal(): number {
     return this.items.reduce((acc, item) => acc + item.subtotal, 0);
+  }
+
+  calcularDescuento(): number {
+    if (!this.promoActiva) return 0;
+    const subtotal = this.calcularSubtotal();
+    return subtotal * this.promoActiva.porcentajeDescuento / 100;
+  }
+
+  calcularTotal(): number {
+    return this.calcularSubtotal() - this.calcularDescuento();
+  }
+
+  quitarPromo(): void {
+    this.promocionService.limpiar();
   }
 
   eliminarItem(idItem: number): void {

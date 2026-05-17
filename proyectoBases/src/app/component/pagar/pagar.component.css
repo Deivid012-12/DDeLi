@@ -281,3 +281,16 @@ a.btn-pagar {
 }
 
 .link-seguir:hover { text-decoration: underline; }
+.promo-activa-resumen {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fdf0f3;
+  border: 1px dashed #c87a8a;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: #7a3b4b;
+}

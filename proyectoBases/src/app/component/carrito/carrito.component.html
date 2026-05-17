@@ -34,20 +34,16 @@
           </div>
 
           <div class="producto-info">
-            <h3 class="producto-nombre">
-              {{ item.producto?.nombre }}
-            </h3>
+            <h3 class="producto-nombre">{{ item.producto?.nombre }}</h3>
 
-            <!-- Descripción normal para productos sin personalización -->
             <div *ngIf="!item.opciones || item.opciones.length === 0" class="opciones-lista">
               <span class="opcion-tag">{{ item.producto?.descripcion }}</span>
             </div>
 
-            <!-- Opciones de personalización -->
             <div *ngIf="item.opciones && item.opciones.length > 0" class="opciones-lista">
               <span class="opcion-tag" *ngFor="let opcion of item.opciones">
                 {{ opcion.nombreTipo }}: {{ opcion.nombre }}
-                 <span *ngIf="opcion.costoAdicional > 0">(+$ {{ opcion.costoAdicional | number:'1.0-0' }})</span>
+                <span *ngIf="opcion.costoAdicional > 0">(+$ {{ opcion.costoAdicional | number:'1.0-0' }})</span>
               </span>
             </div>
 
@@ -67,7 +63,7 @@
             </button>
           </div>
 
-          <!-- TOTAL -->
+          <!-- TOTAL POR ITEM -->
           <div class="producto-total">
             $ {{ item.subtotal | number:'1.2-2' }}
           </div>
@@ -78,7 +74,6 @@
           </button>
 
         </div>
-
       </div>
 
       <!-- RESUMEN -->
@@ -89,14 +84,28 @@
           Resumen del pedido
         </h2>
 
+        <!-- PROMO ACTIVA -->
+        <div *ngIf="promoActiva" class="promo-activa">
+          <span>🎟️ {{ promoActiva.nombre }} (-{{ promoActiva.porcentajeDescuento }}%)</span>
+          <button (click)="quitarPromo()">✕ Quitar</button>
+        </div>
+
+        <!-- SIN PROMO: link para ir a buscar una -->
+        <div *ngIf="!promoActiva" class="sin-promo">
+          <a routerLink="/promociones">🎉 Ver promociones disponibles</a>
+        </div>
+
         <div class="resumen-fila">
           <span>Subtotal</span>
-          <span>$ {{ calcularTotal() | number:'1.2-2' }}</span>
+          <span>$ {{ calcularSubtotal() | number:'1.2-2' }}</span>
         </div>
 
         <div class="resumen-fila descuento">
           <span>Descuento</span>
-          <span>$ 0.00</span>
+          <span *ngIf="promoActiva" style="color: #c87a8a; font-weight: 600;">
+            - $ {{ calcularDescuento() | number:'1.2-2' }}
+          </span>
+          <span *ngIf="!promoActiva">$ 0.00</span>
         </div>
 
         <div class="resumen-divider"></div>
@@ -112,9 +121,7 @@
         </button>
 
         <div class="link-seguir">
-          <a routerLink="/principal">
-            ← Seguir comprando
-          </a>
+          <a routerLink="/principal">← Seguir comprando</a>
         </div>
 
       </div>

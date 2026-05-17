@@ -79,9 +79,7 @@
           <!-- ENTREGA -->
           <div class="form-group">
             <label>Tipo de entrega</label>
-
             <div class="opciones-entrega">
-
               <div
                 class="opcion-card"
                 [class.activo]="tipoEntrega === 'domicilio'"
@@ -90,7 +88,6 @@
                 <i class="pi pi-truck"></i>
                 <span>Domicilio</span>
               </div>
-
               <div
                 class="opcion-card"
                 [class.activo]="tipoEntrega === 'punto'"
@@ -99,21 +96,18 @@
                 <i class="pi pi-shop"></i>
                 <span>Punto de entrega</span>
               </div>
-
             </div>
           </div>
         </div>
 
         <!-- MÉTODO DE PAGO -->
         <div class="seccion-card">
-
           <h2 class="seccion-titulo">
             <i class="pi pi-credit-card"></i>
             Método de pago
           </h2>
 
           <div class="metodos-pago">
-
             <div
               class="metodo-card"
               [class.activo]="pago.metodoPago === 'tarjeta'"
@@ -122,7 +116,6 @@
               <i class="pi pi-credit-card"></i>
               <span>Tarjeta</span>
             </div>
-
             <div
               class="metodo-card"
               [class.activo]="pago.metodoPago === 'transferencia'"
@@ -131,7 +124,6 @@
               <i class="pi pi-building-columns"></i>
               <span>Transferencia</span>
             </div>
-
             <div
               class="metodo-card"
               [class.activo]="pago.metodoPago === 'contraentrega'"
@@ -140,12 +132,10 @@
               <i class="pi pi-money-bill"></i>
               <span>Contra entrega</span>
             </div>
-
           </div>
 
           <!-- TARJETA -->
           <div *ngIf="pago.metodoPago === 'tarjeta'" class="datos-tarjeta">
-
             <div class="form-group">
               <label>Número de tarjeta</label>
               <input
@@ -156,7 +146,6 @@
                 maxlength="19"
               />
             </div>
-
             <div class="form-row">
               <div class="form-group">
                 <label>Fecha de vencimiento</label>
@@ -179,7 +168,6 @@
                 />
               </div>
             </div>
-
             <div class="form-group">
               <label>Nombre en la tarjeta</label>
               <input
@@ -189,7 +177,6 @@
                 class="form-input"
               />
             </div>
-
           </div>
 
           <!-- TRANSFERENCIA -->
@@ -208,7 +195,6 @@
           </div>
 
         </div>
-
       </div>
 
       <!-- RESUMEN -->
@@ -217,11 +203,9 @@
         <h2>Resumen del pedido</h2>
 
         <div class="resumen-items">
-
           <div *ngIf="items.length === 0" class="resumen-vacio">
             <p>No hay productos en el carrito</p>
           </div>
-
           <div class="resumen-item" *ngFor="let item of items">
             <span class="resumen-item-nombre">
               {{ item.producto?.nombre }} x{{ item.cantidad }}
@@ -230,14 +214,21 @@
               $ {{ item.subtotal | number:'1.2-2' }}
             </span>
           </div>
-
         </div>
 
         <div class="resumen-divider"></div>
 
+        <!-- PROMO ACTIVA -->
+        <div *ngIf="promoActiva" class="promo-activa-resumen">
+          <span>🎟️ {{ promoActiva.nombre }}</span>
+          <span style="color: #c87a8a; font-weight: 600;">
+            -{{ promoActiva.porcentajeDescuento }}%
+          </span>
+        </div>
+
         <div class="resumen-fila">
           <span>Subtotal</span>
-          <span>$ {{ calcularTotal() | number:'1.2-2' }}</span>
+          <span>$ {{ calcularSubtotal() | number:'1.2-2' }}</span>
         </div>
 
         <div class="resumen-fila">
@@ -247,14 +238,17 @@
 
         <div class="resumen-fila descuento">
           <span>Descuento</span>
-          <span>$ 0.00</span>
+          <span *ngIf="promoActiva" style="color: #c87a8a; font-weight: 600;">
+            - $ {{ calcularDescuento() | number:'1.2-2' }}
+          </span>
+          <span *ngIf="!promoActiva">$ 0.00</span>
         </div>
 
         <div class="resumen-divider"></div>
 
         <div class="resumen-fila total">
           <span>Total</span>
-          <span>$ {{ pedido.valorTotal | number:'1.2-2' }}</span>
+          <span>$ {{ calcularTotal() + 8000 | number:'1.2-2' }}</span>
         </div>
 
         <button
@@ -270,7 +264,6 @@
         </a>
 
       </div>
-
     </div>
   </div>
 </div>

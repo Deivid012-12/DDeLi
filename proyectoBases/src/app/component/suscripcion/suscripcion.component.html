@@ -1,0 +1,93 @@
+<div class="fondo">
+
+  <div class="menu-header">
+    <h1 class="menu-titulo">💎 Planes de Suscripción</h1>
+    <p class="menu-subtitulo">Elige el plan que mejor se adapta a ti</p>
+  </div>
+
+  <!-- CARGANDO -->
+  <div *ngIf="cargando" class="sin-planes">
+    <p>⏳ Cargando planes...</p>
+  </div>
+
+  <!-- MENSAJE ÉXITO -->
+  <div *ngIf="mensaje && !cargando" class="mensaje-exito">
+    {{ mensaje }}
+  </div>
+
+  <!-- ERROR -->
+  <div *ngIf="error && !cargando" class="mensaje-error">
+    ⚠️ {{ error }}
+  </div>
+
+  <!-- SUSCRIPCIÓN ACTIVA -->
+  <div *ngIf="suscripcionActiva && !cargando" class="suscripcion-activa-banner">
+    <div class="banner-info">
+      <span class="banner-icon">✅</span>
+      <div>
+        <p class="banner-titulo">Plan activo: {{ suscripcionActiva.plan.nombre }}</p>
+        <p class="banner-fecha">Desde el {{ suscripcionActiva.fechaInicio }}</p>
+      </div>
+    </div>
+    <button
+      class="btn-cancelar"
+      (click)="cancelarSuscripcion()"
+      [disabled]="procesando"
+    >
+      {{ procesando ? 'Procesando...' : 'Cancelar suscripción' }}
+    </button>
+  </div>
+
+  <!-- PLANES -->
+  <div class="planes-wrapper" *ngIf="!cargando">
+
+    <div *ngIf="planes.length === 0" class="sin-planes">
+      <p>😢 No hay planes disponibles en este momento.</p>
+    </div>
+
+    <div class="planes-grid">
+      <div
+        class="plan-card"
+        *ngFor="let plan of planes"
+        [class.plan-activo]="esPlanActivo(plan.idPlan)"
+        [class.plan-destacado]="plan.costoAdicional === 0 && plan.precioMensual > 0"
+      >
+        <!-- BADGE PLAN ACTIVO -->
+        <div *ngIf="esPlanActivo(plan.idPlan)" class="plan-badge-activo">
+          ✅ Tu plan actual
+        </div>
+
+        <!-- NOMBRE -->
+        <h2 class="plan-nombre">{{ plan.nombre }}</h2>
+
+        <!-- PRECIO -->
+        <div class="plan-precio">
+          <span class="precio-monto">$ {{ plan.precioMensual | number:'1.0-0' }}</span>
+          <span class="precio-periodo">/ mes</span>
+        </div>
+
+        <!-- COSTO ADICIONAL -->
+        <div class="plan-detalle" *ngIf="plan.costoAdicional > 0">
+          <span>+ $ {{ plan.costoAdicional | number:'1.0-0' }} costo adicional</span>
+        </div>
+        <div class="plan-detalle sin-costo" *ngIf="plan.costoAdicional === 0">
+          <span>✨ Sin costos adicionales</span>
+        </div>
+
+        <!-- BOTÓN -->
+        <button
+          class="btn-suscribirse"
+          (click)="suscribirse(plan.idPlan)"
+          [disabled]="procesando || !!suscripcionActiva"
+          [class.btn-activo]="esPlanActivo(plan.idPlan)"
+        >
+          <span *ngIf="esPlanActivo(plan.idPlan)">Plan activo</span>
+          <span *ngIf="!esPlanActivo(plan.idPlan) && !suscripcionActiva">Suscribirme</span>
+          <span *ngIf="!esPlanActivo(plan.idPlan) && suscripcionActiva">No disponible</span>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+</div>
