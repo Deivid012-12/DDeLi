@@ -15,6 +15,7 @@ import { PerfilComponent } from './app/component/perfil/perfil.component';
 import { authInterceptor } from './app/service/auth.interceptor';
 import { PersonalizacionComponent } from './app/component/personalizacion/personalizacion.component';
 import { PromocionesComponent } from './app/component/promociones/promociones.component';
+import { SuscripcionComponent } from './app/component/suscripcion/suscripcion.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'principal', pathMatch: 'full' },
@@ -26,7 +27,8 @@ const routes: Routes = [
   { path: 'menu', component: MenuComponent},
   { path: 'perfil', component: PerfilComponent},
   { path: 'personalizacion', component: PersonalizacionComponent },
-  { path: 'promociones', component: PromocionesComponent }
+  { path: 'promociones', component: PromocionesComponent },
+  {path: 'suscripcion', component: SuscripcionComponent}
 ];
 
 bootstrapApplication(AppComponent, {

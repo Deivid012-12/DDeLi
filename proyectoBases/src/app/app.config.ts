@@ -13,7 +13,6 @@ import Aura from '@primeng/themes/aura';
 
 import { authInterceptor } from './service/auth.interceptor';
 
-
 import { InicioComponent } from './component/inicio/inicio.component';
 import { PrincipalComponent } from './component/principal/principal.component';
 import { RegistroComponent } from './component/registro/registro.component';
@@ -26,27 +25,23 @@ import { PerfilComponent } from './component/perfil/perfil.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'principal', pathMatch: 'full' },
-  { path: 'inicio', component: InicioComponent },
-  { path: 'principal', component: PrincipalComponent },
-  { path: 'registro', component: RegistroComponent },
-  { path: 'pagar',        component: PagarComponent },
-  { path: 'carrito',      component: CarritoComponent },
-  { path: 'menu',         component: MenuComponent,          },
-  { path: 'promociones',  component: PromocionesComponent,   },
-  { path: 'suscripcion',  component: SuscripcionComponent },
-  { path: 'perfil',       component: PerfilComponent }
+  { path: 'inicio',      component: InicioComponent },
+  { path: 'principal',   component: PrincipalComponent },
+  { path: 'registro',    component: RegistroComponent },
+  { path: 'pagar',       component: PagarComponent },
+  { path: 'carrito',     component: CarritoComponent },
+  { path: 'menu',        component: MenuComponent },
+  { path: 'promociones', component: PromocionesComponent },
+  { path: 'suscripcion', component: SuscripcionComponent },
+  { path: 'perfil',      component: PerfilComponent },
 ];
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(
-      withInterceptors([authInterceptor])
-    ),
-    providePrimeNG({
-      theme: { preset: Aura },
-    }),
+    provideHttpClient(withInterceptors([authInterceptor])),
+    providePrimeNG({ theme: { preset: Aura } }),
     provideAnimations()
   ]
 };

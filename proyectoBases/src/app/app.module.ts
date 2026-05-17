@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { InicioComponent } from './component/inicio/inicio.component';
 import { PrincipalComponent } from './component/principal/principal.component';
@@ -21,6 +20,7 @@ import { PerfilComponent } from './component/perfil/perfil.component';
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     InicioComponent,
     PrincipalComponent,
     RegistroComponent,
