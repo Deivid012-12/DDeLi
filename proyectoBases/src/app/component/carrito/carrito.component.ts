@@ -4,6 +4,8 @@ import { RouterLink, Router } from '@angular/router';
 import { Carrito, ItemCarrito } from '../../model/carrito.model';
 import { CarritoService } from '../../service/carrito.service';
 import { PromocionService, PromocionSeleccionada } from '../../service/promocion.service';
+import { EventoService, EventoSeleccionado } from '../../service/evento.service';
+
 
 @Component({
   selector: 'app-carrito',
@@ -17,18 +19,27 @@ export class CarritoComponent implements OnInit {
   items: ItemCarrito[] = [];
   loading = true;
   promoActiva: PromocionSeleccionada | null = null;
+  eventoActivo: EventoSeleccionado | null = null;
+
 
   constructor(
     private router: Router,
     private carritoService: CarritoService,
     private cdr: ChangeDetectorRef,
-    private promocionService: PromocionService
+    private promocionService: PromocionService,
+  private eventoService: EventoService
   ) {}
 
   ngOnInit(): void {
     // Lee la promo activa
     this.promocionService.promo$.subscribe(promo => {
       this.promoActiva = promo;
+      this.cdr.detectChanges();
+    });
+
+    // Lee el evento activo
+    this.eventoService.evento$.subscribe(evento => {
+      this.eventoActivo = evento;
       this.cdr.detectChanges();
     });
 
@@ -41,7 +52,6 @@ export class CarritoComponent implements OnInit {
             this.items = items;
             this.loading = false;
             this.cdr.detectChanges();
-            console.log('Items en componente:', this.items.length);
           },
           error: (err) => {
             console.error(err);
@@ -55,6 +65,11 @@ export class CarritoComponent implements OnInit {
       }
     });
   }
+
+  quitarEvento(): void {
+    this.eventoService.limpiar();
+  }
+
 
   irAPagar(): void {
     this.router.navigate(['/pagar']);

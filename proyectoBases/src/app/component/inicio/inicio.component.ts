@@ -57,7 +57,9 @@ export class InicioComponent implements OnInit {
         this.isLoading = false;
         console.error('Error en login:', error);
         if (error.status === 401) {
-          this.errorMessage = 'Credenciales incorrectas';
+          this.errorMessage = 'Correo o contraseña incorrectos';
+        } else if (error.status === 403) {
+          this.errorMessage = 'Cuenta no verificada. Revisa tu correo y verifica tu cuenta.';
         } else if (error.status === 0) {
           this.errorMessage = 'Error de conexión con el servidor';
         } else {

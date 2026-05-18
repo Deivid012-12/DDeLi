@@ -84,13 +84,24 @@
           Resumen del pedido
         </h2>
 
+        <!-- EVENTO ACTIVO -->
+        <div *ngIf="eventoActivo" class="evento-activo-resumen">
+          <span>🎉 {{ eventoActivo.tipoEvento }} — {{ eventoActivo.fechaEvento }}</span>
+          <button (click)="quitarEvento()">✕ Quitar</button>
+        </div>
+
+        <!-- SIN EVENTO -->
+        <div *ngIf="!eventoActivo" class="sin-evento">
+          <a routerLink="/evento">🎉 Asociar un evento</a>
+        </div>
+
         <!-- PROMO ACTIVA -->
         <div *ngIf="promoActiva" class="promo-activa">
           <span>🎟️ {{ promoActiva.nombre }} (-{{ promoActiva.porcentajeDescuento }}%)</span>
           <button (click)="quitarPromo()">✕ Quitar</button>
         </div>
 
-        <!-- SIN PROMO: link para ir a buscar una -->
+        <!-- SIN PROMO -->
         <div *ngIf="!promoActiva" class="sin-promo">
           <a routerLink="/promociones">🎉 Ver promociones disponibles</a>
         </div>

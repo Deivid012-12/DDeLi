@@ -294,3 +294,25 @@ a.btn-pagar {
   font-size: 13px;
   color: #7a3b4b;
 }
+.sin-evento-resumen {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.sin-evento-resumen a {
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+  color: #7a9abf;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: 1.5px dashed #7a9abf;
+  border-radius: 20px;
+  display: inline-block;
+  transition: all 0.25s ease;
+}
+
+.sin-evento-resumen a:hover {
+  background: #f0f9ff;
+  transform: translateY(-1px);
+}
