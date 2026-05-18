@@ -3,11 +3,28 @@
 
     <!-- CARD USUARIO -->
     <div class="perfil-card">
-      <div class="avatar">
-        {{ usuario?.nombre ? usuario!.nombre.charAt(0).toUpperCase() : '?' }}
-      </div>
-      <h1 class="perfil-nombre">¡Bienvenid@ {{ usuario?.nombre }}!</h1>
 
+      <!-- HEADER DECORATIVO -->
+      <div class="perfil-card-header">
+        <div class="perfil-card-header-pattern"></div>
+      </div>
+
+      <!-- AVATAR CON ESTADO -->
+      <div class="avatar-wrap">
+        <div class="avatar">
+          {{ usuario?.nombre ? usuario!.nombre.charAt(0).toUpperCase() : '?' }}
+        </div>
+        <div class="avatar-status" [class.verificado-dot]="usuario?.verificado" [class.no-verificado-dot]="!usuario?.verificado"></div>
+      </div>
+
+      <!-- NOMBRE Y ROL -->
+      <h1 class="perfil-nombre">{{ usuario?.nombre }}</h1>
+      <span class="perfil-rol-pill">
+        <i class="pi pi-shield"></i>
+        {{ usuario?.rol === 'ADMIN' ? 'Administrador' : 'Cliente' }}
+      </span>
+
+      <!-- DATOS DEL USUARIO -->
       <div class="usuario-datos">
         <div class="dato-fila" *ngIf="usuario?.correo">
           <i class="pi pi-envelope"></i>
@@ -17,15 +34,35 @@
           <i class="pi pi-phone"></i>
           <span>{{ usuario?.telefono }}</span>
         </div>
-        <div class="dato-fila">
-          <i class="pi pi-shield"></i>
-          <span>{{ usuario?.rol === 'ADMIN' ? 'Administrador' : 'Cliente' }}</span>
+        <div class="dato-fila" *ngIf="!usuario?.correo && !usuario?.telefono">
+          <i class="pi pi-info-circle"></i>
+          <span>Sin información de contacto</span>
         </div>
-        <div class="dato-fila">
-          <i class="pi pi-verified"></i>
-          <span [class.verificado]="usuario?.verificado" [class.no-verificado]="!usuario?.verificado">
-            {{ usuario?.verificado ? 'Cuenta verificada' : 'Cuenta no verificada' }}
-          </span>
+      </div>
+
+      <!-- ALERTA VERIFICACIÓN -->
+      <div class="verificacion-banner" *ngIf="!usuario?.verificado">
+        <i class="pi pi-exclamation-circle"></i>
+        <span>Cuenta sin verificar</span>
+      </div>
+      <div class="verificacion-banner verificado-banner" *ngIf="usuario?.verificado">
+        <i class="pi pi-check-circle"></i>
+        <span>Cuenta verificada</span>
+      </div>
+
+      <!-- ESTADÍSTICAS RÁPIDAS -->
+      <div class="perfil-stats">
+        <div class="stat-item">
+          <span class="stat-num">{{ pedidos.length }}</span>
+          <span class="stat-label">Pedidos</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">{{ eventos.length }}</span>
+          <span class="stat-label">Eventos</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">{{ suscripcion ? '✓' : '—' }}</span>
+          <span class="stat-label">Plan</span>
         </div>
       </div>
 
@@ -40,21 +77,28 @@
 
       <!-- SUSCRIPCIÓN -->
       <div class="seccion-card">
-        <h2 class="seccion-titulo">
-          <i class="pi pi-star"></i>
-          Mi suscripción
-        </h2>
+        <div class="seccion-header">
+          <h2 class="seccion-titulo">
+            <span class="seccion-titulo-icon"><i class="pi pi-star"></i></span>
+            Mi suscripción
+          </h2>
+          <a routerLink="/suscripcion" class="seccion-action">Ver planes →</a>
+        </div>
 
+        <!-- CON SUSCRIPCIÓN -->
         <div *ngIf="suscripcion" class="suscripcion-activa">
-          <div class="suscripcion-badge">💎 {{ suscripcion.plan.nombre }}</div>
+          <div class="suscripcion-badge">
+            <i class="pi pi-gem"></i>
+            {{ suscripcion.plan.nombre }}
+          </div>
           <div class="suscripcion-detalles">
             <div class="suscripcion-fila">
               <span>Precio mensual</span>
-              <span>$ {{ suscripcion.plan.precioMensual | number:'1.0-0' }}</span>
+              <span class="suscripcion-valor">$ {{ suscripcion.plan.precioMensual | number:'1.0-0' }}</span>
             </div>
             <div class="suscripcion-fila" *ngIf="suscripcion.plan.costoAdicional > 0">
               <span>Costo adicional</span>
-              <span>$ {{ suscripcion.plan.costoAdicional | number:'1.0-0' }}</span>
+              <span class="suscripcion-valor">$ {{ suscripcion.plan.costoAdicional | number:'1.0-0' }}</span>
             </div>
             <div class="suscripcion-fila">
               <span>Activa desde</span>
@@ -65,37 +109,68 @@
               <span class="estado-activo">{{ suscripcion.estado }}</span>
             </div>
           </div>
-          <a routerLink="/suscripcion" class="btn-ver-planes">Ver planes</a>
         </div>
 
+        <!-- SIN SUSCRIPCIÓN -->
         <div *ngIf="!suscripcion" class="sin-suscripcion">
-          <p>No tienes una suscripción activa.</p>
-          <a routerLink="/suscripcion" class="btn-suscribirse">💎 Ver planes disponibles</a>
+          <div class="sin-suscripcion-inner">
+            <div class="sin-suscripcion-icon">
+              <i class="pi pi-star"></i>
+            </div>
+            <div>
+              <p class="sin-suscripcion-titulo">Sin plan activo</p>
+              <p class="sin-suscripcion-texto">Accede a beneficios exclusivos con una suscripción.</p>
+            </div>
+          </div>
+          <a routerLink="/suscripcion" class="btn-suscribirse">
+            <i class="pi pi-gem"></i>
+            Ver planes disponibles
+          </a>
         </div>
       </div>
 
       <!-- MIS EVENTOS -->
       <div class="seccion-card">
-        <h2 class="seccion-titulo">
-          <i class="pi pi-calendar"></i>
-          Mis eventos
-        </h2>
+        <div class="seccion-header">
+          <h2 class="seccion-titulo">
+            <span class="seccion-titulo-icon"><i class="pi pi-calendar"></i></span>
+            Mis eventos
+          </h2>
+          <a routerLink="/evento" class="seccion-action">+ Nuevo evento</a>
+        </div>
 
         <!-- EVENTO ACTIVO BANNER -->
         <div *ngIf="eventoActivo" class="evento-activo-banner">
-          <span>✅ Evento activo: {{ eventoActivo.tipoEvento }} — {{ eventoActivo.fechaEvento }}</span>
-          <button (click)="quitarEvento()">✕ Quitar</button>
+          <i class="pi pi-check-circle"></i>
+          <span>Evento activo: <strong>{{ eventoActivo.tipoEvento }}</strong> — {{ eventoActivo.fechaEvento }}</span>
+          <button (click)="quitarEvento()">
+            <i class="pi pi-times"></i>
+            Quitar
+          </button>
         </div>
 
+        <!-- LOADING -->
         <div *ngIf="loadingEventos" class="loading-state">
+          <i class="pi pi-spin pi-spinner"></i>
           <p>Cargando eventos...</p>
         </div>
 
-        <div *ngIf="!loadingEventos && eventos.length === 0" class="pedidos-vacio">
-          <p>Aún no tienes eventos registrados.</p>
-          <a routerLink="/evento">¡Crea tu primer evento aquí!</a>
+        <!-- VACÍO -->
+        <div *ngIf="!loadingEventos && eventos.length === 0" class="estado-vacio-inline">
+          <div class="estado-vacio-inline-icon">
+            <i class="pi pi-calendar-plus"></i>
+          </div>
+          <div class="estado-vacio-inline-texto">
+            <strong>Sin eventos todavía</strong>
+            <span>Planifica tu próxima celebración con nuestros postres personalizados.</span>
+          </div>
+          <a routerLink="/evento" class="btn-suscribirse btn-sm">
+            <i class="pi pi-plus"></i>
+            Crear evento
+          </a>
         </div>
 
+        <!-- LISTA DE EVENTOS -->
         <div class="eventos-lista" *ngIf="!loadingEventos && eventos.length > 0">
           <div
             class="evento-item"
@@ -104,57 +179,76 @@
           >
             <div class="evento-item-info">
               <span class="evento-item-tipo">{{ evento.tipoEvento }}</span>
-              <span class="evento-item-fecha">
-                <i class="pi pi-calendar"></i> {{ evento.fechaEvento }}
-              </span>
-              <span class="evento-item-personas">
-                <i class="pi pi-users"></i> {{ evento.numeroPersonas }} personas
-              </span>
+              <div class="evento-item-meta">
+                <span class="evento-item-fecha">
+                  <i class="pi pi-calendar"></i> {{ evento.fechaEvento }}
+                </span>
+                <span class="evento-item-personas">
+                  <i class="pi pi-users"></i> {{ evento.numeroPersonas }} personas
+                </span>
+              </div>
             </div>
             <div class="evento-item-acciones">
               <button
                 class="btn-usar-evento"
                 (click)="usarEvento(evento)"
                 [disabled]="eventoActivo?.idEvento === evento.idEvento"
+                [class.btn-activo]="eventoActivo?.idEvento === evento.idEvento"
               >
-                {{ eventoActivo?.idEvento === evento.idEvento ? '✅ Activo' : '🛒 Usar' }}
+                <i class="pi" [class.pi-check]="eventoActivo?.idEvento === evento.idEvento" [class.pi-shopping-cart]="eventoActivo?.idEvento !== evento.idEvento"></i>
+                {{ eventoActivo?.idEvento === evento.idEvento ? 'Activo' : 'Usar' }}
               </button>
-              <button class="btn-eliminar-evento" (click)="eliminarEvento(evento.idEvento)">
+              <button class="btn-eliminar-evento" (click)="eliminarEvento(evento.idEvento)" title="Eliminar evento">
                 <i class="pi pi-trash"></i>
               </button>
             </div>
           </div>
         </div>
-
-        <div class="crear-evento-link">
-          <a routerLink="/evento">+ Crear nuevo evento</a>
-        </div>
       </div>
 
       <!-- MIS PEDIDOS -->
       <div class="seccion-card">
-        <h2 class="seccion-titulo">
-          <i class="pi pi-list"></i>
-          Mis pedidos
-        </h2>
+        <div class="seccion-header">
+          <h2 class="seccion-titulo">
+            <span class="seccion-titulo-icon"><i class="pi pi-list"></i></span>
+            Mis pedidos
+          </h2>
+          <span class="seccion-badge" *ngIf="pedidos.length > 0">{{ pedidos.length }} pedido{{ pedidos.length !== 1 ? 's' : '' }}</span>
+        </div>
 
+        <!-- LOADING -->
         <div *ngIf="loading" class="loading-state">
+          <i class="pi pi-spin pi-spinner"></i>
           <p>Cargando tus pedidos...</p>
         </div>
 
-        <div *ngIf="!loading && pedidos.length === 0" class="pedidos-vacio">
-          <p>Aún no tienes pedidos.</p>
-          <a routerLink="/menu">¡Haz tu primer pedido aquí!</a>
+        <!-- VACÍO -->
+        <div *ngIf="!loading && pedidos.length === 0" class="estado-vacio-inline">
+          <div class="estado-vacio-inline-icon">
+            <i class="pi pi-shopping-bag"></i>
+          </div>
+          <div class="estado-vacio-inline-texto">
+            <strong>Sin pedidos aún</strong>
+            <span>Explora nuestro menú y haz tu primer pedido.</span>
+          </div>
+          <a routerLink="/menu" class="btn-ver-planes btn-sm">
+            <i class="pi pi-arrow-right"></i>
+            Ir al menú
+          </a>
         </div>
 
+        <!-- LISTA PEDIDOS -->
         <div class="pedido-card" *ngFor="let pedido of pedidos">
 
           <div class="pedido-header" (click)="togglePedido(pedido.idPedido)">
             <div class="pedido-info">
               <span class="pedido-id">Pedido #{{ pedido.idPedido }}</span>
-              <span class="pedido-fecha">{{ pedido.fechaPedido | date:'dd/MM/yyyy' }}</span>
+              <span class="pedido-fecha">
+                <i class="pi pi-calendar"></i>
+                {{ pedido.fechaPedido | date:'dd/MM/yyyy' }}
+              </span>
               <span *ngIf="pedido.nombrePromocion" class="pedido-promo">
-                🎟️ {{ pedido.nombrePromocion }}
+                <i class="pi pi-tag"></i> {{ pedido.nombrePromocion }}
               </span>
             </div>
             <div class="pedido-header-right">
@@ -195,6 +289,7 @@
 
           </div>
         </div>
+
       </div>
 
     </div>
