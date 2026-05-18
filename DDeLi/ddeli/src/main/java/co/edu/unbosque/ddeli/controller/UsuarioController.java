@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,20 +51,9 @@ public class UsuarioController {
 		int status = userSer.create(newUser);
 
 		if (status == 0) {
-
 			return new ResponseEntity<>("Usuario creado con éxito", HttpStatus.CREATED);
-
-		} else if (status == 1) {
-
-			return new ResponseEntity<>("Usuario ya existente", HttpStatus.NOT_ACCEPTABLE);
-
-		} else if (status == 2) {
-
-			return new ResponseEntity<>("Correo ya registrado", HttpStatus.NOT_ACCEPTABLE);
-
 		} else {
-
-			return new ResponseEntity<>("Error al crear el usuario", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Correo ya registrado", HttpStatus.CONFLICT);
 		}
 	}
 
@@ -79,6 +69,16 @@ public class UsuarioController {
 		} else {
 
 			return new ResponseEntity<>("Token inválido", HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PostMapping("/reenviarCodigo")
+	public ResponseEntity<String> reenviarCodigo(@RequestParam String correo) {
+		try {
+			userSer.reenviarCodigo(correo);
+			return new ResponseEntity<>("Código reenviado correctamente", HttpStatus.OK);
+		} catch (RuntimeException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -152,12 +152,26 @@ public class UsuarioController {
 		}
 	}
 
+	@GetMapping("/miPerfil")
+	public ResponseEntity<UsuarioDTO> miPerfil(Authentication authentication) {
+		String correo = authentication.getName();
+		UsuarioDTO dto = userSer.obtenerPorCorreo(correo);
+		if (dto == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(dto, HttpStatus.OK);
+	}
+
 	@GetMapping("/getbynombre/{nombre}")
-	public ResponseEntity<UsuarioDTO> getByNombre(@PathVariable String nombre) {
+	public ResponseEntity<List<UsuarioDTO>> getByNombre(@PathVariable String nombre) {
 
-		UsuarioDTO usuario = userSer.obtenerPorNombre(nombre);
+		List<UsuarioDTO> usuarios = userSer.obtenerPorNombre(nombre);
 
-		return new ResponseEntity<>(usuario, HttpStatus.OK);
+		if (usuarios.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(usuarios, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/deletebyid/{id}")

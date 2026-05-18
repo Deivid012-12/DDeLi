@@ -30,11 +30,13 @@ public class Suscripcion {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Suscripcion(Long idSuscripcion, LocalDate fechaInicio, String estado, PlanSuscripcion plan) {
+	public Suscripcion(Long idSuscripcion, LocalDate fechaInicio, String estado, Usuario usuario,
+			PlanSuscripcion plan) {
 		super();
 		this.idSuscripcion = idSuscripcion;
 		this.fechaInicio = fechaInicio;
 		this.estado = estado;
+		this.usuario = usuario;
 		this.plan = plan;
 	}
 
@@ -110,6 +112,14 @@ public class Suscripcion {
 	 */
 	public void setPlan(PlanSuscripcion plan) {
 		this.plan = plan;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	@Override

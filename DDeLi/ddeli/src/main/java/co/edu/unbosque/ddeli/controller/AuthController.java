@@ -97,37 +97,31 @@ public class AuthController {
 			@ApiResponse(responseCode = "401", description = "Credenciales inválidas", content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "Nombre de usuario o contraseña inválidos o usuario no"
 					+ " encontrado"))) })
 	@PostMapping("/login")
-	public ResponseEntity<?> login(
-			@Parameter(description = "Credenciales de usuario para iniciar sesión", required = true, schema = @Schema(implementation = UsuarioDTO.class), examples = @ExampleObject(value = """
-					    {
-					      "username": "admin",
-					      "password": "1234567890"
-					    }
-					""")) @RequestBody UsuarioDTO loginRequest) {
+	public ResponseEntity<?> login(@RequestBody UsuarioDTO loginRequest) {
 		try {
 			Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginRequest.getCorreo(), loginRequest.getContrasenia()));
 
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-			String jwt = jwtUtil.generateToken(userDetails);
-
-			String role = null;
-			String nombre = null;
 
 			if (userDetails instanceof Usuario) {
-
 				Usuario user = (Usuario) userDetails;
 
-				role = user.getRol().name();
+				if (!user.isVerificado()) {
+					return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Cuenta no verificada. Revisa tu correo.");
+				}
 
-				nombre = user.getNombre();
+				String jwt = jwtUtil.generateToken(userDetails);
+				String role = user.getRol().name();
+				String nombre = user.getNombre();
+
+				return ResponseEntity.ok(new AuthResponse(jwt, role, nombre));
 			}
 
-			return ResponseEntity.ok(new AuthResponse(jwt, role, nombre));
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Error de autenticación");
+
 		} catch (AuthenticationException e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-					.body("Nombre de usuario o contraseña inválidos o usuario no encontrado");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Correo o contraseña inválidos");
 		}
 	}
 
@@ -158,7 +152,7 @@ public class AuthController {
 			""")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "201", description = "Usuario registrado exitosamente", content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "User registered successfully"))),
-			@ApiResponse(responseCode = "409", description = "El nombre de usuario ya existe", content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "Username already exists"))),
+			@ApiResponse(responseCode = "409", description = "El correo ya existe", content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "Username already exists"))),
 			@ApiResponse(responseCode = "400", description = "Error al registrar el usuario", content = @Content(mediaType = "application/json", examples = @ExampleObject(value = "Error registering user"))) })
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestBody UsuarioDTO registerRequest) {
@@ -167,22 +161,22 @@ public class AuthController {
 
 		if (result == 0) {
 			return ResponseEntity.status(HttpStatus.CREATED).body("Usuario creado con éxito");
-		} else if (result == 1) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("El nombre de usuario ya existe");
-		} else if (result == 2) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).body("El correo ya existe");
 		}
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al registrar el usuario");
+		return ResponseEntity.status(HttpStatus.CONFLICT).body("El correo ya existe");
 	}
 
 	@GetMapping("/actual")
 	public ResponseEntity<UsuarioDTO> obtenerUsuarioActual() {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		if (username == null || username.isBlank()) {
+
+		String correo = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		if (correo == null || correo.isBlank()) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
-		UsuarioDTO usuario = userService.obtenerPorNombre(username);
+
+		UsuarioDTO usuario = userService.obtenerPorCorreo(correo);
+
 		return ResponseEntity.ok(usuario);
 	}
 

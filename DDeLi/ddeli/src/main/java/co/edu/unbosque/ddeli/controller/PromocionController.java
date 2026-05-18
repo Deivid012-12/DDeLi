@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import co.edu.unbosque.ddeli.dto.PromocionConProductoDTO;
 import co.edu.unbosque.ddeli.dto.PromocionDTO;
 import co.edu.unbosque.ddeli.service.PromocionService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -35,14 +36,13 @@ public class PromocionController {
 		}
 	}
 
-	@GetMapping(path = "/vigentes")
-	public ResponseEntity<List<PromocionDTO>> obtenerVigentes() {
-		List<PromocionDTO> promociones = promocionSer.obtenerVigentes();
-		if (promociones.isEmpty()) {
-			return new ResponseEntity<>(promociones, HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(promociones, HttpStatus.OK);
+	@GetMapping(path = "/vigentes-con-productos")
+	public ResponseEntity<List<PromocionConProductoDTO>> vigentesConProductos() {
+		List<PromocionConProductoDTO> resultado = promocionSer.obtenerVigentesConProductos();
+		if (resultado.isEmpty()) {
+			return new ResponseEntity<>(resultado, HttpStatus.NO_CONTENT);
 		}
+		return new ResponseEntity<>(resultado, HttpStatus.OK);
 	}
 
 	@PostMapping(path = "/crear")

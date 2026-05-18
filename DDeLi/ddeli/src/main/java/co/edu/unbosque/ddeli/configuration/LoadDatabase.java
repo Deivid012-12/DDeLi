@@ -32,7 +32,7 @@ public class LoadDatabase {
 			OpcionPersonalizacionRepository opcionRepo) {
 		return args -> {
 
-			Optional<Usuario> found = userRepo.findByNombre("admin");
+			Optional<Usuario> found = userRepo.findByCorreo("admin@ddeli.com");
 
 			if (found.isPresent()) {
 
@@ -54,7 +54,7 @@ public class LoadDatabase {
 				log.info("Precargando usuario administrador");
 			}
 
-			Optional<Usuario> found2 = userRepo.findByNombre("cliente");
+			Optional<Usuario> found2 = userRepo.findByCorreo("cliente@ddeli.com");
 
 			if (found2.isPresent()) {
 
@@ -348,6 +348,17 @@ public class LoadDatabase {
 				opcionRepo.save(grande);
 
 				log.info("Precargando tipos y opciones de personalización");
+			}
+			if (productoRepo.findByTipo("PERSONALIZADO").isEmpty()) {
+				Producto postPersonalizado = new Producto();
+				postPersonalizado.setNombre("Postre Personalizado");
+				postPersonalizado.setDescripcion("Postre artesanal personalizado a tu gusto");
+				postPersonalizado.setPrecioBase(25000);
+				postPersonalizado.setDisponibilidad(true);
+				postPersonalizado.setTipo("PERSONALIZADO");
+				postPersonalizado.setImagenURL("assets/postrePersonalizado.jpg");
+				productoRepo.save(postPersonalizado);
+				log.info("Precargando producto personalizado");
 			}
 
 		};
