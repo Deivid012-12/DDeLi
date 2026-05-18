@@ -1,29 +1,46 @@
 <div class="fondo">
   <div class="carrito-wrapper">
 
-    <!-- ENCABEZADO -->
-    <div class="carrito-header">
-      <h1>
-        <i class="pi pi-shopping-cart"></i>
-        Mi Carrito
-      </h1>
-      <p>{{ items.length }} producto(s) en tu carrito</p>
+    <!-- HERO -->
+    <div class="page-hero">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Tu selección
+      </div>
+      <h1 class="menu-titulo">Mi <em>Carrito</em></h1>
+      <div class="menu-divider">
+        <span class="menu-divider-line"></span>
+        <span class="menu-divider-dot"></span>
+        <span class="menu-divider-line"></span>
+      </div>
+
+      <p class="menu-subtitulo">{{ items.length }} producto(s) esperando por ti</p>
+
     </div>
 
-    <!-- BODY -->
+    <!-- CUERPO -->
     <div class="carrito-body">
 
-      <!-- LISTA DE PRODUCTOS -->
+      <!-- LISTA -->
       <div class="productos-lista">
 
-        <div *ngIf="items.length === 0" class="carrito-vacio">
-          <p>Tu carrito está vacío</p>
-          <a routerLink="/principal" class="link-accent">
-            ← Seguir comprando
+        <!-- VACÍO -->
+        <div *ngIf="items.length === 0" class="estado-pantalla">
+          <div class="estado-icono estado-icono--vacio">
+            <i class="pi pi-shopping-cart"></i>
+          </div>
+          <h3 class="estado-titulo">Tu carrito está vacío</h3>
+          <p class="estado-subtitulo">¡Explora nuestros postres y elige tus favoritos!</p>
+          <a routerLink="/principal" class="btn-usar-promo"
+             style="margin-top:1.25rem;text-decoration:none;font-size:15px">
+            Ver el menú <span class="btn-arrow">→</span>
           </a>
         </div>
 
-        <div class="producto-card" *ngFor="let item of items">
+        <!-- ITEMS -->
+        <div class="producto-card"
+             *ngFor="let item of items; let i = index"
+             [style.animation-delay]="(i * 0.08) + 's'">
 
           <div class="producto-img">
             <img
@@ -43,13 +60,13 @@
             <div *ngIf="item.opciones && item.opciones.length > 0" class="opciones-lista">
               <span class="opcion-tag" *ngFor="let opcion of item.opciones">
                 {{ opcion.nombreTipo }}: {{ opcion.nombre }}
-                <span *ngIf="opcion.costoAdicional > 0">(+$ {{ opcion.costoAdicional | number:'1.0-0' }})</span>
+                <span *ngIf="opcion.costoAdicional > 0">
+                  (+$ {{ opcion.costoAdicional | number:'1.0-0' }})
+                </span>
               </span>
             </div>
 
-            <span class="producto-precio">
-              $ {{ item.precioUnitario | number:'1.2-2' }}
-            </span>
+            <span class="producto-precio">$ {{ item.precioUnitario | number:'1.2-2' }} / unidad</span>
           </div>
 
           <!-- CANTIDAD -->
@@ -57,19 +74,19 @@
             <button class="btn-cantidad" (click)="disminuirCantidad(item)">
               <i class="pi pi-minus"></i>
             </button>
-            <span>{{ item.cantidad }}</span>
+            <span class="qty-num">{{ item.cantidad }}</span>
             <button class="btn-cantidad" (click)="aumentarCantidad(item)">
               <i class="pi pi-plus"></i>
             </button>
           </div>
 
-          <!-- TOTAL POR ITEM -->
+          <!-- SUBTOTAL -->
           <div class="producto-total">
             $ {{ item.subtotal | number:'1.2-2' }}
           </div>
 
           <!-- ELIMINAR -->
-          <button class="btn-eliminar" (click)="eliminarItem(item.idItem!)">
+          <button class="btn-eliminar" (click)="eliminarItem(item.idItem!)" title="Eliminar">
             <i class="pi pi-trash"></i>
           </button>
 
@@ -79,32 +96,42 @@
       <!-- RESUMEN -->
       <div class="resumen-card">
 
-        <h2>
-          <i class="pi pi-receipt"></i>
-          Resumen del pedido
-        </h2>
+        <div class="resumen-header">
+          <div class="resumen-badge">
+            <i class="pi pi-receipt"></i>
+          </div>
+          <h2 class="resumen-titulo">Resumen<br><em>del pedido</em></h2>
+        </div>
+
+
 
         <!-- EVENTO ACTIVO -->
-        <div *ngIf="eventoActivo" class="evento-activo-resumen">
-          <span>🎉 {{ eventoActivo.tipoEvento }} — {{ eventoActivo.fechaEvento }}</span>
-          <button (click)="quitarEvento()">✕ Quitar</button>
+        <div *ngIf="eventoActivo" class="chip-activo chip-evento">
+          <span>🎉 {{ eventoActivo.tipoEvento }} · {{ eventoActivo.fechaEvento }}</span>
+          <button class="chip-quitar" (click)="quitarEvento()">
+            <i class="pi pi-times"></i>
+          </button>
         </div>
 
         <!-- SIN EVENTO -->
-        <div *ngIf="!eventoActivo" class="sin-evento">
-          <a routerLink="/evento">🎉 Asociar un evento</a>
-        </div>
+        <a *ngIf="!eventoActivo" routerLink="/evento" class="btn-accion-secundaria">
+          <i class="pi pi-calendar"></i> Asociar a un evento
+        </a>
 
         <!-- PROMO ACTIVA -->
-        <div *ngIf="promoActiva" class="promo-activa">
+        <div *ngIf="promoActiva" class="chip-activo chip-promo">
           <span>🎟️ {{ promoActiva.nombre }} (-{{ promoActiva.porcentajeDescuento }}%)</span>
-          <button (click)="quitarPromo()">✕ Quitar</button>
+          <button class="chip-quitar" (click)="quitarPromo()">
+            <i class="pi pi-times"></i>
+          </button>
         </div>
 
         <!-- SIN PROMO -->
-        <div *ngIf="!promoActiva" class="sin-promo">
-          <a routerLink="/promociones">🎉 Ver promociones disponibles</a>
-        </div>
+        <a *ngIf="!promoActiva" routerLink="/promociones" class="btn-accion-secundaria">
+          <i class="pi pi-tag"></i> Ver promociones disponibles
+        </a>
+
+        <div class="resumen-divider"></div>
 
         <div class="resumen-fila">
           <span>Subtotal</span>
@@ -113,10 +140,15 @@
 
         <div class="resumen-fila descuento">
           <span>Descuento</span>
-          <span *ngIf="promoActiva" style="color: #c87a8a; font-weight: 600;">
+          <span *ngIf="promoActiva" class="valor-descuento">
             - $ {{ calcularDescuento() | number:'1.2-2' }}
           </span>
           <span *ngIf="!promoActiva">$ 0.00</span>
+        </div>
+
+        <div class="resumen-fila envio">
+          <span>Envío</span>
+          <span class="valor-gratis">Gratis</span>
         </div>
 
         <div class="resumen-divider"></div>
@@ -127,9 +159,22 @@
         </div>
 
         <button class="btn-pagar" (click)="irAPagar()">
-          <i class="pi pi-credit-card"></i>
+          <i class="pi pi-lock"></i>
           Proceder al pago
+          <span class="btn-arrow">→</span>
         </button>
+
+        <div class="trust-strip">
+          <div class="trust-item">
+            <i class="pi pi-shield"></i><span>Pago seguro</span>
+          </div>
+          <div class="trust-item">
+            <i class="pi pi-truck"></i><span>Envío rápido</span>
+          </div>
+          <div class="trust-item">
+            <i class="pi pi-refresh"></i><span>Devoluciones</span>
+          </div>
+        </div>
 
         <div class="link-seguir">
           <a routerLink="/principal">← Seguir comprando</a>
