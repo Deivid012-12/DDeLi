@@ -48,9 +48,12 @@ export class InicioComponent implements OnInit {
     };
 
     this.authService.login(loginRequest).subscribe({
-      next: (response) => {
+      next: (response: any) => {
+
         this.isLoading = false;
+
         console.log('Login exitoso:', response);
+
         this.router.navigate(['/principal']);
       },
       error: (error) => {

@@ -31,19 +31,19 @@ export class CarritoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Lee la promo activa
+
     this.promocionService.promo$.subscribe(promo => {
       this.promoActiva = promo;
       this.cdr.detectChanges();
     });
 
-    // Lee el evento activo
+
     this.eventoService.evento$.subscribe(evento => {
       this.eventoActivo = evento;
       this.cdr.detectChanges();
     });
 
-    // Carga el carrito
+
     this.carritoService.obtenerOCrearCarrito().subscribe({
       next: (carrito) => {
         this.carrito = carrito;
