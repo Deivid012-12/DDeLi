@@ -1,53 +1,105 @@
 <div class="fondo">
 
+  <!-- HERO -->
   <div class="menu-header">
-    <h1 class="menu-titulo">Mis Eventos</h1>
-    <p class="menu-subtitulo">Organiza tus pedidos especiales por evento</p>
+
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      EVENTOS ESPECIALES
+    </div>
+
+    <h1 class="menu-titulo">
+      Organiza tus <em>Eventos</em>
+    </h1>
+
+    <p class="menu-subtitulo">
+      Administra cumpleaños, bodas y celebraciones especiales
+      con una experiencia elegante y personalizada.
+    </p>
+
   </div>
 
   <!-- EVENTO ACTIVO -->
   <div *ngIf="eventoActivo" class="evento-activo-banner">
+
     <div class="banner-info">
-      <span class="banner-icon">✅</span>
+
+      <div class="banner-icon">
+        🎉
+      </div>
+
       <div>
-        <p class="banner-titulo">Evento activo: {{ eventoActivo.tipoEvento }}</p>
+        <p class="banner-titulo">
+          {{ eventoActivo.tipoEvento }}
+        </p>
+
         <p class="banner-fecha">
-          {{ eventoActivo.fechaEvento }} · {{ eventoActivo.numeroPersonas }} personas
+          {{ eventoActivo.fechaEvento }}
+          ·
+          {{ eventoActivo.numeroPersonas }} personas
         </p>
       </div>
+
     </div>
+
     <div class="banner-acciones">
+
       <button class="btn-ir-carrito" (click)="irAlCarrito()">
         🛒 Ir al carrito
       </button>
+
       <button class="btn-quitar-evento" (click)="quitarEvento()">
-        ✕ Quitar
+        Quitar evento
       </button>
+
     </div>
+
   </div>
 
   <!-- MENSAJES -->
-  <div *ngIf="mensaje" class="mensaje-exito">{{ mensaje }}</div>
-  <div *ngIf="error" class="mensaje-error">⚠️ {{ error }}</div>
+  <div *ngIf="mensaje" class="mensaje-exito">
+    <i class="pi pi-check-circle"></i>
+    <span>{{ mensaje }}</span>
+  </div>
 
+  <div *ngIf="error" class="mensaje-error">
+    <i class="pi pi-times-circle"></i>
+    <span>{{ error }}</span>
+  </div>
+
+  <!-- WRAPPER -->
   <div class="eventos-wrapper">
 
-
+    <!-- BOTÓN NUEVO EVENTO -->
     <div class="nuevo-evento-header">
-      <button class="btn-nuevo-evento" (click)="mostrarFormulario = !mostrarFormulario">
-        {{ mostrarFormulario ? '✕ Cancelar' : '+ Nuevo evento' }}
+
+      <button
+        class="btn-nuevo-evento"
+        (click)="mostrarFormulario = !mostrarFormulario"
+      >
+        {{ mostrarFormulario ? 'Cerrar formulario' : '+ Crear evento' }}
       </button>
+
     </div>
 
-
+    <!-- FORMULARIO -->
     <div *ngIf="mostrarFormulario" class="formulario-card">
-      <h2 class="form-titulo">📋 Crear nuevo evento</h2>
+
+      <h2 class="form-titulo">Crear nuevo evento</h2>
+
+      <p class="form-subtitulo">
+        Completa la información para organizar tu pedido especial.
+      </p>
 
       <div class="form-group">
         <label>Tipo de evento</label>
+
         <select [(ngModel)]="nuevoEvento.tipoEvento" class="form-input">
           <option value="" disabled>Selecciona un tipo</option>
-          <option *ngFor="let tipo of tiposEvento" [value]="tipo">{{ tipo }}</option>
+
+          <option *ngFor="let tipo of tiposEvento" [value]="tipo">
+            {{ tipo }}
+          </option>
         </select>
       </div>
 
@@ -59,7 +111,7 @@
           [(ngModel)]="nuevoEvento.fechaEvento"
           class="form-input"
           [min]="hoy"
-        >
+        />
 
         <small
           class="error-campo"
@@ -67,20 +119,19 @@
         >
           ⚠️ La fecha del evento debe ser igual o posterior a hoy
         </small>
-
       </div>
 
       <div class="form-group">
         <label>Número de personas</label>
+
         <input
           type="number"
           [(ngModel)]="nuevoEvento.numeroPersonas"
           class="form-input"
           min="1"
           max="500"
-          step="1"
-          placeholder="Ej: 50"
         />
+
         <small
           class="error-campo"
           *ngIf="nuevoEvento.numeroPersonas < 1"
@@ -94,53 +145,108 @@
         (click)="crearEvento()"
         [disabled]="procesando"
       >
-        {{ procesando ? 'Creando...' : 'Crear evento' }}
+        {{ procesando ? 'Creando evento...' : 'Crear evento' }}
       </button>
+
     </div>
 
     <!-- CARGANDO -->
     <div *ngIf="cargando" class="sin-eventos">
-      <p>⏳ Cargando eventos...</p>
+      <div class="estado-icono">⏳</div>
+      <h3>Cargando eventos</h3>
+      <p>Estamos preparando tu información.</p>
     </div>
 
     <!-- SIN EVENTOS -->
     <div *ngIf="!cargando && eventos.length === 0" class="sin-eventos">
-      <p>🎈 Aún no tienes eventos registrados.</p>
-      <p>¡Crea uno para organizar tu pedido especial!</p>
+      <div class="estado-icono">🎈</div>
+      <h3>Aún no tienes eventos registrados</h3>
+      <p>Crea un evento para organizar pedidos personalizados.</p>
     </div>
 
-    <!-- LISTA DE EVENTOS -->
+    <!-- LISTA EVENTOS -->
     <div class="eventos-grid" *ngIf="!cargando && eventos.length > 0">
+
       <div
         class="evento-card"
         *ngFor="let evento of eventos"
         [class.evento-seleccionado]="eventoActivo?.idEvento === evento.idEvento"
       >
-        <div class="evento-tipo">{{ evento.tipoEvento }}</div>
+
+        <div class="evento-tipo">
+          {{ evento.tipoEvento }}
+        </div>
+
         <div class="evento-detalles">
+
           <div class="evento-fila">
             <i class="pi pi-calendar"></i>
             <span>{{ evento.fechaEvento }}</span>
           </div>
+
           <div class="evento-fila">
             <i class="pi pi-users"></i>
             <span>{{ evento.numeroPersonas }} personas</span>
           </div>
+
         </div>
+
         <div class="evento-acciones">
+
           <button
             class="btn-usar-evento"
             (click)="usarEvento(evento)"
             [disabled]="eventoActivo?.idEvento === evento.idEvento"
           >
-            {{ eventoActivo?.idEvento === evento.idEvento ? 'Seleccionado' : '🛒 Usar para pedido' }}
+            {{
+              eventoActivo?.idEvento === evento.idEvento
+                ? 'Evento seleccionado'
+                : '🛒 Usar para pedido'
+            }}
           </button>
-          <button class="btn-eliminar-evento" (click)="eliminarEvento(evento.idEvento)">
+
+          <button
+            class="btn-eliminar-evento"
+            (click)="eliminarEvento(evento.idEvento)"
+          >
             <i class="pi pi-trash"></i>
           </button>
+
         </div>
+
       </div>
+
     </div>
 
   </div>
+
+  <!-- MODAL CONFIRMACIÓN (ÚNICO) -->
+  <div class="modal-overlay" *ngIf="mostrarConfirmacion">
+
+    <div class="modal-confirmacion">
+
+      <div class="modal-icono">
+        <i class="pi pi-exclamation-triangle"></i>
+      </div>
+
+      <h2>Eliminar evento</h2>
+
+      <p>¿Seguro que deseas eliminar este evento?</p>
+
+      <div class="modal-botones">
+
+        <button class="btn-cancelar-modal" (click)="cancelarEliminacion()">
+          Cancelar
+        </button>
+
+        <button class="btn-confirmar-modal" (click)="confirmarEliminar()">
+          Sí, eliminar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </div>

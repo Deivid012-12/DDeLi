@@ -22,13 +22,22 @@ export interface Evento {
 export class EventoComponent implements OnInit {
 
   eventos: Evento[] = [];
+
   cargando = true;
   procesando = false;
+
   error = '';
   mensaje = '';
+
   eventoActivo: EventoSeleccionado | null = null;
 
+  mostrarFormulario = false;
+
+  mostrarConfirmacion = false;
+  eventoAEliminar: number | null = null;
+
   hoy: string = new Date().toISOString().split('T')[0];
+
   nuevoEvento = {
     tipoEvento: '',
     fechaEvento: '',
@@ -45,8 +54,6 @@ export class EventoComponent implements OnInit {
     'Otro'
   ];
 
-  mostrarFormulario = false;
-
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -60,42 +67,60 @@ export class EventoComponent implements OnInit {
   }
 
   cargarEventos(): void {
-    this.http.get<Evento[]>('http://localhost:8081/evento/misEventos').subscribe({
-      next: (data) => {
-        this.eventos = data ?? [];
-        this.cargando = false;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        if (err.status === 204) this.eventos = [];
-        this.cargando = false;
-        this.cdr.detectChanges();
-      }
-    });
+    this.http.get<Evento[]>('http://localhost:8081/evento/misEventos')
+      .subscribe({
+        next: (data) => {
+          this.eventos = data ?? [];
+          this.cargando = false;
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          if (err.status === 204) {
+            this.eventos = [];
+          }
+          this.cargando = false;
+          this.cdr.detectChanges();
+        }
+      });
   }
 
   crearEvento(): void {
-    if (!this.nuevoEvento.tipoEvento || !this.nuevoEvento.fechaEvento || !this.nuevoEvento.numeroPersonas) {
+
+    this.error = '';
+    this.mensaje = '';
+
+    if (!this.nuevoEvento.tipoEvento ||
+      !this.nuevoEvento.fechaEvento ||
+      !this.nuevoEvento.numeroPersonas) {
       this.error = 'Completa todos los campos del evento';
       return;
     }
 
     this.procesando = true;
-    this.error = '';
 
     this.http.post(
       'http://localhost:8081/evento/crearMio',
       this.nuevoEvento,
       { responseType: 'text' }
     ).subscribe({
+
       next: () => {
-        this.mensaje = '¡Evento creado con éxito!';
+
+        this.mensaje = '¡Evento creado con éxito! 🎉';
+
         this.procesando = false;
         this.mostrarFormulario = false;
-        this.nuevoEvento = { tipoEvento: '', fechaEvento: '', numeroPersonas: 1 };
+
+        this.nuevoEvento = {
+          tipoEvento: '',
+          fechaEvento: '',
+          numeroPersonas: 1
+        };
+
         this.cargarEventos();
         this.cdr.detectChanges();
       },
+
       error: (err) => {
         this.error = err.error || 'Error al crear el evento';
         this.procesando = false;
@@ -105,36 +130,82 @@ export class EventoComponent implements OnInit {
   }
 
   usarEvento(evento: Evento): void {
+
     this.eventoService.seleccionar({
       idEvento: evento.idEvento,
       tipoEvento: evento.tipoEvento,
       fechaEvento: evento.fechaEvento,
       numeroPersonas: evento.numeroPersonas
     });
+
     this.eventoActivo = this.eventoService.obtenerEvento();
-    this.mensaje = `Evento "${evento.tipoEvento}" seleccionado para tu próximo pedido.`;
+
+    this.mensaje = `Evento "${evento.tipoEvento}" seleccionado para tu pedido.`;
+
     this.cdr.detectChanges();
   }
 
   quitarEvento(): void {
     this.eventoService.limpiar();
     this.eventoActivo = null;
+    this.mensaje = 'Evento removido del pedido';
     this.cdr.detectChanges();
   }
 
   eliminarEvento(idEvento: number): void {
-    if (!confirm('¿Eliminar este evento?')) return;
+    this.eventoAEliminar = idEvento;
+    this.mostrarConfirmacion = true;
+  }
+
+  confirmarEliminar(): void {
+
+    if (!this.eventoAEliminar) return;
+
+    this.procesando = true;
+    this.error = '';
+    this.mensaje = '';
+
     this.http.delete(
-      `http://localhost:8081/evento/deletebyid/${idEvento}`,
+      `http://localhost:8081/evento/deletebyid/${this.eventoAEliminar}`,
       { responseType: 'text' }
     ).subscribe({
+
       next: () => {
-        this.eventos = this.eventos.filter(e => e.idEvento !== idEvento);
-        if (this.eventoActivo?.idEvento === idEvento) this.quitarEvento();
+
+        this.eventos = this.eventos.filter(
+          e => e.idEvento !== this.eventoAEliminar
+        );
+
+        if (this.eventoActivo?.idEvento === this.eventoAEliminar) {
+          this.quitarEvento();
+        }
+
+        this.mensaje = '🗑️ Evento eliminado correctamente';
+
+        this.mostrarConfirmacion = false;
+        this.eventoAEliminar = null;
+        this.procesando = false;
+
         this.cdr.detectChanges();
       },
-      error: (err) => console.error(err)
+
+      error: (err) => {
+
+        console.error(err);
+
+        this.error = 'Error al eliminar el evento';
+
+        this.mostrarConfirmacion = false;
+        this.procesando = false;
+
+        this.cdr.detectChanges();
+      }
     });
+  }
+
+  cancelarEliminacion(): void {
+    this.mostrarConfirmacion = false;
+    this.eventoAEliminar = null;
   }
 
   irAlCarrito(): void {

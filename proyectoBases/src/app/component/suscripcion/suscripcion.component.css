@@ -643,6 +643,74 @@
   }
 }
 
+.mensaje-exito {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+
+  background: linear-gradient(135deg, #7a3b4a, #a65a6c);
+  color: white;
+
+  padding: 12px 18px;
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-weight: 600;
+  font-size: 0.95rem;
+
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+
+  animation: toastIn 0.25s ease-out;
+}
+
+/* ICONO */
+.mensaje-exito i {
+  font-size: 1.2rem;
+}
+
+/* ANIMACIÓN */
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ERROR (opcional mismo estilo rojo suave) */
+.mensaje-error {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+
+  background: linear-gradient(135deg, #c84d62, #e06b7c);
+  color: white;
+
+  padding: 12px 18px;
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-weight: 600;
+  font-size: 0.95rem;
+
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+
+  animation: toastIn 0.25s ease-out;
+}
+
 /* =========================================
    RESPONSIVE
 ========================================= */
@@ -700,5 +768,99 @@
   .btn-cancelar,
   .btn-suscribirse {
     width: 100%;
+
+  }
+}/* ===============================
+   PRIME NG CONFIRM DIALOG FIX
+================================ */
+
+/* Fondo overlay */
+::ng-deep .p-confirm-dialog-mask {
+  background: rgba(30, 10, 20, 0.55) !important;
+  backdrop-filter: blur(6px);
+}
+
+/* Caja principal */
+::ng-deep .p-confirm-dialog {
+  border-radius: 22px !important;
+  overflow: hidden;
+
+  background: linear-gradient(135deg, #fff5f7, #ffe9ef) !important;
+
+  border: 1px solid rgba(200, 122, 138, 0.25);
+
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+
+  animation: popIn 0.25s ease-out;
+}
+
+/* HEADER */
+::ng-deep .p-dialog-header {
+  background: linear-gradient(135deg, #c87a8a, #e8a4b8);
+  color: white !important;
+  font-weight: 700;
+  border-bottom: none;
+  padding: 1rem 1.3rem;
+}
+
+/* ICONO X */
+::ng-deep .p-dialog-header-icon {
+  color: white !important;
+}
+
+/* CONTENIDO */
+::ng-deep .p-dialog-content {
+  padding: 1.5rem;
+  font-size: 1rem;
+  color: #5a3a45;
+}
+
+/* ICONO WARNING */
+::ng-deep .p-confirm-dialog-icon {
+  color: #c87a8a !important;
+  font-size: 2rem;
+}
+
+/* BOTONES CONTAINER */
+::ng-deep .p-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 1rem 1.3rem;
+  background: transparent;
+}
+
+/* BOTÓN CONFIRMAR */
+::ng-deep .p-confirm-dialog .p-button-danger {
+  background: linear-gradient(135deg, #e06b7c, #c84d62);
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+::ng-deep .p-confirm-dialog .p-button-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(200, 77, 98, 0.3);
+}
+
+/* BOTÓN CANCELAR */
+::ng-deep .p-confirm-dialog .p-button-text {
+  color: #7a4b57;
+  border-radius: 12px;
+}
+
+::ng-deep .p-confirm-dialog .p-button-text:hover {
+  background: rgba(200, 122, 138, 0.12);
+}
+
+/* ANIMACIÓN */
+@keyframes popIn {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
 }
