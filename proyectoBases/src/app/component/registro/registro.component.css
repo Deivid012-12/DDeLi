@@ -22,7 +22,7 @@
 }
 
 .brand-sub {
-  font-size: 18px;
+  font-size: 20px;
   color: #c87070;
   margin-top: 4px;
   font-family: 'Comic Sans MS', sans-serif;
@@ -264,20 +264,18 @@ button[type="submit"]:disabled {
   margin-top: 0.75rem;
 }
 /* VERIFICACIÓN */
-.verificacion-icon {
-  font-size: 48px;
-  margin-bottom: 8px;
-}
+
 
 .verificacion-form {
   display: flex;
   flex-direction: column;
   gap: 16px;
   margin-top: 8px;
+  font-size: 25px !important;
 }
 
 .codigo-input {
-  font-size: 20px;
+  font-size: 25px;
   letter-spacing: 6px;
   text-align: center;
   font-weight: 700;
@@ -290,8 +288,8 @@ button[type="submit"]:disabled {
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  font-family: 'Poppins', sans-serif;
-  color: #1e8449;
+  font-family: 'Comic Sans MS', sans-serif;
+  color: #a3113f;
 }
 
 .exito-icon {
@@ -299,8 +297,8 @@ button[type="submit"]:disabled {
 }
 
 .exito-sub {
-  font-size: 13px;
-  color: #9e5050;
+  font-size: 20px !important;
+  color: #980505;
 }
 
 button[type="button"] {
@@ -310,11 +308,11 @@ button[type="button"] {
   border: none;
   background: #c87a8a;
   color: #fff;
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 600;
   cursor: pointer;
   margin: 0.5rem 0 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Comic Sans MS', sans-serif;
   transition: all 0.25s ease;
   box-shadow: 0 2px 8px rgba(200, 122, 138, 0.3);
 }

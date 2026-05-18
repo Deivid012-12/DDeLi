@@ -5,26 +5,28 @@
   width: 100%;
   height: 90px;
 
-  background-color: #f5e6d3;
+  background-color: #fffaf6;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   padding: 0 40px;
-  z-index: 1000; /*para que se quede fijo*/
-  margin-bottom: 0px;
-}
-.topbar {
-  transition: box-shadow 0.3s;
+
+  z-index: 1000;
+
+  transition: 0.3s;
 }
 
 .topbar:hover {
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
 }
+
 .topbar-left {
   margin-right: -100px;
 }
 
-/* Menú centrado */
+/* MENÚ */
 .topbar-center {
   display: flex;
   gap: 60px;
@@ -33,19 +35,25 @@
 
 .topbar-center a {
   text-decoration: none;
-  color: #131212;
-  font-weight: 700;
-  transition: 0.3s;
-  font-family: 'Press Start 2P', cursive;
-  font-size: 19px !important;
+
+  font-family: 'Playfair Display', serif;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  color: #1d1d1d;
+
+  letter-spacing: 0.5px;
+
+  transition: all 0.3s ease;
 }
 
 .topbar-center a:hover {
-  color: #7671d6;
-
+  color: #8f6ad8;
+  transform: translateY(-2px);
 }
 
-/* Iconos derecha */
+/* ICONOS */
 .topbar-right {
   display: flex;
   gap: 20px;
@@ -55,9 +63,11 @@
 .topbar-right a i {
   font-size: 22px !important;
   color: #131212 !important;
-  cursor: pointer;
+
+  transition: 0.3s;
 }
+
 .topbar-right a i:hover {
-  color: #7474e1 !important;
-  cursor: pointer;
+  color: #8f6ad8 !important;
+  transform: scale(1.1);
 }

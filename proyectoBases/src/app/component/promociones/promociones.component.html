@@ -1,73 +1,202 @@
 <div class="fondo">
 
   <!-- ENCABEZADO -->
-  <div class="menu-header">
-    <h1 class="menu-titulo">🎉 Promociones</h1>
-    <p class="menu-subtitulo">Aprovecha nuestras ofertas especiales por tiempo limitado</p>
+  <div class="page-hero">
+    <span class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Ofertas exclusivas
+    </span>
+
+    <h1 class="menu-titulo">
+      Nuestras <em>Promociones</em>
+    </h1>
+
+    <p class="menu-subtitulo">
+      Descuentos especiales por tiempo limitado. Endúlzate sin culpa.
+    </p>
   </div>
 
   <!-- CARGANDO -->
-  <div *ngIf="cargando" class="sin-promos">
-    <p>⏳ Cargando promociones...</p>
+  <div *ngIf="cargando" class="estado-pantalla">
+
+    <div class="estado-icono estado-icono--cargando">
+      <span class="spinner"></span>
+    </div>
+
+    <p class="estado-titulo">
+      Cargando promociones...
+    </p>
+
+    <p class="estado-subtitulo">
+      Un momento, preparamos tus ofertas
+    </p>
+
   </div>
 
   <!-- ERROR -->
-  <div *ngIf="error && !cargando" class="sin-promos">
-    <p>⚠️ {{ error }}</p>
+  <div *ngIf="error && !cargando" class="estado-pantalla">
+
+    <div class="estado-icono estado-icono--error">
+      !
+    </div>
+
+    <p class="estado-titulo">
+      Algo salió mal
+    </p>
+
+    <p class="estado-subtitulo">
+      {{ error }}
+    </p>
+
   </div>
 
   <!-- SIN PROMOCIONES -->
-  <div *ngIf="!cargando && !error && promociones?.length === 0" class="sin-promos">
-    <p>😢 No hay promociones vigentes en este momento.</p>
-    <p>¡Vuelve pronto para descubrir nuestras ofertas!</p>
+  <div
+    *ngIf="!cargando && !error && promociones?.length === 0"
+    class="estado-pantalla"
+  >
+
+    <div class="estado-icono estado-icono--vacio">
+      ✦
+    </div>
+
+    <p class="estado-titulo">
+      Sin promociones por ahora
+    </p>
+
+    <p class="estado-subtitulo">
+      ¡Vuelve pronto para descubrir nuestras ofertas!
+    </p>
+
   </div>
 
-  <!-- SECCIONES POR PROMOCION -->
-  <div class="promos-wrapper" *ngFor="let promo of promociones">
-    <div class="promo-seccion">
+  <!-- PROMOCIONES -->
+  <div
+    class="promos-wrapper"
+    *ngFor="let promo of promociones; let i = index"
+  >
 
-      <!-- CABECERA -->
+    <div
+      class="promo-seccion"
+      [class.promo-seccion--destacada]="i === 0"
+    >
+
+      <!-- HEADER -->
       <div class="promo-header">
-        <div class="promo-badge">-{{ promo.porcentajeDescuento }}%</div>
-        <div class="promo-info">
-          <h2 class="promo-nombre">{{ promo.nombre }}</h2>
-          <p class="promo-fechas">Válida del {{ promo.fechaInicio }} al {{ promo.fechaFin }}</p>
+
+        <!-- BADGE -->
+        <div class="promo-badge-wrap">
+
+          <div class="promo-badge">
+            <span class="promo-badge-pct">
+              {{ promo.porcentajeDescuento }}%
+            </span>
+
+            <span class="promo-badge-off">
+              off
+            </span>
+          </div>
+
         </div>
-        <!-- Botón nuevo -->
-        <button class="btn-usar-promo" (click)="usarPromo(promo)">
-          🎟️ Usar esta promo
+
+        <!-- INFO -->
+        <div class="promo-info">
+
+          <span class="promo-etiqueta">
+            Promoción activa
+          </span>
+
+          <h2 class="promo-nombre">
+            {{ promo.nombre }}
+          </h2>
+
+          <p class="promo-fechas">
+            <span class="fechas-icono">◷</span>
+
+            {{ promo.fechaInicio | date:'dd MMM yyyy' }}
+            —
+            {{ promo.fechaFin | date:'dd MMM yyyy' }}
+          </p>
+
+        </div>
+
+        <!-- BOTON -->
+        <button
+          class="btn-usar-promo"
+          (click)="usarPromo(promo)"
+        >
+          Usar esta promo
+
+          <span class="btn-arrow">
+            →
+          </span>
         </button>
+
       </div>
 
-      <!-- PRODUCTOS -->
-      <div class="productos-grid">
-        <div class="tarjeta" *ngFor="let producto of promo.productos">
-          <div class="promo-ribbon">-{{ promo.porcentajeDescuento }}%</div>
+      <!-- CONTADOR -->
+      <div class="promo-extra">
 
-          <div
-            class="tarjeta-img"
-            [style.background-image]="'url(' + producto.imagenURL + ')'">
+        <div class="contador-box">
+
+          <!-- DIAS -->
+          <div class="contador-item">
+
+            <span class="contador-num">
+              {{ diasRestantes(promo.fechaFin) }}
+            </span>
+
+            <span class="contador-label">
+              DÍAS
+            </span>
+
           </div>
 
-          <div class="tarjeta-info">
-            <h3>{{ producto.nombre }}</h3>
-            <p>{{ producto.descripcion }}</p>
+          <!-- HORAS -->
+          <div class="contador-item">
 
-            <div class="precios">
-              <span class="precio-original">
-                $ {{ producto.precioBase | number:'1.0-0' }}
-              </span>
-              <span class="precio-descuento">
-                $ {{ precioConDescuento(producto.precioBase, promo.porcentajeDescuento) | number:'1.0-0' }}
-              </span>
-            </div>
+            <span class="contador-num">
+              {{ horasRestantes(promo.fechaFin) }}
+            </span>
 
-            <button>🛒 Añadir al carrito</button>
+            <span class="contador-label">
+              HORAS
+            </span>
+
           </div>
+
         </div>
+
+        <!-- DISPONIBILIDAD -->
+        <div class="disponibilidad">
+
+          <div class="disponibilidad-top">
+
+            <span>
+              Disponibilidad
+            </span>
+
+            <span>
+              {{ promo.disponibilidad }}% usado
+            </span>
+
+          </div>
+
+          <div class="barra">
+
+            <div
+              class="barra-fill"
+              [style.width.%]="promo.disponibilidad"
+            ></div>
+
+          </div>
+
+        </div>
+
       </div>
 
     </div>
+
   </div>
 
 </div>

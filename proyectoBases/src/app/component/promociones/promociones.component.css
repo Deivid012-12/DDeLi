@@ -1,271 +1,625 @@
+/* FUENTES — agregar en index.html:
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+*/
+
 .fondo {
-  position: relative;
-  width: 100%;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      #f2a6b6 0%,
+      #f7c8d2 33%,
+      #fadbdf 50%
+    );
+
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 110px;
-  padding-bottom: 60px;
+  padding-bottom: 80px;
 }
 
-.fondo::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: url("../../../assets/podria2.jpg");
-  background-size: cover;
-  background-position: center 60%;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
+/* =========================
+   HERO
+========================= */
 
-/* ENCABEZADO */
-.menu-header {
+.page-hero {
   text-align: center;
-  margin-bottom: 40px;
+  padding: 120px 24px 46px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  background: rgba(196,72,107,0.08);
+
+  color: #c4486b;
+
+  font-size: 20px;
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  padding: 6px 16px;
+
+  border-radius: 100px;
+
+  border: 1px solid rgba(196,72,107,0.16);
+
+  margin-bottom: 18px;
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #c4486b;
+
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.45;
+    transform: scale(0.7);
+  }
 }
 
 .menu-titulo {
-  font-size: 40px;
-  color: #7a3b4b;
-  font-family: 'Press Start 2P', cursive;
-  margin-bottom: 10px;
+  font-family: 'Playfair Display', Georgia, serif;
+
+  font-size: 55px;
+  font-weight: 700;
+
+  color: #3d1a26;
+
+  line-height: 1.1;
+
+  margin: 0 0 12px;
+}
+
+.menu-titulo em {
+  font-style: italic;
+  color: #c4486b;
 }
 
 .menu-subtitulo {
-  font-size: 14px;
-  color: #c87a8a;
-  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  color: #9a6070;
+
+  font-weight: 300;
+
+  margin: 0 auto;
+
+  max-width: 420px;
+
+  line-height: 1.7;
 }
 
-/* SIN PROMOS */
-.sin-promos {
+/* =========================
+   ESTADOS
+========================= */
+
+.estado-pantalla {
   text-align: center;
-  padding: 3rem;
-  background: rgba(255,255,255,0.8);
-  border-radius: 16px;
-  font-family: 'Poppins', sans-serif;
-  color: #9e5050;
-  font-size: 16px;
-  line-height: 2;
+
+  padding: 90px 24px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 10px;
 }
 
-/* WRAPPER */
+.estado-icono {
+  width: 64px;
+  height: 64px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  margin-bottom: 4px;
+}
+
+.estado-icono--cargando {
+  background: rgba(196,72,107,0.08);
+  border: 2px solid rgba(196,72,107,0.18);
+}
+
+.estado-icono--error {
+  background: rgba(220,50,50,0.07);
+  color: #c0392b;
+  border: 2px solid rgba(220,50,50,0.18);
+}
+
+.estado-icono--vacio {
+  background: rgba(196,72,107,0.07);
+  color: #c4486b;
+  border: 2px solid rgba(196,72,107,0.14);
+
+  font-size: 24px;
+}
+
+.spinner {
+  width: 22px;
+  height: 22px;
+
+  border: 3px solid rgba(196,72,107,0.15);
+  border-top-color: #c4486b;
+
+  border-radius: 50%;
+
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.estado-titulo {
+  font-family: 'Playfair Display', Georgia, serif;
+
+  font-size: 25px;
+  font-weight: 600;
+
+  color: #3d1a26;
+
+  margin: 0;
+}
+.btn-usar-promo{
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 25px;
+}
+.estado-subtitulo {
+  font-size: 13px;
+  color: #9a6070;
+
+  font-weight: 300;
+
+  margin: 0;
+}
+
+/* =========================
+   WRAPPER
+========================= */
+
 .promos-wrapper {
-  width: 100%;
-  max-width: 1400px;
-  padding: 0 20px;
-  margin-bottom: 60px;
+  max-width: 960px;
+
+  margin: 0 auto 28px;
+
+  padding: 0 24px;
+
+  animation: fadeUp 0.5s ease both;
 }
 
-/* SECCION */
+.promos-wrapper:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.promos-wrapper:nth-child(2) {
+  animation-delay: 0.13s;
+}
+
+.promos-wrapper:nth-child(3) {
+  animation-delay: 0.21s;
+}
+
+@keyframes fadeUp {
+
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   TARJETA PROMO
+========================= */
+
 .promo-seccion {
-  background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(6px);
-  border-radius: 20px;
-  padding: 2rem;
-  border: 1px solid #f0c8c8;
+  background: rgba(255,255,255,0.92);
+
+  backdrop-filter: blur(10px);
+
+  border-radius: 28px;
+
+  border: 1px solid rgba(196,72,107,0.10);
+
+  box-shadow:
+    0 8px 30px rgba(196,72,107,0.10),
+    0 2px 10px rgba(0,0,0,0.04);
+
+  overflow: hidden;
+
+  transition:
+    transform .28s ease,
+    box-shadow .28s ease;
 }
 
-/* CABECERA */
+.promo-seccion:hover {
+
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 14px 42px rgba(196,72,107,0.14),
+    0 4px 14px rgba(0,0,0,0.06);
+}
+
+.promo-seccion--destacada {
+
+  background:
+    linear-gradient(
+      160deg,
+      rgba(255,255,255,0.96) 55%,
+      #fff0f4 100%
+    );
+
+  border: 1px solid rgba(196,72,107,0.18);
+}
+
+/* =========================
+   HEADER
+========================= */
+
 .promo-header {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
+
+  gap: 22px;
+
+  padding: 30px;
+}
+
+.promo-badge-wrap {
+  flex-shrink: 0;
 }
 
 .promo-badge {
-  background: #c87a8a;
-  color: white;
-  font-size: 28px;
+
+  width: 92px;
+  height: 92px;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d86b86,
+      #8f3553
+    );
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  overflow: hidden;
+
+  box-shadow:
+    0 10px 24px rgba(196,72,107,0.28);
+}
+
+.promo-badge::after {
+
+  content: '';
+
+  position: absolute;
+
+  top: -12px;
+  right: -12px;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  background: rgba(255,255,255,0.16);
+}
+
+.promo-badge-pct {
+  font-family: 'Playfair Display', Georgia, serif;
+
+  font-size: 30px;
   font-weight: 700;
-  font-family: 'Press Start 2P', cursive;
-  padding: 16px 20px;
-  border-radius: 16px;
-  white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(200, 122, 138, 0.35);
+
+  color: white;
+
+  line-height: 1;
+}
+
+.promo-badge-off {
+  margin-top: 3px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  color: rgba(255,255,255,0.88);
 }
 
 .promo-info {
   flex: 1;
+  min-width: 0;
+}
+
+.promo-etiqueta {
+  display: block;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+
+  color: #c4486b;
+
+  margin-bottom: 6px;
 }
 
 .promo-nombre {
-  font-size: 22px;
-  color: #7a3b4b;
-  font-family: 'Press Start 2P', cursive;
-  margin-bottom: 8px;
-  line-height: 1.4;
+  font-family: 'Playfair Display', Georgia, serif;
+
+  font-size: 30px;
+  font-weight: 700;
+
+  color: #351520;
+
+  line-height: 1.1;
+
+  margin: 0 0 8px;
 }
 
 .promo-fechas {
-  font-size: 13px;
-  color: #9e5050;
-  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 15px;
+  color: #9a6070;
+
+  margin: 0;
 }
 
-/* BOTÓN USAR PROMO */
+.fechas-icono {
+  color: #d86b86;
+}
+
 .btn-usar-promo {
-  background: white;
-  color: #c87a8a;
-  border: 2px solid #c87a8a;
-  padding: 12px 24px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-family: 'Poppins', sans-serif;
+
+  border: none;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e8748a,
+      #c4486b
+    );
+
+  color: white;
+
+  border-radius: 100px;
+
+  padding: 14px 24px;
+
   font-size: 14px;
-  font-weight: 700;
-  white-space: nowrap;
-  transition: all 0.25s ease;
-  box-shadow: 0 2px 8px rgba(200, 122, 138, 0.2);
+  font-weight: 600;
+
+  cursor: pointer;
+
   display: flex;
   align-items: center;
   gap: 8px;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 6px 18px rgba(196,72,107,0.28);
+
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease;
 }
 
 .btn-usar-promo:hover {
-  background: #c87a8a;
-  color: white;
-  box-shadow: 0 4px 16px rgba(200, 122, 138, 0.4);
+
   transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 26px rgba(196,72,107,0.38);
 }
 
-.btn-usar-promo:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(200, 122, 138, 0.3);
+.btn-arrow {
+  transition: transform .2s ease;
 }
 
-/* GRID */
-.productos-grid {
+.btn-usar-promo:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+/* =========================
+   CONTADOR
+========================= */
+
+.promo-extra {
+  padding: 0 30px 30px;
+}
+
+.contador-box {
   display: flex;
-  flex-wrap: wrap;
-  gap: 30px;
-  justify-content: center;
+  gap: 16px;
+
+  margin-bottom: 24px;
 }
 
-/* TARJETA */
-.tarjeta {
-  width: 250px;
-  border-radius: 16px;
-  overflow: hidden;
-  background: white;
-  box-shadow: 0 20px 15px rgba(0,0,0,0.1);
-  transition: transform 0.3s;
-  position: relative;
-}
+.contador-item {
 
-.tarjeta:hover {
-  transform: translateY(-8px);
-}
+  flex: 1;
 
-/* RIBBON */
-.promo-ribbon {
-  position: absolute;
-  top: 12px;
-  right: -8px;
-  background: #c87a8a;
-  color: white;
-  font-size: 13px;
-  font-weight: 700;
-  font-family: 'Poppins', sans-serif;
-  padding: 4px 14px;
-  border-radius: 4px 0 0 4px;
-  z-index: 1;
-}
+  background: #fff5f7;
 
-.promo-ribbon::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  bottom: -8px;
-  border-width: 8px 8px 0 0;
-  border-style: solid;
-  border-color: #7a3b4b transparent transparent transparent;
-}
+  border-radius: 18px;
 
-.tarjeta-img {
-  width: 100%;
-  height: 200px;
-  background-size: cover;
-  background-position: center;
-  background-color: #f5e6d3;
-}
+  padding: 20px;
 
-.tarjeta-info {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-align: center;
+
+  border: 1px solid rgba(196,72,107,0.08);
+
+  box-shadow:
+    0 6px 18px rgba(196,72,107,0.06);
 }
 
-.tarjeta-info h3 {
-  color: #7a3b4b;
-  margin-bottom: 8px;
-  font-size: 16px;
-  font-family: 'Press Start 2P', cursive;
-  line-height: 1.3;
+.contador-num {
+
+  display: block;
+
+  font-size: 2rem;
+  font-weight: 800;
+
+  color: #b04b67;
+
+  line-height: 1;
 }
 
-.tarjeta-info p {
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 10px;
-  font-family: 'Poppins', sans-serif;
-  line-height: 1.4;
+.contador-label {
+
+  display: block;
+
+  margin-top: 6px;
+
+  font-size: 0.8rem;
+
+  letter-spacing: 2px;
+
+  color: #9d7480;
 }
 
-/* PRECIOS */
-.precios {
+/* =========================
+   DISPONIBILIDAD
+========================= */
+
+.disponibilidad {
+  margin-top: 8px;
+}
+
+.disponibilidad-top {
+
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 12px;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+
+  font-size: 0.95rem;
+
+  color: #8d5f6d;
 }
 
-.precio-original {
-  font-size: 13px;
-  color: #aaa;
-  text-decoration: line-through;
-  font-family: 'Poppins', sans-serif;
-}
+.barra {
 
-.precio-descuento {
-  font-size: 20px;
-  font-weight: 700;
-  color: #c87a8a;
-  font-family: 'Poppins', sans-serif;
-}
-
-/* BOTÓN AÑADIR AL CARRITO */
-.tarjeta-info button {
-  background: #c87a8a;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  font-family: 'Poppins', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
   width: 100%;
-  box-shadow: 0 2px 8px rgba(200, 122, 138, 0.3);
+  height: 11px;
+
+  background: #f1d5dd;
+
+  border-radius: 999px;
+
+  overflow: hidden;
 }
 
-.tarjeta-info button:hover {
-  background: #7a3b4b;
-  box-shadow: 0 4px 14px rgba(122, 59, 75, 0.35);
-  transform: translateY(-1px);
+.barra-fill {
+
+  height: 100%;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #c25575,
+      #8b2e4e
+    );
+
+  transition: width .4s ease;
 }
 
-.tarjeta-info button:active {
-  transform: translateY(0);
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  .page-hero {
+    padding-top: 110px;
+  }
+
+  .menu-titulo {
+    font-size: 34px;
+  }
+
+  .promo-header {
+
+    flex-wrap: wrap;
+
+    padding: 22px;
+
+    gap: 16px;
+  }
+
+  .promo-badge {
+    width: 78px;
+    height: 78px;
+  }
+
+  .promo-badge-pct {
+    font-size: 28px;
+  }
+
+  .promo-nombre {
+    font-size: 20px;
+  }
+
+  .btn-usar-promo {
+
+    width: 100%;
+
+    justify-content: center;
+  }
+
+  .promo-extra {
+    padding: 0 22px 24px;
+  }
+
+  .contador-box {
+    flex-direction: column;
+  }
+
+  .promos-wrapper {
+    padding: 0 14px;
+  }
 }
