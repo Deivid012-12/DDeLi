@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CarritoService } from '../../service/carrito.service';
 import { Producto } from '../../model/carrito.model';
 
-
 @Component({
   selector: 'app-menu',
   standalone: true,
@@ -16,6 +15,8 @@ import { Producto } from '../../model/carrito.model';
 export class MenuComponent implements OnInit {
 
   categoriaActiva: string = 'Todos';
+  cargando: boolean = false;         // 1. estado de carga
+  mensajeCarrito: string | null = null; // 2. reemplaza el alert()
 
   categorias: string[] = [
     'Todos',
@@ -23,6 +24,7 @@ export class MenuComponent implements OnInit {
     'Cheesecakes',
     'Tortas'
   ];
+
   productosFiltrados: Producto[] = [];
   productos: Producto[] = [];
 
@@ -31,7 +33,7 @@ export class MenuComponent implements OnInit {
     private carritoService: CarritoService,
     private cdr: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private router:Router
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -42,43 +44,60 @@ export class MenuComponent implements OnInit {
       this.cargarProductos();
     });
   }
+
   cargarProductos(): void {
+    this.cargando = true;  // 3. activa el spinner
+
     this.http.get<Producto[]>('http://localhost:8081/producto/getall').subscribe({
       next: (data) => {
         this.productos = data;
-        const cat = this.categoriaActiva;
-        this.productosFiltrados = cat === 'Todos' ? data : data.filter(p => p.nombreCategoria === cat);
+        this.aplicarFiltro();  // 4. lógica de filtro centralizada
+        this.cargando = false;
         this.cdr.detectChanges();
       },
       error: (error) => {
         console.error(error);
+        this.cargando = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
+  // 5. filtro extraído a método privado — evita duplicar lógica
+  private aplicarFiltro(): void {
+    this.productosFiltrados = this.categoriaActiva === 'Todos'
+      ? [...this.productos]
+      : this.productos.filter(p => p.nombreCategoria === this.categoriaActiva);
+  }
+
   filtrarCategoria(categoria: string): void {
     this.categoriaActiva = categoria;
-    if (categoria === 'Todos') {
-      this.productosFiltrados = [...this.productos];
-    } else {
-      this.productosFiltrados = this.productos.filter(
-        p => p.nombreCategoria === categoria
-      );
-    }
+    this.aplicarFiltro();  // 6. reutiliza el método privado
     this.cdr.detectChanges();
   }
 
   agregarAlCarrito(producto: Producto): void {
     this.carritoService.agregarDesdeMenu(producto).subscribe({
       next: () => {
-        alert('Producto agregado al carrito 🛒');
+        this.mostrarMensaje('✓ Producto agregado al carrito');  // 7. sin alert()
       },
       error: (err) => {
         console.error(err);
-        alert('Debes iniciar sesión');
+        this.mostrarMensaje('Debes iniciar sesión para agregar productos');
       }
     });
   }
+
+  // 8. toast temporal que desaparece solo — mucho más profesional que alert()
+  private mostrarMensaje(texto: string): void {
+    this.mensajeCarrito = texto;
+    this.cdr.detectChanges();
+    setTimeout(() => {
+      this.mensajeCarrito = null;
+      this.cdr.detectChanges();
+    }, 3000);
+  }
+
   irAPersonalizar(): void {
     this.router.navigate(['/personalizacion']);
   }

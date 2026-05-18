@@ -3,19 +3,10 @@
 */
 
 .fondo {
-
-  background:
-    radial-gradient(
-      circle at top right,
-      #f2a6b6 0%,
-      #f7c8d2 33%,
-      #fadbdf 50%
-    );
-
+  background: linear-gradient(135deg, #f7cdd8 10%, #f0b3c4 40%, #e8708a 100%);
   min-height: 100vh;
   padding-bottom: 80px;
 }
-
 /* =========================
    HERO
 ========================= */
@@ -346,7 +337,7 @@
   font-size: 30px;
   font-weight: 700;
 
-  color: white;
+  color: #f3e8e8;
 
   line-height: 1;
 }
