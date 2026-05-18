@@ -67,31 +67,49 @@ export class EventoComponent implements OnInit {
   }
 
   cargarEventos(): void {
-    this.http.get<Evento[]>('http://localhost:8081/evento/obtenerPorUsuario/' + localStorage.getItem('idUsuario'))
-      .subscribe({
-        next: (data) => {
-          this.eventos = data ?? [];
-          this.cargando = false;
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          if (err.status === 204) {
-            this.eventos = [];
-          }
-          this.cargando = false;
-          this.cdr.detectChanges();
+
+    this.cargando = true;
+
+    this.http.get<Evento[]>(
+      'http://localhost:8081/evento/obtenerPorUsuario'
+    ).subscribe({
+
+      next: (data) => {
+        this.eventos = data ?? [];
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+
+      error: (err) => {
+        console.log('ERROR CARGANDO EVENTOS:', err);
+
+        if (err.status === 204) {
+          this.eventos = [];
+        } else {
+          this.error = 'Error al cargar eventos';
         }
-      });
+
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+
+      complete: () => {
+        this.cargando = false;
+      }
+    });
   }
+
 
   crearEvento(): void {
 
     this.error = '';
     this.mensaje = '';
 
-    if (!this.nuevoEvento.tipoEvento ||
+    if (
+      !this.nuevoEvento.tipoEvento ||
       !this.nuevoEvento.fechaEvento ||
-      !this.nuevoEvento.numeroPersonas) {
+      !this.nuevoEvento.numeroPersonas
+    ) {
       this.error = 'Completa todos los campos del evento';
       return;
     }
@@ -100,7 +118,7 @@ export class EventoComponent implements OnInit {
 
     this.http.post(
       'http://localhost:8081/evento/crear',
-      { ...this.nuevoEvento, idUsuario: localStorage.getItem('idUsuario') },
+      this.nuevoEvento,
       { responseType: 'text' }
     ).subscribe({
 
@@ -108,7 +126,6 @@ export class EventoComponent implements OnInit {
 
         this.mensaje = '¡Evento creado con éxito! 🎉';
 
-        this.procesando = false;
         this.mostrarFormulario = false;
 
         this.nuevoEvento = {
@@ -118,13 +135,15 @@ export class EventoComponent implements OnInit {
         };
 
         this.cargarEventos();
-        this.cdr.detectChanges();
       },
 
       error: (err) => {
-        this.error = 'Error al crear el evento';  // ← quita el err.error ||
+        console.log('ERROR CREANDO EVENTO:', err);
+        this.error = 'Error al crear el evento';
+      },
+
+      complete: () => {
         this.procesando = false;
-        this.cdr.detectChanges();
       }
     });
   }
@@ -184,17 +203,15 @@ export class EventoComponent implements OnInit {
 
         this.mostrarConfirmacion = false;
         this.eventoAEliminar = null;
-        this.procesando = false;
-
-        this.cdr.detectChanges();
       },
 
       error: (err) => {
-        console.error(err);
-        this.error = 'Error al eliminar el evento';  // ← ya está bien así
-        this.mostrarConfirmacion = false;
+        console.log('ERROR ELIMINANDO:', err);
+        this.error = 'Error al eliminar el evento';
+      },
+
+      complete: () => {
         this.procesando = false;
-        this.cdr.detectChanges();
       }
     });
   }
@@ -203,6 +220,7 @@ export class EventoComponent implements OnInit {
     this.mostrarConfirmacion = false;
     this.eventoAEliminar = null;
   }
+
 
   irAlCarrito(): void {
     this.router.navigate(['/carrito']);
