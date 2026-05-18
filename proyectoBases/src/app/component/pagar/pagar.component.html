@@ -218,6 +218,19 @@
 
         <div class="resumen-divider"></div>
 
+        <!-- EVENTO ACTIVO -->
+        <div *ngIf="eventoActivo" class="promo-activa-resumen">
+          <span>🎉 {{ eventoActivo.tipoEvento }}</span>
+          <span style="color: #7a9abf; font-weight: 600;">
+            {{ eventoActivo.fechaEvento }} · {{ eventoActivo.numeroPersonas }} personas
+          </span>
+        </div>
+
+        <!-- SIN EVENTO -->
+        <div *ngIf="!eventoActivo" class="sin-evento-resumen">
+          <a routerLink="/evento">🎉 Asociar un evento</a>
+        </div>
+
         <!-- PROMO ACTIVA -->
         <div *ngIf="promoActiva" class="promo-activa-resumen">
           <span>🎟️ {{ promoActiva.nombre }}</span>

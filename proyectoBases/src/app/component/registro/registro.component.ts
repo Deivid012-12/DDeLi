@@ -78,7 +78,7 @@ export class RegistroComponent {
 
     this.authService.register(userToRegister).subscribe({
       next: (response) => {
-        console.log('✅ Respuesta recibida:', response);
+        console.log('Respuesta recibida:', response);
         this.isLoading = false;
         this.correoRegistrado = this.registerData.email;
         this.mostrarVerificacion = true;
@@ -144,7 +144,7 @@ export class RegistroComponent {
     ).subscribe({
       next: () => {
         this.verificando = false;
-        this.mensajeVerificacion = '✅ Código reenviado a ' + this.correoRegistrado;
+        this.mensajeVerificacion = 'Código reenviado a ' + this.correoRegistrado;
         this.cdr.detectChanges();
       },
       error: (err) => {

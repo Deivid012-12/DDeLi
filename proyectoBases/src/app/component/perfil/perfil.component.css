@@ -439,3 +439,173 @@
   font-size: 12px;
   font-weight: 600;
 }
+/* EVENTOS */
+.eventos-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.evento-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #f0c8c8;
+  background: #fffafa;
+  gap: 1rem;
+  flex-wrap: wrap;
+  transition: all 0.2s ease;
+}
+
+.evento-item:hover {
+  border-color: #c87a8a;
+  background: #fdf0f3;
+}
+
+.evento-item.evento-seleccionado {
+  border-color: #c87a8a;
+  border-width: 2px;
+  background: #fdf0f3;
+}
+
+.evento-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.evento-item-tipo {
+  font-size: 14px;
+  font-weight: 700;
+  color: #7a3b4b;
+  font-family: 'Poppins', sans-serif;
+}
+
+.evento-item-fecha,
+.evento-item-personas {
+  font-size: 12px;
+  color: #9e5050;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.evento-item-fecha i,
+.evento-item-personas i {
+  color: #c87a8a;
+  font-size: 12px;
+}
+
+.evento-item-acciones {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-usar-evento {
+  background: #c87a8a;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn-usar-evento:hover:not(:disabled) {
+  background: #7a3b4b;
+  transform: translateY(-1px);
+}
+
+.btn-usar-evento:disabled {
+  background: #7a3b4b;
+  cursor: default;
+  opacity: 0.8;
+}
+
+.btn-eliminar-evento {
+  background: #faece7;
+  border: 0.5px solid #f0997b;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #c0392b;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.btn-eliminar-evento:hover {
+  background: #f0c8c8;
+  transform: scale(1.1);
+}
+
+.evento-activo-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f0f9ff;
+  border: 1px dashed #7a9abf;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: #2c5f8a;
+  font-weight: 600;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.evento-activo-banner button {
+  background: none;
+  border: 1px solid #7a9abf;
+  border-radius: 20px;
+  color: #7a9abf;
+  font-size: 11px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.evento-activo-banner button:hover {
+  background: #7a9abf;
+  color: white;
+}
+
+.crear-evento-link {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.crear-evento-link a {
+  font-size: 13px;
+  font-family: 'Poppins', sans-serif;
+  color: #c87a8a;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 16px;
+  border: 1.5px dashed #c87a8a;
+  border-radius: 20px;
+  display: inline-block;
+  transition: all 0.25s ease;
+}
+
+.crear-evento-link a:hover {
+  background: #fdf0f3;
+  transform: translateY(-1px);
+}

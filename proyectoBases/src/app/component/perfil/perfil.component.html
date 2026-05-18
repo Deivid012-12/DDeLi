@@ -1,7 +1,7 @@
 <div class="fondo">
   <div class="perfil-wrapper">
 
-
+    <!-- CARD USUARIO -->
     <div class="perfil-card">
       <div class="avatar">
         {{ usuario?.nombre ? usuario!.nombre.charAt(0).toUpperCase() : '?' }}
@@ -45,7 +45,6 @@
           Mi suscripción
         </h2>
 
-        <!-- CON SUSCRIPCIÓN ACTIVA -->
         <div *ngIf="suscripcion" class="suscripcion-activa">
           <div class="suscripcion-badge">💎 {{ suscripcion.plan.nombre }}</div>
           <div class="suscripcion-detalles">
@@ -66,17 +65,69 @@
               <span class="estado-activo">{{ suscripcion.estado }}</span>
             </div>
           </div>
-          <a routerLink="/suscripcion" class="btn-ver-planes">
-            Ver planes
-          </a>
+          <a routerLink="/suscripcion" class="btn-ver-planes">Ver planes</a>
         </div>
 
-        <!-- SIN SUSCRIPCIÓN -->
         <div *ngIf="!suscripcion" class="sin-suscripcion">
           <p>No tienes una suscripción activa.</p>
-          <a routerLink="/suscripcion" class="btn-suscribirse">
-            💎 Ver planes disponibles
-          </a>
+          <a routerLink="/suscripcion" class="btn-suscribirse">💎 Ver planes disponibles</a>
+        </div>
+      </div>
+
+      <!-- MIS EVENTOS -->
+      <div class="seccion-card">
+        <h2 class="seccion-titulo">
+          <i class="pi pi-calendar"></i>
+          Mis eventos
+        </h2>
+
+        <!-- EVENTO ACTIVO BANNER -->
+        <div *ngIf="eventoActivo" class="evento-activo-banner">
+          <span>✅ Evento activo: {{ eventoActivo.tipoEvento }} — {{ eventoActivo.fechaEvento }}</span>
+          <button (click)="quitarEvento()">✕ Quitar</button>
+        </div>
+
+        <div *ngIf="loadingEventos" class="loading-state">
+          <p>Cargando eventos...</p>
+        </div>
+
+        <div *ngIf="!loadingEventos && eventos.length === 0" class="pedidos-vacio">
+          <p>Aún no tienes eventos registrados.</p>
+          <a routerLink="/evento">¡Crea tu primer evento aquí!</a>
+        </div>
+
+        <div class="eventos-lista" *ngIf="!loadingEventos && eventos.length > 0">
+          <div
+            class="evento-item"
+            *ngFor="let evento of eventos"
+            [class.evento-seleccionado]="eventoActivo?.idEvento === evento.idEvento"
+          >
+            <div class="evento-item-info">
+              <span class="evento-item-tipo">{{ evento.tipoEvento }}</span>
+              <span class="evento-item-fecha">
+                <i class="pi pi-calendar"></i> {{ evento.fechaEvento }}
+              </span>
+              <span class="evento-item-personas">
+                <i class="pi pi-users"></i> {{ evento.numeroPersonas }} personas
+              </span>
+            </div>
+            <div class="evento-item-acciones">
+              <button
+                class="btn-usar-evento"
+                (click)="usarEvento(evento)"
+                [disabled]="eventoActivo?.idEvento === evento.idEvento"
+              >
+                {{ eventoActivo?.idEvento === evento.idEvento ? '✅ Activo' : '🛒 Usar' }}
+              </button>
+              <button class="btn-eliminar-evento" (click)="eliminarEvento(evento.idEvento)">
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="crear-evento-link">
+          <a routerLink="/evento">+ Crear nuevo evento</a>
         </div>
       </div>
 
@@ -98,7 +149,6 @@
 
         <div class="pedido-card" *ngFor="let pedido of pedidos">
 
-          <!-- ENCABEZADO DEL PEDIDO -->
           <div class="pedido-header" (click)="togglePedido(pedido.idPedido)">
             <div class="pedido-info">
               <span class="pedido-id">Pedido #{{ pedido.idPedido }}</span>
@@ -116,7 +166,6 @@
             </div>
           </div>
 
-          <!-- DETALLES DEL PEDIDO -->
           <div class="pedido-detalles" *ngIf="pedidoExpandido === pedido.idPedido">
 
             <div class="envio-info" *ngIf="pedido.estadoEnvio">
