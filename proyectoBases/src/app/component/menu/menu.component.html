@@ -48,21 +48,20 @@
           <p>{{ producto.descripcion }}</p>
 
           <div class="tarjeta-footer">
-            <span class="precio">$ {{ producto.precioBase | number:'1.0-0' }}</span>
+            <ng-container *ngIf="!esPersonalizado(producto); else btnPersonalizar">
+              <span class="precio">$ {{ producto.precioBase | number:'1.0-0' }}</span>
+              <button (click)="agregarAlCarrito(producto)">
+                <i class="pi pi-shopping-cart"></i> Añadir al carrito
+              </button>
+            </ng-container>
 
-            <button
-              *ngIf="producto.tipo !== 'PERSONALIZADO'"
-              (click)="agregarAlCarrito(producto)">
-              <i class="pi pi-shopping-cart"></i> Añadir al carrito
-            </button>
-
-            <button
-              *ngIf="producto.tipo === 'PERSONALIZADO'"
-              class="btn-personalizar"
-              (click)="irAPersonalizar()">
-              <i class="pi pi-star"></i> Personalizar
-            </button>
+            <ng-template #btnPersonalizar>
+              <button class="btn-personalizar" (click)="irAPersonalizar()">
+                <i class="pi pi-star"></i> Personalizar
+              </button>
+            </ng-template>
           </div>
+
         </div>
 
       </div>

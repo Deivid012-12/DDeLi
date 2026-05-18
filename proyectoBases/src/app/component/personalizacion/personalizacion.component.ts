@@ -52,11 +52,10 @@ export class PersonalizacionComponent implements OnInit {
   }
 
   cargarProductoPersonalizado(): void {
-    this.http.get<any[]>('http://localhost:8081/producto/getall').subscribe({
+    this.http.get<any[]>('http://localhost:8081/producto/personalizados').subscribe({
       next: (productos) => {
-        const personalizado = productos.find(p => p.tipo === 'PERSONALIZADO');
-        if (personalizado) {
-          this.idProductoPersonalizado = personalizado.idProducto;
+        if (productos && productos.length > 0) {
+          this.idProductoPersonalizado = productos[0].idProducto;
         }
       },
       error: (err) => console.error('Error cargando producto personalizado:', err)

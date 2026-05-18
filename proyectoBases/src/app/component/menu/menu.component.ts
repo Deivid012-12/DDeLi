@@ -15,8 +15,8 @@ import { Producto } from '../../model/carrito.model';
 export class MenuComponent implements OnInit {
 
   categoriaActiva: string = 'Todos';
-  cargando: boolean = false;         // 1. estado de carga
-  mensajeCarrito: string | null = null; // 2. reemplaza el alert()
+  cargando: boolean = false;
+  mensajeCarrito: string | null = null;
 
   categorias: string[] = [
     'Todos',
@@ -46,12 +46,12 @@ export class MenuComponent implements OnInit {
   }
 
   cargarProductos(): void {
-    this.cargando = true;  // 3. activa el spinner
+    this.cargando = true;
 
     this.http.get<Producto[]>('http://localhost:8081/producto/getall').subscribe({
       next: (data) => {
         this.productos = data;
-        this.aplicarFiltro();  // 4. lógica de filtro centralizada
+        this.aplicarFiltro();
         this.cargando = false;
         this.cdr.detectChanges();
       },
@@ -63,7 +63,6 @@ export class MenuComponent implements OnInit {
     });
   }
 
-  // 5. filtro extraído a método privado — evita duplicar lógica
   private aplicarFiltro(): void {
     this.productosFiltrados = this.categoriaActiva === 'Todos'
       ? [...this.productos]
@@ -72,14 +71,14 @@ export class MenuComponent implements OnInit {
 
   filtrarCategoria(categoria: string): void {
     this.categoriaActiva = categoria;
-    this.aplicarFiltro();  // 6. reutiliza el método privado
+    this.aplicarFiltro();
     this.cdr.detectChanges();
   }
 
   agregarAlCarrito(producto: Producto): void {
     this.carritoService.agregarDesdeMenu(producto).subscribe({
       next: () => {
-        this.mostrarMensaje('✓ Producto agregado al carrito');  // 7. sin alert()
+        this.mostrarMensaje('✓ Producto agregado al carrito');
       },
       error: (err) => {
         console.error(err);
@@ -88,7 +87,6 @@ export class MenuComponent implements OnInit {
     });
   }
 
-  // 8. toast temporal que desaparece solo — mucho más profesional que alert()
   private mostrarMensaje(texto: string): void {
     this.mensajeCarrito = texto;
     this.cdr.detectChanges();
@@ -96,6 +94,10 @@ export class MenuComponent implements OnInit {
       this.mensajeCarrito = null;
       this.cdr.detectChanges();
     }, 3000);
+  }
+
+  esPersonalizado(producto: Producto): boolean {
+    return producto.maximoOpciones !== undefined && producto.maximoOpciones > 0;
   }
 
   irAPersonalizar(): void {
