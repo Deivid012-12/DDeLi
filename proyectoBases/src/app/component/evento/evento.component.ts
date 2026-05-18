@@ -67,7 +67,7 @@ export class EventoComponent implements OnInit {
   }
 
   cargarEventos(): void {
-    this.http.get<Evento[]>('http://localhost:8081/evento/misEventos')
+    this.http.get<Evento[]>('http://localhost:8081/evento/obtenerPorUsuario/' + localStorage.getItem('idUsuario'))
       .subscribe({
         next: (data) => {
           this.eventos = data ?? [];
@@ -99,8 +99,8 @@ export class EventoComponent implements OnInit {
     this.procesando = true;
 
     this.http.post(
-      'http://localhost:8081/evento/crearMio',
-      this.nuevoEvento,
+      'http://localhost:8081/evento/crear',
+      { ...this.nuevoEvento, idUsuario: localStorage.getItem('idUsuario') },
       { responseType: 'text' }
     ).subscribe({
 
@@ -122,7 +122,7 @@ export class EventoComponent implements OnInit {
       },
 
       error: (err) => {
-        this.error = err.error || 'Error al crear el evento';
+        this.error = 'Error al crear el evento';  // ← quita el err.error ||
         this.procesando = false;
         this.cdr.detectChanges();
       }
@@ -190,14 +190,10 @@ export class EventoComponent implements OnInit {
       },
 
       error: (err) => {
-
         console.error(err);
-
-        this.error = 'Error al eliminar el evento';
-
+        this.error = 'Error al eliminar el evento';  // ← ya está bien así
         this.mostrarConfirmacion = false;
         this.procesando = false;
-
         this.cdr.detectChanges();
       }
     });

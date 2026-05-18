@@ -3,10 +3,6 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-
 export interface PlanSuscripcion {
   idPlan: number;
   nombre: string;
@@ -27,12 +23,8 @@ export interface Suscripcion {
 
   imports: [
     CommonModule,
-    RouterModule,
-    ConfirmDialogModule,
-    ButtonModule
+    RouterModule
   ],
-
-  providers: [ConfirmationService],
 
   templateUrl: './suscripcion.component.html',
   styleUrl: './suscripcion.component.css'
@@ -40,23 +32,29 @@ export interface Suscripcion {
 export class SuscripcionComponent implements OnInit {
 
   planes: PlanSuscripcion[] = [];
+
   suscripcionActiva: Suscripcion | null = null;
 
   cargando = true;
+
   procesando = false;
 
   error = '';
+
   mensaje = '';
+
+  mostrarModalCancelar = false;
 
   constructor(
     private http: HttpClient,
     private router: Router,
-    private cdr: ChangeDetectorRef,
-    private confirmationService: ConfirmationService
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+
     this.cargarDatos();
+
   }
 
   cargarDatos(): void {
@@ -66,17 +64,23 @@ export class SuscripcionComponent implements OnInit {
     ).subscribe({
 
       next: (planes) => {
+
         this.planes = planes ?? [];
+
         this.cargarSuscripcionActiva();
+
       },
 
       error: (err) => {
+
         this.error = 'Error cargando planes.';
+
         this.cargando = false;
 
         console.error(err);
 
         this.cdr.detectChanges();
+
       }
 
     });
@@ -90,21 +94,27 @@ export class SuscripcionComponent implements OnInit {
     ).subscribe({
 
       next: (data) => {
+
         this.suscripcionActiva = data;
+
         this.cargando = false;
 
         this.cdr.detectChanges();
+
       },
 
       error: (err) => {
 
         if (err.status === 204) {
+
           this.suscripcionActiva = null;
+
         }
 
         this.cargando = false;
 
         this.cdr.detectChanges();
+
       }
 
     });
@@ -114,11 +124,15 @@ export class SuscripcionComponent implements OnInit {
   suscribirse(idPlan: number): void {
 
     this.error = '';
+
     this.mensaje = '';
 
     if (this.suscripcionActiva) {
+
       this.mensaje = 'Ya tienes una suscripción activa.';
+
       return;
+
     }
 
     this.procesando = true;
@@ -131,20 +145,24 @@ export class SuscripcionComponent implements OnInit {
 
       next: () => {
 
-        this.mensaje = '¡Suscripción activada con éxito! 🎉';
+        this.mensaje =
+          '¡Suscripción activada con éxito! 🎉';
 
         this.procesando = false;
 
         this.cargarSuscripcionActiva();
+
       },
 
       error: (err) => {
 
-        this.error = err.error || 'Error al suscribirse.';
+        this.error =
+          err.error || 'Error al suscribirse.';
 
         this.procesando = false;
 
         this.cdr.detectChanges();
+
       }
 
     });
@@ -153,54 +171,47 @@ export class SuscripcionComponent implements OnInit {
 
   cancelarSuscripcion(): void {
 
-    this.confirmationService.confirm({
+    this.mostrarModalCancelar = true;
 
-      header: 'Cancelar suscripción',
+  }
 
-      message: '¿Estás segura de que deseas cancelar tu suscripción?',
+  confirmarCancelarSuscripcion(): void {
 
-      icon: 'pi pi-exclamation-triangle',
+    this.mostrarModalCancelar = false;
 
-      acceptLabel: 'Sí, cancelar',
-      rejectLabel: 'No',
+    this.error = '';
 
-      acceptButtonStyleClass: 'p-button-danger',
-      rejectButtonStyleClass: 'p-button-text',
+    this.mensaje = '';
 
-      accept: () => {
+    this.procesando = true;
 
-        this.error = '';
-        this.mensaje = '';
+    this.http.put(
+      'http://localhost:8081/suscripcion/cancelar',
+      {},
+      { responseType: 'text' }
+    ).subscribe({
 
-        this.procesando = true;
+      next: () => {
 
-        this.http.put(
-          'http://localhost:8081/suscripcion/cancelar',
-          {},
-          { responseType: 'text' }
-        ).subscribe({
+        this.mensaje =
+          'Suscripción cancelada correctamente.';
 
-          next: () => {
+        this.suscripcionActiva = null;
 
-            this.mensaje = 'Suscripción cancelada correctamente.';
+        this.procesando = false;
 
-            this.suscripcionActiva = null;
+        this.cdr.detectChanges();
 
-            this.procesando = false;
+      },
 
-            this.cdr.detectChanges();
-          },
+      error: (err) => {
 
-          error: (err) => {
+        this.error =
+          err.error || 'Error al cancelar la suscripción.';
 
-            this.error = err.error || 'Error al cancelar la suscripción.';
+        this.procesando = false;
 
-            this.procesando = false;
-
-            this.cdr.detectChanges();
-          }
-
-        });
+        this.cdr.detectChanges();
 
       }
 
@@ -208,8 +219,16 @@ export class SuscripcionComponent implements OnInit {
 
   }
 
+  cerrarModalCancelar(): void {
+
+    this.mostrarModalCancelar = false;
+
+  }
+
   esPlanActivo(idPlan: number): boolean {
+
     return this.suscripcionActiva?.plan?.idPlan === idPlan;
+
   }
 
 }

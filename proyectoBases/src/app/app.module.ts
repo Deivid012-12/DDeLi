@@ -15,6 +15,7 @@ import { PromocionesComponent } from './component/promociones/promociones.compon
 import { SuscripcionComponent } from './component/suscripcion/suscripcion.component';
 import { PerfilComponent } from './component/perfil/perfil.component';
 
+
 @NgModule({
   declarations: [],
   imports: [
