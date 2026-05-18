@@ -14,11 +14,15 @@ import co.edu.unbosque.ddeli.repository.UsuarioRepository;
 
 import co.edu.unbosque.ddeli.entity.Categoria;
 import co.edu.unbosque.ddeli.entity.OpcionPersonalizacion;
+import co.edu.unbosque.ddeli.entity.PlanSuscripcion;
 import co.edu.unbosque.ddeli.entity.Producto;
+import co.edu.unbosque.ddeli.entity.Promocion;
 import co.edu.unbosque.ddeli.entity.TipoPersonalizacion;
 import co.edu.unbosque.ddeli.repository.CategoriaRepository;
 import co.edu.unbosque.ddeli.repository.OpcionPersonalizacionRepository;
+import co.edu.unbosque.ddeli.repository.PlanSuscripcionRepository;
 import co.edu.unbosque.ddeli.repository.ProductoRepository;
+import co.edu.unbosque.ddeli.repository.PromocionRepository;
 import co.edu.unbosque.ddeli.repository.TipoPersonalizacionRepository;
 
 @Configuration
@@ -29,7 +33,8 @@ public class LoadDatabase {
 	@Bean
 	CommandLineRunner initDatabase(UsuarioRepository userRepo, CategoriaRepository categoriaRepo,
 			ProductoRepository productoRepo, PasswordEncoder passwordEncoder, TipoPersonalizacionRepository tipoRepo,
-			OpcionPersonalizacionRepository opcionRepo) {
+			OpcionPersonalizacionRepository opcionRepo, PlanSuscripcionRepository planRepo,
+			PromocionRepository promocionRepo) {
 		return args -> {
 
 			Optional<Usuario> found = userRepo.findByCorreo("admin@ddeli.com");
@@ -359,6 +364,52 @@ public class LoadDatabase {
 				postPersonalizado.setImagenURL("assets/postrePersonalizado.jpg");
 				productoRepo.save(postPersonalizado);
 				log.info("Precargando producto personalizado");
+			}
+			if (planRepo.count() == 0) {
+				PlanSuscripcion basico = new PlanSuscripcion();
+				basico.setNombre("Básico");
+				basico.setPrecioMensual(15000);
+				basico.setCostoAdicional(0);
+				planRepo.save(basico);
+
+				PlanSuscripcion estandar = new PlanSuscripcion();
+				estandar.setNombre("Estándar");
+				estandar.setPrecioMensual(25000);
+				estandar.setCostoAdicional(5000);
+				planRepo.save(estandar);
+
+				PlanSuscripcion premium = new PlanSuscripcion();
+				premium.setNombre("Premium");
+				premium.setPrecioMensual(40000);
+				premium.setCostoAdicional(0);
+				planRepo.save(premium);
+
+				log.info("Precargando planes de suscripción");
+			}
+
+			if (promocionRepo.count() == 0) {
+				Promocion promoVerano = new Promocion();
+				promoVerano.setNombre("Promo Verano");
+				promoVerano.setPorcentajeDescuento(20);
+				promoVerano.setFechaInicio(java.time.LocalDate.of(2026, 1, 1));
+				promoVerano.setFechaFin(java.time.LocalDate.of(2026, 12, 31));
+				promocionRepo.save(promoVerano);
+
+				Promocion promoEspecial = new Promocion();
+				promoEspecial.setNombre("Descuento Especial");
+				promoEspecial.setPorcentajeDescuento(15);
+				promoEspecial.setFechaInicio(java.time.LocalDate.of(2026, 5, 1));
+				promoEspecial.setFechaFin(java.time.LocalDate.of(2026, 6, 30));
+				promocionRepo.save(promoEspecial);
+
+				Promocion promoPostres = new Promocion();
+				promoPostres.setNombre("Festival de Postres");
+				promoPostres.setPorcentajeDescuento(30);
+				promoPostres.setFechaInicio(java.time.LocalDate.of(2026, 5, 15));
+				promoPostres.setFechaFin(java.time.LocalDate.of(2026, 5, 31));
+				promocionRepo.save(promoPostres);
+
+				log.info("Precargando promociones");
 			}
 
 		};
