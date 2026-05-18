@@ -1,84 +1,172 @@
 <div class="fondo">
   <div class="personalizacion-wrapper">
 
-    <div class="personalizacion-header">
-      <h1 class="titulo">🎂 Personaliza tu postre</h1>
-      <p class="subtitulo">Crea el postre de tus sueños eligiendo cada detalle</p>
+    <!-- STEPPER -->
+    <div class="stepper">
+      <ng-container *ngFor="let tipo of tipos; let i = index">
+        <div class="step"
+             [class.step-done]="getOpcionSeleccionada(tipo.idTipo)"
+             [class.step-active]="!getOpcionSeleccionada(tipo.idTipo)">
+          <div class="step-dot">
+            <span *ngIf="getOpcionSeleccionada(tipo.idTipo)">✓</span>
+            <span *ngIf="!getOpcionSeleccionada(tipo.idTipo)">{{ i + 1 }}</span>
+          </div>
+          <span class="step-label">{{ tipo.nombre }}</span>
+        </div>
+        <div class="step-line"
+             *ngIf="i < tipos.length - 1"
+             [class.step-line-done]="getOpcionSeleccionada(tipo.idTipo)">
+        </div>
+      </ng-container>
     </div>
 
+    <!-- HEADER -->
+    <div class="personalizacion-header">
+      <span class="header-badge">✦ CREA TU POSTRE</span>
+      <h1 class="titulo">Personaliza tu <span class="titulo-italic">postre</span></h1>
+      <p class="subtitulo">Elige cada detalle y crea el postre de tus sueños</p>
+    </div>
+
+    <!-- LOADING -->
     <div *ngIf="loading" class="loading-state">
+      <div class="loading-spinner"></div>
       <p>Cargando opciones...</p>
     </div>
 
+    <!-- BODY -->
     <div class="personalizacion-body" *ngIf="!loading">
 
-      <!-- OPCIONES POR TIPO -->
+      <!-- COLUMNA IZQUIERDA -->
       <div class="opciones-section">
 
         <div class="tipo-card" *ngFor="let tipo of tipos">
-
           <h2 class="tipo-titulo">
-            <span *ngIf="tipo.nombre === 'Sabor'">🍓</span>
-            <span *ngIf="tipo.nombre === 'Topping'">🍫</span>
-            <span *ngIf="tipo.nombre === 'Decoración'">🎨</span>
-            <span *ngIf="tipo.nombre === 'Tamaño'">📏</span>
+            <span class="tipo-icono-wrap">
+              <span *ngIf="tipo.nombre === 'Sabor'">🍓</span>
+              <span *ngIf="tipo.nombre === 'Topping'">🍫</span>
+              <span *ngIf="tipo.nombre === 'Decoración'">🎨</span>
+              <span *ngIf="tipo.nombre === 'Tamaño'">📏</span>
+            </span>
             {{ tipo.nombre }}
+            <span class="tipo-badge" *ngIf="getOpcionSeleccionada(tipo.idTipo)">
+              ✓ {{ getOpcionSeleccionada(tipo.idTipo)?.nombre }}
+            </span>
           </h2>
 
           <div class="opciones-grid">
-            <div
+            <button
               class="opcion-card"
               *ngFor="let opcion of opcionesPorTipo[tipo.idTipo]"
               [class.activo]="estaSeleccionada(tipo.idTipo, opcion.idOpcion)"
               (click)="seleccionarOpcion(tipo.idTipo, opcion.idOpcion)"
+              [attr.aria-pressed]="estaSeleccionada(tipo.idTipo, opcion.idOpcion)"
+              type="button"
             >
+              <!-- Imagen por nombre de opción -->
+              <div class="opcion-img-wrap">
+                <span class="opcion-emoji"
+                      *ngIf="tipo.nombre === 'Sabor'">
+                  <span *ngIf="opcion.nombre === 'Fresa'">🍓</span>
+                  <span *ngIf="opcion.nombre === 'Chocolate'">🍫</span>
+                  <span *ngIf="opcion.nombre === 'Vainilla'">🍦</span>
+                  <span *ngIf="opcion.nombre === 'Maracuyá'">🟡</span>
+                  <span *ngIf="opcion.nombre !== 'Fresa' && opcion.nombre !== 'Chocolate' && opcion.nombre !== 'Vainilla' && opcion.nombre !== 'Maracuyá'">🎂</span>
+                </span>
+                <span class="opcion-emoji"
+                      *ngIf="tipo.nombre === 'Topping'">
+                  <span *ngIf="opcion.nombre === 'Chispas de chocolate' || opcion.nombre === 'Chispas'">🍪</span>
+                  <span *ngIf="opcion.nombre === 'Frutas'">🍇</span>
+                  <span *ngIf="opcion.nombre === 'Caramelo'">🍯</span>
+                  <span *ngIf="opcion.nombre === 'Oreo'">🖤</span>
+                  <span *ngIf="opcion.nombre !== 'Chispas de chocolate' && opcion.nombre !== 'Chispas' && opcion.nombre !== 'Frutas' && opcion.nombre !== 'Caramelo' && opcion.nombre !== 'Oreo'">✨</span>
+                </span>
+                <span class="opcion-emoji"
+                      *ngIf="tipo.nombre === 'Decoración'">
+                  <span *ngIf="opcion.nombre === 'Sin decoración'">✦</span>
+                  <span *ngIf="opcion.nombre === 'Flores'">🌸</span>
+                  <span *ngIf="opcion.nombre === 'Mensaje personalizado' || opcion.nombre === 'Mensaje'">💌</span>
+                  <span *ngIf="opcion.nombre === 'Temática especial' || opcion.nombre === 'Temática'">🎉</span>
+                  <span *ngIf="opcion.nombre !== 'Sin decoración' && opcion.nombre !== 'Flores' && opcion.nombre !== 'Mensaje personalizado' && opcion.nombre !== 'Mensaje' && opcion.nombre !== 'Temática especial' && opcion.nombre !== 'Temática'">🎨</span>
+                </span>
+                <span class="opcion-emoji"
+                      *ngIf="tipo.nombre === 'Tamaño'">
+                  <span *ngIf="opcion.nombre === 'Individual'">🍰</span>
+                  <span *ngIf="opcion.nombre === 'Mediano'">🎂</span>
+                  <span *ngIf="opcion.nombre === 'Grande'">🎂</span>
+                  <span *ngIf="opcion.nombre === 'Familiar'">🎂</span>
+                  <span *ngIf="opcion.nombre !== 'Individual' && opcion.nombre !== 'Mediano' && opcion.nombre !== 'Grande' && opcion.nombre !== 'Familiar'">📦</span>
+                </span>
+                <div class="opcion-check" *ngIf="estaSeleccionada(tipo.idTipo, opcion.idOpcion)">✓</div>
+              </div>
+
               <span class="opcion-nombre">{{ opcion.nombre }}</span>
               <span class="opcion-costo" *ngIf="opcion.costoAdicional > 0">
-                + $ {{ opcion.costoAdicional | number:'1.0-0' }}
+                + ${{ opcion.costoAdicional | number:'1.0-0' }}
               </span>
               <span class="opcion-gratis" *ngIf="opcion.costoAdicional === 0">
                 Incluido
               </span>
-            </div>
+            </button>
           </div>
-
         </div>
 
         <!-- NOTA PERSONAL -->
         <div class="tipo-card">
-          <h2 class="tipo-titulo">✏️ Nota personal</h2>
+          <h2 class="tipo-titulo">
+            <span class="tipo-icono-wrap">✏️</span>
+            Nota personal
+            <span class="tipo-opcional">(opcional)</span>
+          </h2>
           <textarea
             [(ngModel)]="notaPersonal"
-            placeholder="Escribe un mensaje especial, indicaciones de decoración, dedicatoria..."
+            placeholder="Escribe un mensaje especial, dedicatoria o indicaciones de decoración..."
             class="nota-input"
-            rows="4"
+            rows="3"
           ></textarea>
         </div>
 
       </div>
 
-      <!-- RESUMEN -->
+      <!-- RESUMEN LATERAL -->
       <div class="resumen-card">
 
-        <h2>Tu postre</h2>
+        <div class="resumen-header">
+          <h2 class="resumen-titulo">Tu postre</h2>
+          <span class="resumen-badge" *ngIf="todasSeleccionadas()">Listo ✓</span>
+        </div>
 
+        <!-- CHIPS -->
+        <div class="chips-container">
+          <ng-container *ngFor="let tipo of tipos">
+            <div class="chip" *ngIf="getOpcionSeleccionada(tipo.idTipo)">
+              {{ getOpcionSeleccionada(tipo.idTipo)?.nombre }}
+              <span class="chip-extra" *ngIf="getOpcionSeleccionada(tipo.idTipo)!.costoAdicional > 0">
+                +${{ getOpcionSeleccionada(tipo.idTipo)!.costoAdicional | number:'1.0-0' }}
+              </span>
+            </div>
+          </ng-container>
+          <span class="chips-placeholder" *ngIf="!todasSeleccionadas()">Elige tus opciones →</span>
+        </div>
+
+        <div class="resumen-divider"></div>
+
+        <!-- FILAS -->
         <div class="resumen-opciones">
           <div *ngFor="let tipo of tipos" class="resumen-fila">
             <span class="resumen-tipo">{{ tipo.nombre }}</span>
             <span class="resumen-opcion" *ngIf="getOpcionSeleccionada(tipo.idTipo)">
               {{ getOpcionSeleccionada(tipo.idTipo)?.nombre }}
-              <span *ngIf="getOpcionSeleccionada(tipo.idTipo)?.costoAdicional! > 0">
-                (+ $ {{ getOpcionSeleccionada(tipo.idTipo)?.costoAdicional | number:'1.0-0' }})
+              <span class="resumen-extra" *ngIf="getOpcionSeleccionada(tipo.idTipo)!.costoAdicional > 0">
+                +${{ getOpcionSeleccionada(tipo.idTipo)!.costoAdicional | number:'1.0-0' }}
               </span>
             </span>
-            <span class="resumen-opcion sin-seleccion" *ngIf="!getOpcionSeleccionada(tipo.idTipo)">
+            <span class="resumen-sin-seleccion" *ngIf="!getOpcionSeleccionada(tipo.idTipo)">
               Sin seleccionar
             </span>
           </div>
-
           <div class="resumen-fila" *ngIf="notaPersonal">
             <span class="resumen-tipo">Nota</span>
-            <span class="resumen-opcion">{{ notaPersonal }}</span>
+            <span class="resumen-opcion nota-resumen">{{ notaPersonal }}</span>
           </div>
         </div>
 
@@ -86,43 +174,62 @@
 
         <!-- CANTIDAD -->
         <div class="cantidad-wrapper">
-          <span>Cantidad</span>
+          <span class="cantidad-label">Cantidad</span>
           <div class="cantidad-controles">
-            <button (click)="cantidad = cantidad - 1" [disabled]="cantidad <= 1" class="btn-cantidad">−</button>
-            <span>{{ cantidad }}</span>
-            <button (click)="cantidad = cantidad + 1" class="btn-cantidad">+</button>
+            <button class="btn-cantidad" (click)="cantidad = cantidad - 1"
+                    [disabled]="cantidad <= 1" type="button" aria-label="Disminuir">−</button>
+            <span class="cantidad-valor">{{ cantidad }}</span>
+            <button class="btn-cantidad" (click)="cantidad = cantidad + 1"
+                    type="button" aria-label="Aumentar">+</button>
           </div>
         </div>
 
         <div class="resumen-divider"></div>
 
-        <div class="resumen-precio">
-          <span>Precio base</span>
-          <span>$ 25,000</span>
+        <!-- PRECIOS -->
+        <div class="precio-desglose">
+          <div class="resumen-precio">
+            <span>Precio base</span>
+            <span>$25.000</span>
+          </div>
+          <div class="resumen-precio" *ngIf="calcularCostoOpciones() > 0">
+            <span>Personalizaciones</span>
+            <span class="precio-extra">+ ${{ calcularCostoOpciones() | number:'1.0-0' }}</span>
+          </div>
+          <div class="resumen-precio" *ngIf="cantidad > 1">
+            <span>× {{ cantidad }} unidades</span>
+            <span></span>
+          </div>
         </div>
-        <div class="resumen-precio" *ngIf="calcularCostoOpciones() > 0">
-          <span>Personalizaciones</span>
-          <span>+ $ {{ calcularCostoOpciones() | number:'1.0-0' }}</span>
-        </div>
-
-        <div class="resumen-divider"></div>
 
         <div class="resumen-total">
           <span>Total</span>
-          <span>$ {{ calcularTotal() | number:'1.0-0' }}</span>
+          <span class="total-valor">${{ calcularTotal() | number:'1.0-0' }}</span>
+        </div>
+
+        <div class="alerta-incompleto" *ngIf="!todasSeleccionadas()">
+          ⚠️ Elige todas las opciones para continuar
         </div>
 
         <button
           class="btn-agregar"
           (click)="agregarAlCarrito()"
-          [disabled]="agregando"
+          [disabled]="agregando || !todasSeleccionadas()"
+          [class.btn-exito]="agregando"
+          type="button"
         >
-          {{ agregando ? 'Agregando...' : '🛒 Agregar al carrito' }}
+          <span *ngIf="!agregando">🛒 Agregar al carrito</span>
+          <span *ngIf="agregando">✓ Agregando...</span>
         </button>
 
-        <a routerLink="/menu" class="link-volver">
-          ← Volver al menú
-        </a>
+        <p class="envio-hint" *ngIf="calcularTotal() < 60000">
+          🚚 Agrega ${{ (60000 - calcularTotal()) | number:'1.0-0' }} más para envío gratis
+        </p>
+        <p class="envio-hint envio-gratis" *ngIf="calcularTotal() >= 60000">
+          🎉 ¡Tienes envío gratis!
+        </p>
+
+        <a routerLink="/menu" class="link-volver">← Volver al menú</a>
 
       </div>
 

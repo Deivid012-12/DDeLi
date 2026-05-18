@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CarritoService } from '../../service/carrito.service';
+import Swal from 'sweetalert2';
 
 interface OpcionDTO {
   idOpcion: number;
@@ -137,6 +138,10 @@ export class PersonalizacionComponent implements OnInit {
     const opciones = this.opcionesPorTipo[idTipo] || [];
     return opciones.find(o => o.idOpcion === idOpcion) || null;
   }
+  todasSeleccionadas(): boolean {
+    return this.tipos.length > 0 &&
+      this.tipos.every(tipo => !!this.getOpcionSeleccionada(tipo.idTipo));
+  }
 
   agregarAlCarrito(): void {
     const idOpciones = Object.values(this.seleccionadas);
@@ -163,13 +168,46 @@ export class PersonalizacionComponent implements OnInit {
         this.http.post(url, {}, { responseType: 'text' }).subscribe({
           next: () => {
             this.agregando = false;
-            alert('¡Postre personalizado agregado al carrito! 🎂');
-            this.router.navigate(['/carrito']);
+
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+
+              icon: 'success',
+
+              title: 'Postre agregado al carrito 🧁',
+
+              showConfirmButton: false,
+
+              timer: 5000,
+
+              timerProgressBar: true,
+
+              background: '#fff5f7',
+
+              color: '#7a3b4b'
+            });
+
           },
+
           error: (err) => {
             console.error('Error agregando al carrito:', err);
+
             this.agregando = false;
-            alert('Error al agregar al carrito.');
+
+            Swal.fire({
+              icon: 'error',
+
+              title: 'Oops...',
+
+              text: 'No se pudo agregar al carrito.',
+
+              confirmButtonColor: '#c87a8a',
+
+              background: '#fff5f7',
+
+              color: '#7a3b4b'
+            });
           }
         });
       },
