@@ -1,7 +1,7 @@
 package co.edu.unbosque.ddeli.entity;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -14,8 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -32,10 +31,6 @@ public class Carrito {
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
-
-	@ManyToMany
-	@JoinTable(name = "item_opcion", joinColumns = @JoinColumn(name = "id_item"), inverseJoinColumns = @JoinColumn(name = "id_opcion"))
-	private List<OpcionPersonalizacion> opciones = new ArrayList<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
@@ -109,14 +104,6 @@ public class Carrito {
 
 	public void setItems(List<ItemCarrito> items) {
 		this.items = items;
-	}
-
-	public List<OpcionPersonalizacion> getOpciones() {
-		return opciones;
-	}
-
-	public void setOpciones(List<OpcionPersonalizacion> opciones) {
-		this.opciones = opciones;
 	}
 
 	@Override

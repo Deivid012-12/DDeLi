@@ -15,9 +15,11 @@ import co.edu.unbosque.ddeli.dto.PedidoDTO;
 import co.edu.unbosque.ddeli.entity.Carrito;
 import co.edu.unbosque.ddeli.entity.DetallePedido;
 import co.edu.unbosque.ddeli.entity.Direccion;
+import co.edu.unbosque.ddeli.entity.Evento;
 import co.edu.unbosque.ddeli.entity.Pedido;
 import co.edu.unbosque.ddeli.entity.Promocion;
 import co.edu.unbosque.ddeli.repository.CarritoRepository;
+import co.edu.unbosque.ddeli.repository.EventoRepository;
 import co.edu.unbosque.ddeli.repository.PedidoRepository;
 import co.edu.unbosque.ddeli.repository.PromocionRepository;
 
@@ -40,6 +42,8 @@ public class PedidoService implements CRUDOperation<PedidoDTO> {
 
 	@Autowired
 	private ModelMapper modelMapper;
+	@Autowired
+	private EventoRepository eventoRepository;
 
 	public PedidoService() {
 
@@ -115,7 +119,7 @@ public class PedidoService implements CRUDOperation<PedidoDTO> {
 	}
 
 	@Transactional
-	public PedidoDTO confirmarCarrito(Long idCarrito, Long idPromocion) {
+	public PedidoDTO confirmarCarrito(Long idCarrito, Long idPromocion, Long idEvento) {
 		Carrito carrito = carritoRepository.findById(idCarrito)
 				.orElseThrow(() -> new RuntimeException("Carrito no encontrado: " + idCarrito));
 
@@ -131,6 +135,12 @@ public class PedidoService implements CRUDOperation<PedidoDTO> {
 			Promocion promo = promocionRepository.findById(idPromocion)
 					.orElseThrow(() -> new RuntimeException("Promoción no encontrada: " + idPromocion));
 			pedido.setPromocion(promo);
+		}
+
+		if (idEvento != null) {
+			Evento evento = eventoRepository.findById(idEvento)
+					.orElseThrow(() -> new RuntimeException("Evento no encontrado: " + idEvento));
+			pedido.setEvento(evento);
 		}
 
 		List<DetallePedido> detalles = carrito.getItems().stream().map(item -> {

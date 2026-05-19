@@ -119,4 +119,30 @@ public class EventoService implements CRUDOperation<EventoDTO> {
 	public long count() {
 		return eventoRepository.count();
 	}
+
+	public int crearParaUsuario(String correo, EventoDTO newData) {
+		Usuario usuario = usuarioRepository.findByCorreo(correo).orElse(null);
+		if (usuario == null)
+			return 1;
+
+		if (eventoRepository.existsByUsuarioIdUsuarioAndTipoEventoAndFechaEvento(usuario.getIdUsuario(),
+				newData.getTipoEvento(), newData.getFechaEvento())) {
+			return 2;
+		}
+
+		Evento evento = new Evento();
+		evento.setUsuario(usuario);
+		evento.setFechaEvento(newData.getFechaEvento());
+		evento.setNumeroPersonas(newData.getNumeroPersonas());
+		evento.setTipoEvento(newData.getTipoEvento());
+		eventoRepository.save(evento);
+		return 0;
+	}
+
+	public List<EventoDTO> obtenerPorCorreo(String correo) {
+		Usuario usuario = usuarioRepository.findByCorreo(correo).orElse(null);
+		if (usuario == null)
+			return new ArrayList<>();
+		return obtenerPorUsuario(usuario.getIdUsuario());
+	}
 }

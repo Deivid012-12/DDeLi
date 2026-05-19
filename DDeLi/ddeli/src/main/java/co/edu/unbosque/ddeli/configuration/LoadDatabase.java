@@ -1,7 +1,5 @@
 package co.edu.unbosque.ddeli.configuration;
 
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -9,21 +7,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import co.edu.unbosque.ddeli.entity.Usuario;
-import co.edu.unbosque.ddeli.repository.UsuarioRepository;
-
 import co.edu.unbosque.ddeli.entity.Categoria;
 import co.edu.unbosque.ddeli.entity.OpcionPersonalizacion;
 import co.edu.unbosque.ddeli.entity.PlanSuscripcion;
-import co.edu.unbosque.ddeli.entity.Producto;
+import co.edu.unbosque.ddeli.entity.PostrePersonalizado;
+import co.edu.unbosque.ddeli.entity.PostrePredeterminado;
 import co.edu.unbosque.ddeli.entity.Promocion;
 import co.edu.unbosque.ddeli.entity.TipoPersonalizacion;
+import co.edu.unbosque.ddeli.entity.Usuario;
 import co.edu.unbosque.ddeli.repository.CategoriaRepository;
 import co.edu.unbosque.ddeli.repository.OpcionPersonalizacionRepository;
 import co.edu.unbosque.ddeli.repository.PlanSuscripcionRepository;
 import co.edu.unbosque.ddeli.repository.ProductoRepository;
 import co.edu.unbosque.ddeli.repository.PromocionRepository;
 import co.edu.unbosque.ddeli.repository.TipoPersonalizacionRepository;
+import co.edu.unbosque.ddeli.repository.UsuarioRepository;
 
 @Configuration
 public class LoadDatabase {
@@ -35,217 +33,237 @@ public class LoadDatabase {
 			ProductoRepository productoRepo, PasswordEncoder passwordEncoder, TipoPersonalizacionRepository tipoRepo,
 			OpcionPersonalizacionRepository opcionRepo, PlanSuscripcionRepository planRepo,
 			PromocionRepository promocionRepo) {
+
 		return args -> {
 
-			Optional<Usuario> found = userRepo.findByCorreo("admin@ddeli.com");
-
-			if (found.isPresent()) {
-
-				log.info("El administrador ya existe");
-
-			} else {
-
+			if (userRepo.findByCorreo("admin@ddeli.com").isEmpty()) {
 				Usuario adminUser = new Usuario();
-
 				adminUser.setNombre("admin");
 				adminUser.setCorreo("admin@ddeli.com");
 				adminUser.setTelefono("3000000000");
 				adminUser.setContrasenia(passwordEncoder.encode("1234567890"));
 				adminUser.setRol(Usuario.Role.ADMIN);
 				adminUser.setVerificado(true);
-
 				userRepo.save(adminUser);
-
 				log.info("Precargando usuario administrador");
 			}
 
-			Optional<Usuario> found2 = userRepo.findByCorreo("cliente@ddeli.com");
-
-			if (found2.isPresent()) {
-
-				log.info("El usuario cliente ya existe");
-
-			} else {
-
+			if (userRepo.findByCorreo("cliente@ddeli.com").isEmpty()) {
 				Usuario clienteUser = new Usuario();
-
 				clienteUser.setNombre("cliente");
 				clienteUser.setCorreo("cliente@ddeli.com");
 				clienteUser.setTelefono("3111111111");
 				clienteUser.setContrasenia(passwordEncoder.encode("1234567890"));
 				clienteUser.setRol(Usuario.Role.CLIENTE);
 				clienteUser.setVerificado(true);
-
 				userRepo.save(clienteUser);
-
 				log.info("Precargando usuario cliente");
-				Categoria brownies = new Categoria();
-				brownies.setNombre("Brownies");
-				brownies.setDescripcion("Brownies artesanales");
+			}
 
-				Categoria cheesecakes = new Categoria();
-				cheesecakes.setNombre("Cheesecakes");
-				cheesecakes.setDescripcion("Cheesecakes cremosos");
+			Categoria brownies = categoriaRepo.findByNombre("Brownies").orElseGet(() -> {
+				Categoria c = new Categoria();
+				c.setNombre("Brownies");
+				c.setDescripcion("Brownies artesanales");
+				log.info("Precargando categoría: Brownies");
+				return categoriaRepo.save(c);
+			});
 
-				Categoria tortas = new Categoria();
-				tortas.setNombre("Tortas");
-				tortas.setDescripcion("Tortas especiales");
-				if (categoriaRepo.count() == 0) {
+			Categoria cheesecakes = categoriaRepo.findByNombre("Cheesecakes").orElseGet(() -> {
+				Categoria c = new Categoria();
+				c.setNombre("Cheesecakes");
+				c.setDescripcion("Cheesecakes cremosos");
+				log.info("Precargando categoría: Cheesecakes");
+				return categoriaRepo.save(c);
+			});
 
-					categoriaRepo.save(brownies);
-					categoriaRepo.save(cheesecakes);
-					categoriaRepo.save(tortas);
+			Categoria tortas = categoriaRepo.findByNombre("Tortas").orElseGet(() -> {
+				Categoria c = new Categoria();
+				c.setNombre("Tortas");
+				c.setDescripcion("Tortas especiales");
+				log.info("Precargando categoría: Tortas");
+				return categoriaRepo.save(c);
+			});
 
-					log.info("Precargando categorías");
-				}
-				if (productoRepo.count() == 0) {
+			Categoria postres = categoriaRepo.findByNombre("Postres").orElseGet(() -> {
+				Categoria c = new Categoria();
+				c.setNombre("Postres");
+				c.setDescripcion("Postres variados");
+				log.info("Precargando categoría: Postres");
+				return categoriaRepo.save(c);
+			});
 
-					Producto brownieChocolate = new Producto();
-					brownieChocolate.setNombre("Brownie de Chocolate");
-					brownieChocolate.setDescripcion("Brownie artesanal de chocolate");
-					brownieChocolate.setPrecioBase(15000);
-					brownieChocolate.setDisponibilidad(true);
-					brownieChocolate.setTipo("POSTRE");
-					brownieChocolate.setImagenURL("assets/brownie.jpg");
-					brownieChocolate.setCategoria(brownies);
-					productoRepo.save(brownieChocolate);
+			if (productoRepo.count() == 0) {
 
-					Producto cheesecake = new Producto();
-					cheesecake.setNombre("Cheesecake de Frutos Rojos");
-					cheesecake.setDescripcion("Cheesecake cremoso con frutos rojos");
-					cheesecake.setPrecioBase(25000);
-					cheesecake.setDisponibilidad(true);
-					cheesecake.setTipo("POSTRE");
-					cheesecake.setImagenURL("assets/cheesecake.jpg");
-					cheesecake.setCategoria(cheesecakes);
-					productoRepo.save(cheesecake);
+				PostrePredeterminado brownieChocolate = new PostrePredeterminado();
+				brownieChocolate.setNombre("Brownie de Chocolate");
+				brownieChocolate.setDescripcion("Brownie artesanal de chocolate");
+				brownieChocolate.setPrecioBase(15000);
+				brownieChocolate.setEstiloBase("Chocolate clásico");
+				brownieChocolate.setImagenURL("assets/brownie.jpg");
+				brownieChocolate.setDisponibilidad(true);
+				brownieChocolate.setCategoria(brownies);
+				productoRepo.save(brownieChocolate);
 
-					Producto torta = new Producto();
-					torta.setNombre("Torta Red Velvet");
-					torta.setDescripcion("Torta suave Red Velvet");
-					torta.setPrecioBase(45000);
-					torta.setDisponibilidad(true);
-					torta.setTipo("POSTRE");
-					torta.setImagenURL("assets/redvelvet.jpg");
-					torta.setCategoria(tortas);
-					productoRepo.save(torta);
+				PostrePredeterminado cheesecake = new PostrePredeterminado();
+				cheesecake.setNombre("Cheesecake de Frutos Rojos");
+				cheesecake.setDescripcion("Cheesecake cremoso con frutos rojos");
+				cheesecake.setPrecioBase(25000);
+				cheesecake.setEstiloBase("Frutos rojos");
+				cheesecake.setImagenURL("assets/cheesecake.jpg");
+				cheesecake.setDisponibilidad(true);
+				cheesecake.setCategoria(cheesecakes);
+				productoRepo.save(cheesecake);
 
-					Producto tiramisu = new Producto();
-					tiramisu.setNombre("Tiramisú Clásico");
-					tiramisu.setDescripcion("Postre italiano con café y cacao");
-					tiramisu.setPrecioBase(28000);
-					tiramisu.setDisponibilidad(true);
-					tiramisu.setTipo("POSTRE");
-					tiramisu.setImagenURL("assets/tiramisu.jpg");
-					tiramisu.setCategoria(cheesecakes);
-					productoRepo.save(tiramisu);
+				PostrePredeterminado torta = new PostrePredeterminado();
+				torta.setNombre("Torta Red Velvet");
+				torta.setDescripcion("Torta suave Red Velvet");
+				torta.setPrecioBase(45000);
+				torta.setEstiloBase("Red Velvet");
+				torta.setImagenURL("assets/redvelvet.jpg");
+				torta.setDisponibilidad(true);
+				torta.setCategoria(tortas);
+				productoRepo.save(torta);
 
-					Producto flan = new Producto();
-					flan.setNombre("Flan de Caramelo");
-					flan.setDescripcion("Flan tradicional con caramelo casero");
-					flan.setPrecioBase(12000);
-					flan.setDisponibilidad(true);
-					flan.setTipo("POSTRE");
-					flan.setImagenURL("assets/flan.jpg");
-					flan.setCategoria(cheesecakes);
-					productoRepo.save(flan);
+				PostrePredeterminado tiramisu = new PostrePredeterminado();
+				tiramisu.setNombre("Tiramisú Clásico");
+				tiramisu.setDescripcion("Postre italiano con café y cacao");
+				tiramisu.setPrecioBase(28000);
+				tiramisu.setEstiloBase("Italiano clásico");
+				tiramisu.setImagenURL("assets/tiramisu.jpg");
+				tiramisu.setDisponibilidad(true);
+				tiramisu.setCategoria(postres);
+				productoRepo.save(tiramisu);
 
-					Producto tresLeches = new Producto();
-					tresLeches.setNombre("Torta Tres Leches");
-					tresLeches.setDescripcion("Bizcocho suave con mezcla de tres leches");
-					tresLeches.setPrecioBase(30000);
-					tresLeches.setDisponibilidad(true);
-					tresLeches.setTipo("POSTRE");
-					tresLeches.setImagenURL("assets/tresleches.jpg");
-					tresLeches.setCategoria(tortas);
-					productoRepo.save(tresLeches);
+				PostrePredeterminado flan = new PostrePredeterminado();
+				flan.setNombre("Flan de Caramelo");
+				flan.setDescripcion("Flan tradicional con caramelo casero");
+				flan.setPrecioBase(12000);
+				flan.setEstiloBase("Caramelo tradicional");
+				flan.setImagenURL("assets/flan.jpg");
+				flan.setDisponibilidad(true);
+				flan.setCategoria(postres);
+				productoRepo.save(flan);
 
-					Producto galletaChoco = new Producto();
-					galletaChoco.setNombre("Galletas con Chips de Chocolate");
-					galletaChoco.setDescripcion("Galletas caseras con chispas de chocolate");
-					galletaChoco.setPrecioBase(8000);
-					galletaChoco.setDisponibilidad(true);
-					galletaChoco.setTipo("POSTRE");
-					galletaChoco.setImagenURL("assets/galletas.jpg");
-					galletaChoco.setCategoria(brownies);
-					productoRepo.save(galletaChoco);
+				PostrePredeterminado tresLeches = new PostrePredeterminado();
+				tresLeches.setNombre("Torta Tres Leches");
+				tresLeches.setDescripcion("Bizcocho suave con mezcla de tres leches");
+				tresLeches.setPrecioBase(30000);
+				tresLeches.setEstiloBase("Tres leches clásico");
+				tresLeches.setImagenURL("assets/tresleches.jpg");
+				tresLeches.setDisponibilidad(true);
+				tresLeches.setCategoria(tortas);
+				productoRepo.save(tresLeches);
 
-					Producto mousseChocolate = new Producto();
-					mousseChocolate.setNombre("Mousse de Chocolate");
-					mousseChocolate.setDescripcion("Postre ligero y cremoso de chocolate");
-					mousseChocolate.setPrecioBase(20000);
-					mousseChocolate.setDisponibilidad(true);
-					mousseChocolate.setTipo("POSTRE");
-					mousseChocolate.setImagenURL("assets/mousse.jpg");
-					mousseChocolate.setCategoria(cheesecakes);
-					productoRepo.save(mousseChocolate);
+				PostrePredeterminado cupcakeVainilla = new PostrePredeterminado();
+				cupcakeVainilla.setNombre("Cupcake de Vainilla");
+				cupcakeVainilla.setDescripcion("Cupcake suave con crema de vainilla");
+				cupcakeVainilla.setPrecioBase(9000);
+				cupcakeVainilla.setEstiloBase("Vainilla clásica");
+				cupcakeVainilla.setImagenURL("assets/cupcake.jpg");
+				cupcakeVainilla.setDisponibilidad(true);
+				cupcakeVainilla.setCategoria(tortas);
+				productoRepo.save(cupcakeVainilla);
 
-					Producto pieLimon = new Producto();
-					pieLimon.setNombre("Pie de Limón");
-					pieLimon.setDescripcion("Postre cítrico con base crocante");
-					pieLimon.setPrecioBase(22000);
-					pieLimon.setDisponibilidad(true);
-					pieLimon.setTipo("POSTRE");
-					pieLimon.setImagenURL("assets/pielimon.jpg");
-					pieLimon.setCategoria(tortas);
-					productoRepo.save(pieLimon);
+				PostrePredeterminado alfajor = new PostrePredeterminado();
+				alfajor.setNombre("Alfajor Artesanal");
+				alfajor.setDescripcion("Alfajor relleno de arequipe con coco rallado");
+				alfajor.setPrecioBase(8000);
+				alfajor.setEstiloBase("Arequipe clásico");
+				alfajor.setImagenURL("assets/alfajor.jpg");
+				alfajor.setDisponibilidad(true);
+				alfajor.setCategoria(postres);
+				productoRepo.save(alfajor);
 
-					Producto brownieNuez = new Producto();
-					brownieNuez.setNombre("Brownie con Nueces");
-					brownieNuez.setDescripcion("Brownie clásico con trozos de nuez");
-					brownieNuez.setPrecioBase(17000);
-					brownieNuez.setDisponibilidad(true);
-					brownieNuez.setTipo("POSTRE");
-					brownieNuez.setImagenURL("assets/browniemz.jpg");
-					brownieNuez.setCategoria(brownies);
-					productoRepo.save(brownieNuez);
+				PostrePredeterminado arrozLeche = new PostrePredeterminado();
+				arrozLeche.setNombre("Arroz con Leche");
+				arrozLeche.setDescripcion("Arroz con leche cremoso con canela");
+				arrozLeche.setPrecioBase(10000);
+				arrozLeche.setEstiloBase("Canela tradicional");
+				arrozLeche.setImagenURL("assets/arrozleche.jpg");
+				arrozLeche.setDisponibilidad(true);
+				arrozLeche.setCategoria(postres);
+				productoRepo.save(arrozLeche);
 
-					Producto cupcakeVainilla = new Producto();
-					cupcakeVainilla.setNombre("Cupcake de Vainilla");
-					cupcakeVainilla.setDescripcion("Cupcake suave con crema de vainilla");
-					cupcakeVainilla.setPrecioBase(9000);
-					cupcakeVainilla.setDisponibilidad(true);
-					cupcakeVainilla.setTipo("POSTRE");
-					cupcakeVainilla.setImagenURL("assets/cupcake.jpg");
-					cupcakeVainilla.setCategoria(tortas);
-					productoRepo.save(cupcakeVainilla);
+				PostrePredeterminado brownieMz = new PostrePredeterminado();
+				brownieMz.setNombre("Brownie de Manzana");
+				brownieMz.setDescripcion("Brownie húmedo con trozos de manzana caramelizada");
+				brownieMz.setPrecioBase(16000);
+				brownieMz.setEstiloBase("Manzana caramelizada");
+				brownieMz.setImagenURL("assets/browniemz.jpg");
+				brownieMz.setDisponibilidad(true);
+				brownieMz.setCategoria(brownies);
+				productoRepo.save(brownieMz);
 
-					Producto alfajor = new Producto();
-					alfajor.setNombre("Alfajor Artesanal");
-					alfajor.setDescripcion("Dulce relleno de arequipe y coco");
-					alfajor.setPrecioBase(6000);
-					alfajor.setDisponibilidad(true);
-					alfajor.setTipo("POSTRE");
-					alfajor.setImagenURL("assets/alfajor.jpg");
-					alfajor.setCategoria(brownies);
-					productoRepo.save(alfajor);
+				PostrePredeterminado galletas = new PostrePredeterminado();
+				galletas.setNombre("Galletas Artesanales");
+				galletas.setDescripcion("Galletas crujientes con chips de chocolate");
+				galletas.setPrecioBase(7000);
+				galletas.setEstiloBase("Chips de chocolate");
+				galletas.setImagenURL("assets/galletas.jpg");
+				galletas.setDisponibilidad(true);
+				galletas.setCategoria(postres);
+				productoRepo.save(galletas);
 
-					Producto arrozLeche = new Producto();
-					arrozLeche.setNombre("Arroz con Leche");
-					arrozLeche.setDescripcion("Postre tradicional con canela");
-					arrozLeche.setPrecioBase(10000);
-					arrozLeche.setDisponibilidad(true);
-					arrozLeche.setTipo("POSTRE");
-					arrozLeche.setImagenURL("assets/arrozleche.jpg");
-					arrozLeche.setCategoria(cheesecakes);
-					productoRepo.save(arrozLeche);
+				PostrePredeterminado mousse = new PostrePredeterminado();
+				mousse.setNombre("Mousse de Chocolate");
+				mousse.setDescripcion("Mousse esponjoso de chocolate oscuro");
+				mousse.setPrecioBase(18000);
+				mousse.setEstiloBase("Chocolate oscuro");
+				mousse.setImagenURL("assets/mousse.jpg");
+				mousse.setDisponibilidad(true);
+				mousse.setCategoria(postres);
+				productoRepo.save(mousse);
 
-					Producto selvaNegra = new Producto();
-					selvaNegra.setNombre("Torta Selva Negra");
-					selvaNegra.setDescripcion("Torta de chocolate con cerezas");
-					selvaNegra.setPrecioBase(38000);
-					selvaNegra.setDisponibilidad(true);
-					selvaNegra.setTipo("POSTRE");
-					selvaNegra.setImagenURL("assets/selvanegra.jpg");
-					selvaNegra.setCategoria(tortas);
-					productoRepo.save(selvaNegra);
+				PostrePredeterminado pieLimon = new PostrePredeterminado();
+				pieLimon.setNombre("Pie de Limón");
+				pieLimon.setDescripcion("Pie de limón con merengue tostado");
+				pieLimon.setPrecioBase(22000);
+				pieLimon.setEstiloBase("Merengue tostado");
+				pieLimon.setImagenURL("assets/pielimon.jpg");
+				pieLimon.setDisponibilidad(true);
+				pieLimon.setCategoria(tortas);
+				productoRepo.save(pieLimon);
 
-					log.info("Precargando 15 productos en total");
+				PostrePredeterminado selvaNegra = new PostrePredeterminado();
+				selvaNegra.setNombre("Torta Selva Negra");
+				selvaNegra.setDescripcion("Torta alemana de chocolate con cerezas y crema");
+				selvaNegra.setPrecioBase(48000);
+				selvaNegra.setEstiloBase("Cereza y crema");
+				selvaNegra.setImagenURL("assets/selvanegra.jpg");
+				selvaNegra.setDisponibilidad(true);
+				selvaNegra.setCategoria(tortas);
+				productoRepo.save(selvaNegra);
 
-				}
+				PostrePredeterminado wuafle = new PostrePredeterminado();
+				wuafle.setNombre("Wafle Artesanal");
+				wuafle.setDescripcion("Wafle crujiente con frutos rojos y miel");
+				wuafle.setPrecioBase(14000);
+				wuafle.setEstiloBase("Frutos rojos y miel");
+				wuafle.setImagenURL("assets/wuafle.png");
+				wuafle.setDisponibilidad(true);
+				wuafle.setCategoria(postres);
+				productoRepo.save(wuafle);
+
+				log.info("Precargando productos predeterminados");
+			}
+
+			boolean existePersonalizado = productoRepo.findAll().stream()
+					.anyMatch(p -> p instanceof PostrePersonalizado);
+
+			if (!existePersonalizado) {
+				PostrePersonalizado personalizado = new PostrePersonalizado();
+				personalizado.setNombre("Postre Personalizado");
+				personalizado.setDescripcion("Postre artesanal personalizado a tu gusto");
+				personalizado.setPrecioBase(25000);
+				personalizado.setMaximoOpciones(5);
+				personalizado.setImagenURL("assets/postrePersonalizado.jpg");
+				personalizado.setDisponibilidad(true);
+				productoRepo.save(personalizado);
+				log.info("Precargando producto personalizado");
 			}
 
 			if (tipoRepo.count() == 0) {
+
 				TipoPersonalizacion sabor = new TipoPersonalizacion();
 				sabor.setNombre("Sabor");
 				tipoRepo.save(sabor);
@@ -354,18 +372,9 @@ public class LoadDatabase {
 
 				log.info("Precargando tipos y opciones de personalización");
 			}
-			if (productoRepo.findByTipo("PERSONALIZADO").isEmpty()) {
-				Producto postPersonalizado = new Producto();
-				postPersonalizado.setNombre("Postre Personalizado");
-				postPersonalizado.setDescripcion("Postre artesanal personalizado a tu gusto");
-				postPersonalizado.setPrecioBase(25000);
-				postPersonalizado.setDisponibilidad(true);
-				postPersonalizado.setTipo("PERSONALIZADO");
-				postPersonalizado.setImagenURL("assets/postrePersonalizado.jpg");
-				productoRepo.save(postPersonalizado);
-				log.info("Precargando producto personalizado");
-			}
+
 			if (planRepo.count() == 0) {
+
 				PlanSuscripcion basico = new PlanSuscripcion();
 				basico.setNombre("Básico");
 				basico.setPrecioMensual(15000);
@@ -388,6 +397,7 @@ public class LoadDatabase {
 			}
 
 			if (promocionRepo.count() == 0) {
+
 				Promocion promoVerano = new Promocion();
 				promoVerano.setNombre("Promo Verano");
 				promoVerano.setPorcentajeDescuento(20);
@@ -411,8 +421,6 @@ public class LoadDatabase {
 
 				log.info("Precargando promociones");
 			}
-
 		};
-
 	}
 }

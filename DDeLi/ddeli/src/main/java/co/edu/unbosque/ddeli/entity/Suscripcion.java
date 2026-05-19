@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -13,8 +14,8 @@ import jakarta.persistence.ManyToOne;
 public class Suscripcion {
 
 	@Id
-	@GeneratedValue
-	private Long idSuscripcion; // falta determinar la secuencia para generar automaticamente el id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long idSuscripcion;// falta determinar la secuencia para generar automaticamente el id
 
 	private LocalDate fechaInicio;
 	private String estado;
@@ -23,7 +24,7 @@ public class Suscripcion {
 	private Usuario usuario;
 
 	@ManyToOne
-	@JoinColumn(name = "id_plan") // FK en la tabla suscripcion
+	@JoinColumn(name = "id_plan")
 	private PlanSuscripcion plan;
 
 	public Suscripcion() {
