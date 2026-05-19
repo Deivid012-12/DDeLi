@@ -1,0 +1,38 @@
+export interface Producto {
+  idProducto: number;
+  nombre: string;
+  descripcion: string;
+  precioBase: number;
+  disponibilidad: boolean;
+  tipo: string;
+  nombreCategoria: string;
+  imagenURL: string;
+  maximoOpciones?: number;
+}
+export interface OpcionPersonalizacion {
+  idOpcion: number;
+  nombre: string;
+  costoAdicional: number;
+  idTipo: number;
+  nombreTipo: string;
+}
+
+export interface ItemCarrito {
+  idItem?: number;
+  cantidad: number;
+  precioUnitario: number;
+  subtotal: number;
+  idCarrito: number;
+  idProducto: number;
+  producto: Producto;
+  opciones?: OpcionPersonalizacion[];
+}
+
+export interface Carrito {
+  idCarrito: number;
+  estado: string;
+  fechaCreacion: string;
+  idUsuario?: number;
+  items?: ItemCarrito[];
+}
+

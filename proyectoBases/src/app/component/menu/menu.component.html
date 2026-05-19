@@ -1,0 +1,82 @@
+<div class="fondo">
+
+  <!-- SPINNER DE CARGA -->
+  <div class="menu-cargando" *ngIf="cargando">
+    <i class="pi pi-spin pi-spinner"></i>
+    <p>Cargando postres...</p>
+  </div>
+
+  <!-- ENCABEZADO -->
+  <div class="menu-header" *ngIf="!cargando">
+    <p class="menu-eyebrow">Postres artesanales · Bogotá</p>
+    <h1 class="menu-titulo">🍰 Nuestro Menú</h1>
+    <p class="menu-subtitulo">Descubre todos nuestros postres artesanales</p>
+    <div class="menu-divider">
+      <span class="menu-divider-line"></span>
+      <span class="menu-divider-dot"></span>
+      <span class="menu-divider-line"></span>
+    </div>
+  </div>
+
+  <!-- FILTROS POR CATEGORÍA -->
+  <div class="categorias-wrapper" *ngIf="!cargando">
+    <button
+      *ngFor="let cat of categorias"
+      class="btn-categoria"
+      [class.activo]="categoriaActiva === cat"
+      (click)="filtrarCategoria(cat)">
+      {{ cat }}
+    </button>
+  </div>
+
+  <!-- GRID DE PRODUCTOS -->
+  <div class="productos-section" *ngIf="!cargando">
+    <div class="productos-grid">
+
+      <div class="tarjeta" *ngFor="let producto of productosFiltrados">
+
+        <!-- IMAGEN -->
+        <div
+          class="tarjeta-img"
+          [style.background-image]="'url(/' + producto.imagenURL + ')'">
+        </div>
+
+        <!-- CONTENIDO -->
+        <div class="tarjeta-info">
+          <p class="tarjeta-categoria">{{ producto.nombreCategoria }}</p>
+          <h3>{{ producto.nombre }}</h3>
+          <p>{{ producto.descripcion }}</p>
+
+          <div class="tarjeta-footer">
+            <ng-container *ngIf="!esPersonalizado(producto); else btnPersonalizar">
+              <span class="precio">$ {{ producto.precioBase | number:'1.0-0' }}</span>
+              <button (click)="agregarAlCarrito(producto)">
+                <i class="pi pi-shopping-cart"></i> Añadir al carrito
+              </button>
+            </ng-container>
+
+            <ng-template #btnPersonalizar>
+              <button class="btn-personalizar" (click)="irAPersonalizar()">
+                <i class="pi pi-star"></i> Personalizar
+              </button>
+            </ng-template>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ESTADO VACÍO -->
+    <p class="menu-vacio" *ngIf="productosFiltrados.length === 0">
+      No hay productos en esta categoría aún. 🍪
+    </p>
+  </div>
+
+  <!-- TOAST -->
+  <div class="menu-toast" *ngIf="mensajeCarrito">
+    <i class="pi pi-check-circle"></i>
+    {{ mensajeCarrito }}
+  </div>
+
+</div>

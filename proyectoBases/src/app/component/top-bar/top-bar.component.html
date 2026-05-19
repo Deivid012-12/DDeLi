@@ -1,0 +1,37 @@
+<div class="topbar">
+
+  <div class="topbar-left">
+    <a routerLink="/principal">
+      <img src="/assets/logo2.png" style="height:100px; margin-right: -80px; cursor: pointer;">
+    </a>
+  </div>
+
+  <!-- Menú -->
+  <div class="topbar-center">
+    <a routerLink="/principal">Inicio</a>
+    <a routerLink="/promociones">Promos</a>
+    <a routerLink="/menu">Menú</a>
+    <a routerLink="/personalizacion">Postres Personalizados</a>
+    <a routerLink="/suscripcion">Suscripción</a>
+    <a routerLink="/evento">Eventos</a>
+    <a href="https://github.com/Deivid012-12/DDeLi" target="_blank">Contáctanos</a>
+  </div>
+
+  <div class="topbar-right">
+    <!-- Si NO está logueado -->
+    <a routerLink="/inicio" *ngIf="!estaLogueado" title="Iniciar sesión">
+      <i class="pi pi-sign-in"></i>
+    </a>
+
+    <!-- Si ESTÁ logueado -->
+    <ng-container *ngIf="estaLogueado">
+      <a routerLink="/perfil" title="Mi perfil">
+        <i class="pi pi-user"></i>
+      </a>
+      <a routerLink="/carrito" title="Carrito">
+        <i class="pi pi-shopping-bag"></i>
+      </a>
+    </ng-container>
+  </div>
+
+</div>

@@ -1,0 +1,203 @@
+<div class="fondo">
+  <div class="card">
+
+    <!-- ===== FORMULARIO DE REGISTRO ===== -->
+    <ng-container *ngIf="!mostrarVerificacion">
+
+      <div class="brand">
+        <div class="brand-name">DDeLI Postres 🍒</div>
+        <div class="brand-sub">Crea tu cuenta y empieza a disfrutar</div>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+        <div class="form-body">
+
+          <!-- Nombre -->
+          <div class="field-group-wrap">
+            <label for="nombre">Nombre</label>
+            <div class="field-group">
+              <i class="pi pi-user field-icon"></i>
+              <input
+                type="text"
+                id="nombre"
+                name="nombre"
+                [(ngModel)]="registerData.username"
+                placeholder="Ej: María Rodríguez"
+                required
+                minlength="3"
+                #nombre="ngModel"
+              >
+            </div>
+            <div *ngIf="nombre.invalid && nombre.touched" class="error">
+              <div *ngIf="nombre.errors?.['required']">El nombre es requerido</div>
+              <div *ngIf="nombre.errors?.['minlength']">Mínimo 3 caracteres</div>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="field-group-wrap">
+            <label for="email">Correo electrónico</label>
+            <div class="field-group">
+              <i class="pi pi-envelope field-icon"></i>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                [(ngModel)]="registerData.email"
+                placeholder="tu@correo.com"
+                required
+                email
+                #email="ngModel"
+              >
+            </div>
+            <div *ngIf="email.invalid && email.touched" class="error">
+              <div *ngIf="email.errors?.['required']">Correo requerido</div>
+              <div *ngIf="email.errors?.['email']">Correo inválido</div>
+            </div>
+          </div>
+
+          <!-- Teléfono -->
+          <div class="field-group-wrap">
+            <label for="telefono">Teléfono</label>
+            <div class="field-group">
+              <i class="pi pi-phone field-icon"></i>
+              <input
+                type="tel"
+                id="telefono"
+                name="telefono"
+                [(ngModel)]="registerData.telefono"
+                placeholder="3001234567"
+                required
+                pattern="[0-9]{7,15}"
+                #telefono="ngModel"
+              >
+            </div>
+            <div *ngIf="telefono.invalid && telefono.touched" class="error">
+              <div *ngIf="telefono.errors?.['required']">Teléfono requerido</div>
+              <div *ngIf="telefono.errors?.['pattern']">Solo números (7 a 15 dígitos)</div>
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="field-group-wrap">
+            <label for="password">Contraseña</label>
+            <div class="field-group">
+              <i class="pi pi-lock"></i>
+              <p-password
+                id="password"
+                name="password"
+                [(ngModel)]="registerData.password"
+                [toggleMask]="true"
+                placeholder="Mínimo 6 caracteres"
+                required
+                [minlength]="6"
+                #password="ngModel"
+                autocomplete="off"
+                [feedback]="false">
+              </p-password>
+            </div>
+            <div *ngIf="password.invalid && password.touched" class="error">
+              <div *ngIf="password.errors?.['required']">Contraseña requerida</div>
+              <div *ngIf="password.errors?.['minlength']">Mínimo 6 caracteres</div>
+            </div>
+          </div>
+
+        </div>
+
+        <button type="submit" [disabled]="registerForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Crear mi cuenta</span>
+          <span *ngIf="isLoading" class="loading-content">
+            <i class="pi pi-spin pi-spinner spinner"></i>
+            Creando cuenta...
+          </span>
+        </button>
+
+        <div class="link-box">
+          <span>¿Ya tienes cuenta?</span>
+          <a routerLink="/inicio" class="link-accent">Inicia sesión</a>
+        </div>
+
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+        <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+      </form>
+    </ng-container>
+
+    <!-- ===== PANTALLA DE VERIFICACIÓN ===== -->
+    <ng-container *ngIf="mostrarVerificacion">
+
+      <div class="brand">
+        <div class="verificacion-icon"></div>
+        <div class="brand-name">Verifica tu cuenta</div>
+        <div class="brand-sub">
+          Enviamos un código de verificación a<br>
+          <strong>{{ correoRegistrado }}</strong>
+        </div>
+      </div>
+
+      <!-- ÉXITO -->
+      <div *ngIf="verificado" class="verificacion-exito">
+        <div class="exito-icon">✅</div>
+        <p>¡Cuenta verificada correctamente!</p>
+        <p class="exito-sub">Redirigiendo al inicio de sesión...</p>
+      </div>
+
+      <!-- FORMULARIO CÓDIGO -->
+      <div *ngIf="!verificado" class="verificacion-form">
+
+        <div class="field-group-wrap">
+          <label>Código de verificación</label>
+          <div class="field-group">
+            <i class="pi pi-shield field-icon"></i>
+            <input
+              type="text"
+              [(ngModel)]="codigoVerificacion"
+              placeholder="Ej: 48291"
+              maxlength="5"
+              class="codigo-input"
+            >
+          </div>
+        </div>
+
+        <div *ngIf="errorVerificacion" class="error-message">
+          {{ errorVerificacion }}
+        </div>
+
+        <div *ngIf="mensajeVerificacion" class="success-message">
+          {{ mensajeVerificacion }}
+        </div>
+
+        <button
+          type="button"
+          (click)="verificarCuenta()"
+          [disabled]="verificando || !codigoVerificacion"
+        >
+          <span *ngIf="!verificando">Verificar cuenta</span>
+          <span *ngIf="verificando" class="loading-content">
+            <i class="pi pi-spin pi-spinner spinner"></i>
+            Verificando...
+          </span>
+        </button>
+
+        <div class="link-box">
+          <span>¿No recibiste el código?</span>
+          <a
+            class="link-accent"
+            (click)="reenviarCodigo()"
+            style="cursor: pointer;"
+            [class.disabled]="verificando"
+          >
+            Reenviar código
+          </a>
+        </div>
+
+        <div class="link-box">
+          <span>¿Ya tienes cuenta?</span>
+          <a routerLink="/inicio" class="link-accent">Inicia sesión</a>
+        </div>
+
+      </div>
+    </ng-container>
+
+  </div>
+</div>

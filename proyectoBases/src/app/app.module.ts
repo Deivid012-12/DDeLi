@@ -1,0 +1,40 @@
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { AppComponent } from './app.component';
+import { InicioComponent } from './component/inicio/inicio.component';
+import { PrincipalComponent } from './component/principal/principal.component';
+import { RegistroComponent } from './component/registro/registro.component';
+import { HttpClientModule } from '@angular/common/http';
+import { CarritoComponent } from './component/carrito/carrito.component';
+import { TopBarComponent } from './component/top-bar/top-bar.component';
+import { FooterComponent } from './component/footer/footer.component';
+import { PagarComponent } from './component/pagar/pagar.component';
+import { MenuComponent } from './component/menu/menu.component';
+import { PromocionesComponent } from './component/promociones/promociones.component';
+import { SuscripcionComponent } from './component/suscripcion/suscripcion.component';
+import { PerfilComponent } from './component/perfil/perfil.component';
+
+
+@NgModule({
+  declarations: [],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    InicioComponent,
+    PrincipalComponent,
+    RegistroComponent,
+    TopBarComponent,
+    CarritoComponent,
+    FooterComponent,
+    PagarComponent,
+    PromocionesComponent,
+    MenuComponent,
+    SuscripcionComponent,
+    PerfilComponent,
+  ],
+  providers: [],
+  bootstrap: [],
+})
+export class AppModule {}

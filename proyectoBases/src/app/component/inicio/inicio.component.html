@@ -1,0 +1,83 @@
+<div class="fondo">
+  <div class="login-wrapper">
+
+    <!-- LADO IZQUIERDO — decorativo -->
+    <div class="login-left">
+      <div class="left-content">
+        <h2>Postres artesanales<br>llenos de amor</h2>
+        <p>Endulzamos tus momentos especiales con ingredientes naturales y recetas únicas.</p>
+      </div>
+    </div>
+
+    <!-- LADO DERECHO — formulario -->
+    <div class="login-right">
+      <div class="login-card">
+
+        <div class="card-header">
+          <h1>Iniciar sesión</h1>
+          <p>Ingresa tus datos para continuar</p>
+        </div>
+
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+
+          <div class="field-wrap">
+            <label for="email">Correo electrónico</label>
+            <div class="field-inner">
+              <i class="ti ti-mail field-icon" aria-hidden="true"></i>
+              <input type="email"
+                     id="email"
+                     name="email"
+                     [(ngModel)]="loginData.email"
+                     placeholder="Tu correo electrónico"
+                     required
+                     #email="ngModel">
+            </div>
+            <div *ngIf="email.invalid && email.touched" class="error">
+              <div *ngIf="email.errors?.['required']">El correo es requerido</div>
+              <div *ngIf="email.errors?.['email']">Ingresa un correo válido</div>
+            </div>
+          </div>
+
+          <div class="field-wrap">
+            <div class="label-row">
+              <label for="password">Contraseña</label>
+              <a href="#" class="forgot">¿Olvidaste tu contraseña?</a>
+            </div>
+            <div class="field-inner">
+              <i class="ti ti-lock field-icon" aria-hidden="true"></i>
+              <p-password id="password"
+                          name="password"
+                          [(ngModel)]="loginData.password"
+                          [toggleMask]="true"
+                          placeholder="Tu contraseña"
+                          required
+                          [feedback]="false"
+                          #password="ngModel"
+                          autocomplete="off">
+              </p-password>
+            </div>
+            <div *ngIf="password.invalid && password.touched" class="error">
+              <div *ngIf="password.errors?.['required']">Contraseña es requerida</div>
+            </div>
+          </div>
+
+          <button type="submit" [disabled]="loginForm.invalid || isLoading">
+            {{ isLoading ? 'Iniciando...' : 'Iniciar sesión' }}
+          </button>
+
+          <div *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}
+          </div>
+
+        </form>
+
+        <div class="card-footer">
+          <span>¿No tienes cuenta?</span>
+          <a routerLink="/registro" class="link-accent">Regístrate gratis</a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

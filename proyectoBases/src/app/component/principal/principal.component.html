@@ -1,0 +1,99 @@
+
+<div class="fondo">
+<div class="division1"></div>
+  <div class="info">
+  <div class="productos-section">
+    <h2 class="productos-titulo">Nuestros Productos</h2>
+    <div class="productos-grid">
+
+      <div class="tarjeta">
+        <div class="tarjeta-img" style="background-image: url('/assets/torta.png')"></div>
+        <div class="tarjeta-info">
+          <h3>Tortas</h3>
+          <p>Deliciosas tortas artesanales para toda ocasión</p>
+
+          <button
+            [routerLink]="['/menu']"
+            [queryParams]="{ categoria: 'Tortas' }">
+            Ver más
+          </button>
+        </div>
+      </div>
+
+      <div class="tarjeta">
+        <div class="tarjeta-img" style="background-image: url('/assets/browni.png')"></div>
+        <div class="tarjeta-info">
+          <h3>Brownies</h3>
+          <p>Brownies esponjosos con el mejor chocolate</p>
+
+          <button
+            [routerLink]="['/menu']"
+            [queryParams]="{ categoria: 'Brownies' }">
+            Ver más
+          </button>
+        </div>
+      </div>
+
+      <div class="tarjeta">
+        <div class="tarjeta-img" style="background-image: url('/assets/cheeskake.png')"></div>
+        <div class="tarjeta-info">
+          <h3>Cheesecakes</h3>
+          <p>Cremosos cheesecakes con frutas frescas</p>
+
+          <button
+            [routerLink]="['/menu']"
+            [queryParams]="{ categoria: 'Cheesecakes' }">
+            Ver más
+          </button>
+        </div>
+      </div>
+
+      <div class="tarjeta">
+        <div class="tarjeta-img" style="background-image: url('/assets/cupcake.png')"></div>
+        <div class="tarjeta-info">
+          <h3>Cupcakes</h3>
+          <p>Cupcakes decorados para cada momento especial</p>
+
+          <button
+            [routerLink]="['/menu']"
+            [queryParams]="{ categoria: 'Tortas' }">
+            Ver más
+          </button>
+        </div>
+      </div>
+
+      <div class="tarjeta">
+        <div class="tarjeta-img" style="background-image: url('/assets/wuafle.png')"></div>
+        <div class="tarjeta-info">
+          <h3>Postres Especiales</h3>
+          <p>Creaciones únicas para eventos y celebraciones</p>
+
+          <button
+            [routerLink]="['/menu']"
+            [queryParams]="{ categoria: 'Postres Especiales' }">
+            Ver más
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </div>
+    <div class="personalizacion-section">
+      <div class="personalizacion-img">
+        <img src="/assets/personalizado.png" alt="Personaliza tu postre">
+      </div>
+      <div class="personalizacion-texto">
+        <h2>¡Personaliza tu postre como quieras! 🎂</h2>
+        <p>En DDeLI Postres puedes crear el postre de tus sueños eligiendo:</p>
+        <ul>
+          <li>🍓 <span>Sabores</span> — fresa, chocolate, vainilla y más</li>
+          <li>🍫 <span>Toppings</span> — chispas, frutas, caramelo, oreo</li>
+          <li>🎨 <span>Decoración</span> — personalizada para tu ocasión</li>
+          <li>📏 <span>Tamaño</span> — pequeño, mediano o grande</li>
+        </ul>
+        <button routerLink="/personalizacion">¡Personaliza ahora!</button>
+      </div>
+    </div>
+  <div class="espacio"> </div>
+</div>

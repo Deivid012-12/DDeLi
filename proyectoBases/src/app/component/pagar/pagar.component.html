@@ -1,0 +1,505 @@
+<div class="fondo">
+  <div class="alerta" *ngIf="mostrarAlerta" [ngClass]="tipoAlerta">
+    <i class="pi"
+       [ngClass]="{
+       'pi-check-circle': tipoAlerta === 'exito',
+       'pi-exclamation-triangle': tipoAlerta === 'error',
+       'pi-info-circle': tipoAlerta === 'info'
+     }">
+    </i>
+
+    <span>{{ mensajeAlerta }}</span>
+  </div>
+  <div class="pago-wrapper">
+
+    <!-- ── HEADER ─────────────────────────────────────────── -->
+    <div class="pago-header">
+      <div class="pago-header-badge">
+        <span class="pago-header-dot"></span>
+        FINALIZAR COMPRA
+      </div>
+      <h1 class="pago-titulo">Proceder al <em>Pago</em></h1>
+      <div class="menu-divider">
+        <span class="menu-divider-line"></span>
+        <span class="menu-divider-dot"></span>
+        <span class="menu-divider-line"></span>
+      </div>
+      <p class="pago-subtitulo">Completa tu información para finalizar el pedido</p>
+    </div>
+
+    <!-- ── PROGRESS STEPS ────────────────────────────────── -->
+    <div class="progress-bar-wrap">
+      <div class="progress-steps">
+        <div class="step done">
+          <div class="step-num">✓</div>
+          <span>Carrito</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step active">
+          <div class="step-num">2</div>
+          <span>Información</span>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <span>Confirmación</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LOADING ───────────────────────────────────────── -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="loading-spinner"></div>
+      <p>Cargando tu pedido...</p>
+    </div>
+
+    <!-- ── BODY ─────────────────────────────────────────── -->
+    <div class="pago-body" *ngIf="!loading">
+
+      <!-- COLUMNA IZQUIERDA -->
+      <div class="pago-form-col">
+
+        <!-- ── DIRECCIÓN ──────────────────────────────────── -->
+        <div class="seccion-card">
+          <h2 class="seccion-titulo">
+            <span class="seccion-icono"><i class="pi pi-map-marker"></i></span>
+            Dirección de entrega
+          </h2>
+
+          <!-- Dirección -->
+          <div class="form-group">
+            <label class="form-label">Dirección <span class="req">*</span></label>
+            <input
+              type="text"
+              name="direccion"
+              [(ngModel)]="direccion"
+              #dirRef="ngModel"
+              required
+              minlength="8"
+              maxlength="120"
+              placeholder="Calle, número, barrio"
+              class="form-input"
+              [class.input-error]="dirRef.invalid && dirRef.touched"
+              [class.input-ok]="dirRef.valid && dirRef.touched"
+            />
+            <div class="error-msg" *ngIf="dirRef.invalid && dirRef.touched">
+              <i class="pi pi-exclamation-circle"></i>
+              <span *ngIf="dirRef.errors?.['required']">La dirección es obligatoria.</span>
+              <span *ngIf="dirRef.errors?.['minlength']">Mínimo 8 caracteres.</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <!-- Ciudad -->
+            <div class="form-group">
+              <label class="form-label">Ciudad <span class="req">*</span></label>
+              <input
+                type="text"
+                name="ciudad"
+                [(ngModel)]="ciudad"
+                #ciudadRef="ngModel"
+                required
+                pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,60}$"
+                maxlength="60"
+                placeholder="Ej: Bogotá"
+                class="form-input"
+                [class.input-error]="ciudadRef.invalid && ciudadRef.touched"
+                [class.input-ok]="ciudadRef.valid && ciudadRef.touched"
+              />
+              <div class="error-msg" *ngIf="ciudadRef.invalid && ciudadRef.touched">
+                <i class="pi pi-exclamation-circle"></i>
+                <span *ngIf="ciudadRef.errors?.['required']">La ciudad es obligatoria.</span>
+                <span *ngIf="ciudadRef.errors?.['pattern']">Solo letras, sin números.</span>
+              </div>
+            </div>
+
+            <!-- Departamento -->
+            <div class="form-group">
+              <label class="form-label">Departamento <span class="req">*</span></label>
+              <input
+                type="text"
+                name="departamento"
+                [(ngModel)]="departamento"
+                #deptRef="ngModel"
+                required
+                pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{2,60}$"
+                maxlength="60"
+                placeholder="Ej: Cundinamarca"
+                class="form-input"
+                [class.input-error]="deptRef.invalid && deptRef.touched"
+                [class.input-ok]="deptRef.valid && deptRef.touched"
+              />
+              <div class="error-msg" *ngIf="deptRef.invalid && deptRef.touched">
+                <i class="pi pi-exclamation-circle"></i>
+                <span *ngIf="deptRef.errors?.['required']">El departamento es obligatorio.</span>
+                <span *ngIf="deptRef.errors?.['pattern']">Solo letras, sin números.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <!-- Código postal -->
+            <div class="form-group">
+              <label class="form-label">Código postal <span class="req">*</span></label>
+              <input
+                type="text"
+                name="codigoPostal"
+                [(ngModel)]="codigoPostal"
+                #cpRef="ngModel"
+                required
+                pattern="^\d{6}$"
+                maxlength="6"
+                placeholder="Ej: 110111"
+                class="form-input"
+                [class.input-error]="cpRef.invalid && cpRef.touched"
+                [class.input-ok]="cpRef.valid && cpRef.touched"
+              />
+              <div class="error-msg" *ngIf="cpRef.invalid && cpRef.touched">
+                <i class="pi pi-exclamation-circle"></i>
+                <span *ngIf="cpRef.errors?.['required']">El código postal es obligatorio.</span>
+                <span *ngIf="cpRef.errors?.['pattern']">Debe tener exactamente 6 dígitos.</span>
+              </div>
+            </div>
+
+            <!-- Indicaciones -->
+            <div class="form-group">
+              <label class="form-label">Indicaciones adicionales</label>
+              <input
+                type="text"
+                name="indicaciones"
+                [(ngModel)]="indicaciones"
+                maxlength="100"
+                placeholder="Apto, piso, referencia..."
+                class="form-input"
+              />
+            </div>
+          </div>
+
+          <!-- Tipo de entrega -->
+          <div class="form-group">
+            <label class="form-label">Tipo de entrega <span class="req">*</span></label>
+            <div class="opciones-entrega">
+              <div
+                class="opcion-card"
+                [class.activo]="tipoEntrega === 'domicilio'"
+                (click)="tipoEntrega = 'domicilio'"
+              >
+                <i class="pi pi-truck"></i>
+                <span>Domicilio</span>
+                <small>Recibe en tu puerta</small>
+              </div>
+              <div
+                class="opcion-card"
+                [class.activo]="tipoEntrega === 'punto'"
+                (click)="tipoEntrega = 'punto'"
+              >
+                <i class="pi pi-shop"></i>
+                <span>Punto de entrega</span>
+                <small>Recoge en tienda</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── MÉTODO DE PAGO ──────────────────────────────── -->
+        <div class="seccion-card">
+          <h2 class="seccion-titulo">
+            <span class="seccion-icono"><i class="pi pi-credit-card"></i></span>
+            Método de pago
+          </h2>
+
+          <div class="metodos-pago">
+            <div
+              class="metodo-card"
+              [class.activo]="pago.metodoPago === 'tarjeta'"
+              (click)="pago.metodoPago = 'tarjeta'"
+            >
+              <i class="pi pi-credit-card"></i>
+              <span>Tarjeta</span>
+            </div>
+            <div
+              class="metodo-card"
+              [class.activo]="pago.metodoPago === 'transferencia'"
+              (click)="pago.metodoPago = 'transferencia'"
+            >
+              <i class="pi pi-building-columns"></i>
+              <span>Transferencia</span>
+            </div>
+            <div
+              class="metodo-card"
+              [class.activo]="pago.metodoPago === 'contraentrega'"
+              (click)="pago.metodoPago = 'contraentrega'"
+            >
+              <i class="pi pi-money-bill"></i>
+              <span>Contraentrega</span>
+            </div>
+          </div>
+
+          <!-- TARJETA -->
+          <div *ngIf="pago.metodoPago === 'tarjeta'" class="datos-tarjeta">
+
+            <div class="form-group">
+              <label class="form-label">Número de tarjeta <span class="req">*</span></label>
+              <div class="input-icon-wrap">
+                <input
+                  type="text"
+                  name="numeroTarjeta"
+                  [(ngModel)]="numeroTarjeta"
+                  #cardRef="ngModel"
+                  required
+                  pattern="^[\d\s]{19}$"
+                  maxlength="19"
+                  placeholder="0000 0000 0000 0000"
+                  class="form-input input-with-badges"
+                  [class.input-error]="cardRef.invalid && cardRef.touched"
+                  [class.input-ok]="cardRef.valid && cardRef.touched"
+                />
+                <div class="card-network-badges">
+                  <span class="badge-visa">VISA</span>
+                  <span class="badge-mc">MC</span>
+                </div>
+              </div>
+              <div class="error-msg" *ngIf="cardRef.invalid && cardRef.touched">
+                <i class="pi pi-exclamation-circle"></i>
+                <span *ngIf="cardRef.errors?.['required']">El número de tarjeta es obligatorio.</span>
+                <span *ngIf="cardRef.errors?.['pattern']">16 dígitos en formato: 0000 0000 0000 0000</span>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <!-- Vencimiento -->
+              <div class="form-group">
+                <label class="form-label">Vencimiento <span class="req">*</span></label>
+                <input
+                  type="text"
+                  name="vencimiento"
+                  [(ngModel)]="vencimiento"
+                  #vencRef="ngModel"
+                  required
+                  pattern="^(0[1-9]|1[0-2])\/\d{2}$"
+                  maxlength="5"
+                  placeholder="MM/AA"
+                  class="form-input"
+                  [class.input-error]="vencRef.invalid && vencRef.touched"
+                  [class.input-ok]="vencRef.valid && vencRef.touched"
+                />
+                <div class="error-msg" *ngIf="vencRef.invalid && vencRef.touched">
+                  <i class="pi pi-exclamation-circle"></i>
+                  <span *ngIf="vencRef.errors?.['required']">Campo obligatorio.</span>
+                  <span *ngIf="vencRef.errors?.['pattern']">Formato MM/AA (ej: 08/27).</span>
+                </div>
+              </div>
+
+              <!-- CVV -->
+              <div class="form-group">
+                <label class="form-label">CVV <span class="req">*</span></label>
+                <input
+                  type="password"
+                  name="cvv"
+                  [(ngModel)]="cvv"
+                  #cvvRef="ngModel"
+                  required
+                  pattern="^\d{3,4}$"
+                  minlength="3"
+                  maxlength="4"
+                  placeholder="•••"
+                  class="form-input"
+                  [class.input-error]="cvvRef.invalid && cvvRef.touched"
+                  [class.input-ok]="cvvRef.valid && cvvRef.touched"
+                />
+                <div class="error-msg" *ngIf="cvvRef.invalid && cvvRef.touched">
+                  <i class="pi pi-exclamation-circle"></i>
+                  <span *ngIf="cvvRef.errors?.['required']">El CVV es obligatorio.</span>
+                  <span *ngIf="cvvRef.errors?.['pattern']">3 o 4 dígitos numéricos.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nombre en tarjeta -->
+            <div class="form-group">
+              <label class="form-label">Nombre en la tarjeta <span class="req">*</span></label>
+              <input
+                type="text"
+                name="nombreTarjeta"
+                [(ngModel)]="nombreTarjeta"
+                #nomTRef="ngModel"
+                required
+                pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{3,60}$"
+                maxlength="60"
+                placeholder="Como aparece en la tarjeta"
+                class="form-input"
+                [class.input-error]="nomTRef.invalid && nomTRef.touched"
+                [class.input-ok]="nomTRef.valid && nomTRef.touched"
+              />
+              <div class="error-msg" *ngIf="nomTRef.invalid && nomTRef.touched">
+                <i class="pi pi-exclamation-circle"></i>
+                <span *ngIf="nomTRef.errors?.['required']">El nombre es obligatorio.</span>
+                <span *ngIf="nomTRef.errors?.['pattern']">Solo letras, mínimo 3 caracteres.</span>
+              </div>
+            </div>
+
+            <div class="ssl-strip">
+              <i class="pi pi-lock"></i>
+              <span>Tus datos están protegidos con cifrado SSL de 256 bits</span>
+            </div>
+          </div>
+
+          <!-- TRANSFERENCIA -->
+          <div *ngIf="pago.metodoPago === 'transferencia'" class="info-bloque info-transferencia">
+            <div class="info-bloque-icon">🏦</div>
+            <p class="info-bloque-titulo">Datos bancarios</p>
+            <div class="info-row"><span>Banco</span><strong>Bancolombia</strong></div>
+            <div class="info-row"><span>Cuenta ahorros</span><strong>123-456789-00</strong></div>
+            <div class="info-row"><span>NIT</span><strong>900.123.456-7</strong></div>
+            <p class="info-nota">
+              📎 Envía el comprobante a <strong>pagos&#64;ddeli.com</strong> para activar tu pedido.
+            </p>
+          </div>
+
+          <!-- CONTRA ENTREGA -->
+          <div *ngIf="pago.metodoPago === 'contraentrega'" class="info-bloque info-contraentrega">
+            <div class="info-bloque-icon">🏍️</div>
+            <p class="info-bloque-titulo">Pago en efectivo</p>
+            <p class="info-nota">
+              Pagarás al momento de recibir tu pedido. Ten el valor exacto listo para el domiciliario.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── RESUMEN ─────────────────────────────────────── -->
+      <div class="resumen-card">
+
+        <div class="resumen-header">
+          <div class="resumen-badge">🧁</div>
+          <h2 class="resumen-titulo">Tu <em>pedido</em></h2>
+        </div>
+
+        <!-- Items -->
+        <div class="resumen-items">
+          <div *ngIf="items.length === 0" class="resumen-vacio">
+            <p>No hay productos en el carrito</p>
+          </div>
+          <div class="resumen-item" *ngFor="let item of items">
+            <span class="resumen-item-nombre">
+              {{ item.producto?.nombre }}
+              <span class="resumen-item-qty">x{{ item.cantidad }}</span>
+            </span>
+            <span class="resumen-item-precio">
+              $ {{ item.subtotal | number:'1.2-2' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="resumen-divider"></div>
+
+        <!-- Evento activo -->
+        <div *ngIf="eventoActivo" class="chip-activo chip-evento">
+          <i class="pi pi-calendar"></i>
+          <span>
+            🎉 {{ eventoActivo.tipoEvento }} ·
+            {{ eventoActivo.fechaEvento }} ·
+            {{ eventoActivo.numeroPersonas }} personas
+          </span>
+        </div>
+
+        <!-- Sin evento -->
+        <a *ngIf="!eventoActivo" routerLink="/evento" class="btn-accion-secundaria">
+          🎉 Asociar un evento
+        </a>
+
+        <!-- Promo activa -->
+        <div *ngIf="promoActiva" class="chip-activo chip-promo">
+          <i class="pi pi-tag"></i>
+          <span>🎟️ {{ promoActiva.nombre }} — {{ promoActiva.porcentajeDescuento }}% off</span>
+        </div>
+
+        <div class="resumen-divider"></div>
+
+        <div class="resumen-fila">
+          <span>Subtotal</span>
+          <span>$ {{ calcularSubtotal() | number:'1.2-2' }}</span>
+        </div>
+
+        <div class="resumen-fila">
+          <span>Envío</span>
+          <span>$ 8,000.00</span>
+        </div>
+
+        <div class="resumen-fila">
+          <span>Descuento</span>
+          <span *ngIf="promoActiva" class="valor-descuento">
+            - $ {{ calcularDescuento() | number:'1.2-2' }}
+          </span>
+          <span *ngIf="!promoActiva">$ 0.00</span>
+        </div>
+
+        <div class="resumen-divider"></div>
+
+        <div class="resumen-fila total">
+          <span>Total</span>
+          <span>$ {{ calcularTotal() + 8000 | number:'1.2-2' }}</span>
+        </div>
+        <button
+          class="btn-pagar"
+          (click)="confirmarPago()"
+          [disabled]="procesando || loading"
+        >
+          <i class="pi pi-shield" *ngIf="!procesando"></i>
+          <i class="pi pi-spin pi-spinner" *ngIf="procesando"></i>
+
+          <span>
+    {{ procesando ? 'Procesando...' : 'Confirmar pedido' }}
+  </span>
+
+          <span class="btn-arrow" *ngIf="!procesando">→</span>
+        </button>
+
+        <div class="link-seguir">
+          <a routerLink="/carrito">← Volver al carrito</a>
+        </div>
+
+        <div class="trust-strip">
+          <div class="trust-item">
+            <i class="pi pi-lock"></i>
+            <span>Pago seguro</span>
+          </div>
+
+          <div class="trust-item">
+            <i class="pi pi-verified"></i>
+            <span>SSL 256-bit</span>
+          </div>
+
+          <div class="trust-item">
+            <i class="pi pi-refresh"></i>
+            <span>Devoluciones</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div
+    class="modal-overlay"
+    *ngIf="mostrarModalCompra">
+    <div class="modal-confirmacion">
+      <div class="modal-icono modal-icono-exito">
+        <i class="pi pi-check-circle"></i>
+      </div>
+      <h2>
+        ¡Compra realizada!
+      </h2>
+      <p>
+        Tu pedido fue confirmado correctamente 🎉
+      </p>
+      <div class="modal-botones">
+      <button
+        class="btn-modal-confirmar"
+        (click)="cerrarModalCompra()">
+        Continuar
+      </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,230 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.fondo {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  background-image: url("../../../assets/inicio3.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.login-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+/* ── LADO IZQUIERDO ── */
+.login-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(3px);            /* ya lo tienes, auméntalo un poco */
+}
+
+.left-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+.login-left h2 {
+  font-size: 45px;
+  font-weight: 900;
+  color: #630303;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+  font-family: 'Comic Sans MS', sans-serif
+}
+
+.login-left p {
+  font-size: 25px;
+  color: rgba(101, 6, 6, 0.8);
+  line-height: 1.7;
+  font-family: 'Comic Sans MS', sans-serif
+}
+
+.login-right {
+  width: 480px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  padding: 2rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+}
+
+.card-header {
+  margin-bottom: 1rem;
+}
+
+.card-header h1 {
+  font-size: 40px;
+  font-weight: 500;
+  color: #3d1515;
+  font-family: 'Comic Sans MS', sans-serif;
+  margin-bottom: 6px;
+  margin-top: -30px !important;
+}
+
+.card-header p {
+  font-size: 15px;
+  color: #9e5050;
+  font-family: 'Comic Sans MS', sans-serif;
+}
+
+/* FIELDS */
+.field-wrap {
+  width: 100%;
+  margin-bottom: 1.25rem;
+}
+
+label {
+  display: block;
+  font-size: 18px;
+  color: #9e5050;
+  font-weight: 500;
+  margin-bottom: 5px;
+  font-family:'Comic Sans MS', sans-serif;
+}
+
+.label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.forgot {
+  font-size: 12px;
+  color: #c0392b;
+  text-decoration: none;
+  font-family: 'Comic Sans MS', sans-serif;
+}
+.forgot:hover { text-decoration: underline; }
+
+.field-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.field-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 16px;
+  color: #d49090;
+  pointer-events: none;
+  z-index: 1;
+  font-family: 'Comic Sans MS', sans-serif;
+}
+
+input {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px 0 40px;
+  border-radius: 10px;
+  border: 0.5px solid #f0c8c8;
+  background: #fffafa;
+  font-size: 14px;
+  color: #3d1515;
+  font-family: 'Comic Sans MS', sans-serif;
+  outline: none;
+  box-shadow: none;
+  margin: 0;
+  transition: border-color 0.2s;
+}
+input:focus {
+  border-color: #c0392b;
+  background: #fff;
+}
+input::placeholder { color: #c8a0a0; }
+
+/* p-password igual que los inputs */
+:host ::ng-deep .p-password { width: 100%; }
+:host ::ng-deep .p-password input {
+  width: 100%;
+  height: 46px;
+  padding: 0 40px;
+  border-radius: 10px;
+  border: 0.5px solid #f0c8c8;
+  background: #fffafa;
+  font-size: 14px;
+  color: #3d1515;
+  font-family: 'Comic Sans MS', sans-serif;
+  outline: none;
+  box-shadow: none;
+}
+:host ::ng-deep .p-password input:focus {
+  border-color: #c0392b;
+  background: #fff;
+}
+:host ::ng-deep .p-password input::placeholder { color: #c8a0a0; }
+
+/* BOTÓN */
+button[type="submit"] {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  border: none;
+  background: #c0392b;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: 'Comic Sans MS', sans-serif;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  margin: 0.5rem 0 0;
+  box-shadow: none;
+  letter-spacing: 0.2px;
+}
+button[type="submit"]:hover { opacity: 0.9; }
+button[type="submit"]:disabled { background: #e0b0b0; cursor: not-allowed; }
+
+/* FOOTER */
+.card-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 13px;
+  color: #9e5050;
+  font-family: 'Comic Sans MS', sans-serif;
+}
+.link-accent {
+  color: #c0392b;
+  font-weight: 500;
+  text-decoration: none;
+  margin-left: 4px;
+}
+.link-accent:hover { text-decoration: underline; }
+
+/* ERRORES */
+.error {
+  color: #c0392b;
+  font-size: 12px;
+  margin-top: 4px;
+  padding-left: 2px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.error-message {
+  background: #faece7;
+  color: #712b13;
+  font-size: 13px;
+  padding: 0.75rem;
+  border-radius: 10px;
+  border: 0.5px solid #f0997b;
+  text-align: center;
+  margin-top: 0.75rem;
+  font-family: 'Poppins', sans-serif;
+}
