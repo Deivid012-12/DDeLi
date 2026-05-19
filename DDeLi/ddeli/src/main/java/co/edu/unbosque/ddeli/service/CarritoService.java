@@ -220,7 +220,7 @@ public class CarritoService implements CRUDOperation<CarritoDTO> {
 		Carrito carrito = carritoOpt.get();
 		Producto producto = productoOpt.get();
 
-		// Calcular costo adicional de opciones
+	
 		double costoOpciones = 0;
 		List<OpcionPersonalizacion> opciones = new ArrayList<>();
 		if (idOpciones != null && !idOpciones.isEmpty()) {

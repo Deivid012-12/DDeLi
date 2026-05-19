@@ -3,6 +3,7 @@ package co.edu.unbosque.ddeli.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,13 +25,14 @@ public class EnvioCorreoService {
 	 * @param destinatario correo electrónico del usuario
 	 * @param token        código de verificación asociado al usuario
 	 */
+	@Async
 	public void enviarCorreoVerificacion(String destinatario, int token) {
-		String asunto = "Verificación de cuenta";
-		String linkVerificacion = "http://localhost:8081/usuario/verificar?token=" + token;
+		String asunto = " DDeLi Postres - Verifica tu cuenta";
 
-		String cuerpo = "Hola,\n\n"
-				+ "Gracias por registrarte. Para activar tu cuenta, haz clic en el siguiente enlace:\n"
-				+ linkVerificacion + "\n\n" + "Si no te registraste en nuestro sistema, ignora este correo.";
+		String cuerpo = "Bienvenid@\\n" + "Gracias por registrarte en DDeLi Postres \n\n"
+				+ "Tu código de verificación es el siguiente:\n\n" + token + "\n\n"
+				+ "Regresa a la pagina de registro e ingresa este código en la app para activar tu cuenta.\n\n"
+				+ "Si no te registraste, ignora este correo.\n\n" + "Que tengas un dulce inicio ";
 
 		SimpleMailMessage mensaje = new SimpleMailMessage();
 		mensaje.setFrom("pokefightf@gmail.com");

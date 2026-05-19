@@ -97,6 +97,7 @@ public class SuscripcionDTO {
 		this.plan = plan;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "Suscripcion [idSuscripcion=" + idSuscripcion + ", fechaInicio=" + fechaInicio + ", estado=" + estado

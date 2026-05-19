@@ -4,13 +4,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.edu.unbosque.ddeli.dto.ProductoDTO;
+import co.edu.unbosque.ddeli.dto.PromocionConProductoDTO;
 import co.edu.unbosque.ddeli.dto.PromocionDTO;
+import co.edu.unbosque.ddeli.entity.Producto;
 import co.edu.unbosque.ddeli.entity.Promocion;
+import co.edu.unbosque.ddeli.repository.ProductoRepository;
 import co.edu.unbosque.ddeli.repository.PromocionRepository;
 
 @Service
@@ -21,6 +26,8 @@ public class PromocionService implements CRUDOperation<PromocionDTO> {
 
 	@Autowired
 	private ModelMapper modelMapper;
+	@Autowired
+	private ProductoRepository productoRepository;
 
 	public PromocionService() {
 	}
@@ -73,19 +80,25 @@ public class PromocionService implements CRUDOperation<PromocionDTO> {
 		return 1;
 	}
 
-	
-	public List<PromocionDTO> obtenerVigentes() {
+	public List<PromocionConProductoDTO> obtenerVigentesConProductos() {
 		LocalDate hoy = LocalDate.now();
-		List<Promocion> entityList = promocionRepository.findByFechaInicioLessThanEqualAndFechaFinGreaterThanEqual(hoy,
+
+		List<Promocion> vigentes = promocionRepository.findByFechaInicioLessThanEqualAndFechaFinGreaterThanEqual(hoy,
 				hoy);
-		List<PromocionDTO> dtoList = new ArrayList<>();
 
-		entityList.forEach(entity -> {
-			PromocionDTO dto = modelMapper.map(entity, PromocionDTO.class);
-			dtoList.add(dto);
-		});
+		List<Producto> productosDisponibles = productoRepository.findByDisponibilidad(true);
 
-		return dtoList;
+		return vigentes.stream().map(promo -> {
+			PromocionConProductoDTO dto = new PromocionConProductoDTO();
+			dto.setIdPromocion(promo.getIdPromocion());
+			dto.setNombre(promo.getNombre());
+			dto.setPorcentajeDescuento(promo.getPorcentajeDescuento());
+			dto.setFechaInicio(promo.getFechaInicio());
+			dto.setFechaFin(promo.getFechaFin());
+			dto.setProducto(productosDisponibles.stream().map(p -> modelMapper.map(p, ProductoDTO.class))
+					.collect(Collectors.toList()));
+			return dto;
+		}).collect(Collectors.toList());
 	}
 
 	public boolean exist(Long id) {

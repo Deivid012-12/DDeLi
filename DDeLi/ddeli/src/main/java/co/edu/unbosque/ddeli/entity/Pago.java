@@ -23,6 +23,7 @@ public class Pago {
 	private String metodoPago;
 	private String estadoTransaccion;
 	private LocalDate fechaPago;
+	
 
 	@JsonIgnore
 	@OneToOne

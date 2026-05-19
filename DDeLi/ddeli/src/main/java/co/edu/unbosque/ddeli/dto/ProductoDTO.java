@@ -1,29 +1,36 @@
 package co.edu.unbosque.ddeli.dto;
 
 public class ProductoDTO {
+
 	private Long idProducto;
 	private String nombre;
 	private String descripcion;
 	private double precioBase;
+	private String tipoProducto;
+	private String estiloBase;
+	private int maximoOpciones;
+
 	private boolean disponibilidad;
-	private String tipo;
 
 	private Long idCategoria;
-
 	private String nombreCategoria;
 	private String imagenURL;
 
 	public ProductoDTO() {
 	}
 
-	public ProductoDTO(Long idProducto, String nombre, String descripcion, double precioBase, boolean disponibilidad,
-			String tipo, String nombreCategoria, String imagenURL) {
+	public ProductoDTO(Long idProducto, String nombre, String descripcion, double precioBase, String tipoProducto,
+			String estiloBase, int maximoOpciones, boolean disponibilidad, Long idCategoria, String nombreCategoria,
+			String imagenURL) {
 		this.idProducto = idProducto;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.precioBase = precioBase;
+		this.tipoProducto = tipoProducto;
+		this.estiloBase = estiloBase;
+		this.maximoOpciones = maximoOpciones;
 		this.disponibilidad = disponibilidad;
-		this.tipo = tipo;
+		this.idCategoria = idCategoria;
 		this.nombreCategoria = nombreCategoria;
 		this.imagenURL = imagenURL;
 	}
@@ -60,6 +67,30 @@ public class ProductoDTO {
 		this.precioBase = precioBase;
 	}
 
+	public String getTipoProducto() {
+		return tipoProducto;
+	}
+
+	public void setTipoProducto(String tipoProducto) {
+		this.tipoProducto = tipoProducto;
+	}
+
+	public String getEstiloBase() {
+		return estiloBase;
+	}
+
+	public void setEstiloBase(String estiloBase) {
+		this.estiloBase = estiloBase;
+	}
+
+	public int getMaximoOpciones() {
+		return maximoOpciones;
+	}
+
+	public void setMaximoOpciones(int maximoOpciones) {
+		this.maximoOpciones = maximoOpciones;
+	}
+
 	public boolean isDisponibilidad() {
 		return disponibilidad;
 	}
@@ -68,12 +99,12 @@ public class ProductoDTO {
 		this.disponibilidad = disponibilidad;
 	}
 
-	public String getTipo() {
-		return tipo;
+	public Long getIdCategoria() {
+		return idCategoria;
 	}
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
+	public void setIdCategoria(Long idCategoria) {
+		this.idCategoria = idCategoria;
 	}
 
 	public String getNombreCategoria() {
@@ -92,19 +123,11 @@ public class ProductoDTO {
 		this.imagenURL = imagenURL;
 	}
 
-	public Long getIdCategoria() {
-		return idCategoria;
-	}
-
-	public void setIdCategoria(Long idCategoria) {
-		this.idCategoria = idCategoria;
-	}
-
 	@Override
 	public String toString() {
 		return "ProductoDTO [idProducto=" + idProducto + ", nombre=" + nombre + ", descripcion=" + descripcion
-				+ ", precioBase=" + precioBase + ", disponibilidad=" + disponibilidad + ", tipo=" + tipo
-				+ ", idCategoria=" + idCategoria + ", nombreCategoria=" + nombreCategoria + ", imagenURL=" + imagenURL
-				+ "]";
+				+ ", precioBase=" + precioBase + ", tipoProducto=" + tipoProducto + ", estiloBase=" + estiloBase
+				+ ", maximoOpciones=" + maximoOpciones + ", disponibilidad=" + disponibilidad + ", idCategoria="
+				+ idCategoria + ", nombreCategoria=" + nombreCategoria + ", imagenURL=" + imagenURL + "]";
 	}
 }

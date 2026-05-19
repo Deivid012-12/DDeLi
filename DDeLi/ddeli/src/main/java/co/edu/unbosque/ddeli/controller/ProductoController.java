@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/producto")
-@CrossOrigin(origins = { "http://localhost:4200" })
+// FIX #5: CORS ya no está hardcodeado aquí — se configura en WebConfig.java
 @Transactional
 @Tag(name = "Gestión de Productos", description = "Endpoints para administrar productos")
 @SecurityRequirement(name = "bearerAuth")
@@ -28,36 +28,6 @@ public class ProductoController {
 	@GetMapping(path = "/getall")
 	public ResponseEntity<List<ProductoDTO>> getAll() {
 		List<ProductoDTO> productos = productoSer.getAll();
-		if (productos.isEmpty()) {
-			return new ResponseEntity<>(productos, HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(productos, HttpStatus.OK);
-		}
-	}
-
-	@GetMapping(path = "/disponibles")
-	public ResponseEntity<List<ProductoDTO>> obtenerDisponibles() {
-		List<ProductoDTO> productos = productoSer.obtenerDisponibles();
-		if (productos.isEmpty()) {
-			return new ResponseEntity<>(productos, HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(productos, HttpStatus.OK);
-		}
-	}
-
-	@GetMapping(path = "/obtenerPorTipo/{tipo}")
-	public ResponseEntity<List<ProductoDTO>> obtenerPorTipo(@PathVariable String tipo) {
-		List<ProductoDTO> productos = productoSer.obtenerPorTipo(tipo);
-		if (productos.isEmpty()) {
-			return new ResponseEntity<>(productos, HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(productos, HttpStatus.OK);
-		}
-	}
-
-	@GetMapping(path = "/obtenerPorCategoria/{idCategoria}")
-	public ResponseEntity<List<ProductoDTO>> obtenerPorCategoria(@PathVariable Long idCategoria) {
-		List<ProductoDTO> productos = productoSer.obtenerPorCategoria(idCategoria);
 		if (productos.isEmpty()) {
 			return new ResponseEntity<>(productos, HttpStatus.NO_CONTENT);
 		} else {
@@ -81,25 +51,13 @@ public class ProductoController {
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
-	@PostMapping(path = "/crear")
+	// FIX #2: Eliminado /createjson por ser idéntico a /crear
+	@PostMapping(path = "/crear", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> crear(@RequestBody ProductoDTO newProducto) {
 		int status = productoSer.create(newProducto);
 
 		if (status == 0) {
 			return new ResponseEntity<>("Producto creado con éxito", HttpStatus.CREATED);
-		} else if (status == 2) {
-			return new ResponseEntity<>("Categoría no encontrada", HttpStatus.BAD_REQUEST);
-		} else {
-			return new ResponseEntity<>("Error al crear el producto", HttpStatus.BAD_REQUEST);
-		}
-	}
-
-	@PostMapping(path = "/createjson", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> createNewWithJSON(@RequestBody ProductoDTO newProducto) {
-		int status = productoSer.create(newProducto);
-
-		if (status == 0) {
-			return new ResponseEntity<>("Producto creado correctamente", HttpStatus.CREATED);
 		} else if (status == 2) {
 			return new ResponseEntity<>("Categoría no encontrada", HttpStatus.BAD_REQUEST);
 		} else {
@@ -116,6 +74,26 @@ public class ProductoController {
 		} else {
 			return new ResponseEntity<>("Producto no encontrado", HttpStatus.NOT_FOUND);
 		}
+	}
+
+	@GetMapping(path = "/predeterminados")
+	public ResponseEntity<List<ProductoDTO>> obtenerPredeterminados() {
+		List<ProductoDTO> productos = productoSer.obtenerPredeterminados();
+
+		if (productos.isEmpty()) {
+			return new ResponseEntity<>(productos, HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(productos, HttpStatus.OK);
+	}
+
+	@GetMapping(path = "/personalizados")
+	public ResponseEntity<List<ProductoDTO>> obtenerPersonalizados() {
+		List<ProductoDTO> productos = productoSer.obtenerPersonalizados();
+
+		if (productos.isEmpty()) {
+			return new ResponseEntity<>(productos, HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<>(productos, HttpStatus.OK);
 	}
 
 	@DeleteMapping(path = "/deletebyid/{id}")

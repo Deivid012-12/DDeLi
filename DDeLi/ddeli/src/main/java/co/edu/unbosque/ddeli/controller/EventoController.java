@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,14 +36,17 @@ public class EventoController {
 		}
 	}
 
-	@GetMapping(path = "/obtenerPorUsuario/{idUsuario}")
-	public ResponseEntity<List<EventoDTO>> obtenerPorUsuario(@PathVariable Long idUsuario) {
-		List<EventoDTO> eventos = eventoSer.obtenerPorUsuario(idUsuario);
+	@GetMapping("/obtenerPorUsuario")
+	public ResponseEntity<List<EventoDTO>> obtenerPorUsuario(Authentication authentication) {
+
+		String correo = authentication.getName();
+		List<EventoDTO> eventos = eventoSer.obtenerPorCorreo(correo);
+
 		if (eventos.isEmpty()) {
 			return new ResponseEntity<>(eventos, HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(eventos, HttpStatus.OK);
 		}
+
+		return new ResponseEntity<>(eventos, HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/obtenerPorTipo/{tipoEvento}")
@@ -55,20 +59,41 @@ public class EventoController {
 		}
 	}
 
-	@PostMapping(path = "/crear")
-	public ResponseEntity<String> crear(@RequestBody EventoDTO newEvento) {
-		int status = eventoSer.create(newEvento);
+	@PostMapping("/crear")
+	public ResponseEntity<String> crear(@RequestBody EventoDTO newEvento, Authentication authentication) {
+
+		String correo = authentication.getName();
+
+		int status = eventoSer.crearParaUsuario(correo, newEvento);
 
 		if (status == 0) {
 			return new ResponseEntity<>("Evento creado con éxito", HttpStatus.CREATED);
-		} else if (status == 1) {
-			return new ResponseEntity<>("Usuario no encontrado", HttpStatus.NOT_FOUND);
-		} else if (status == 2) {
-			return new ResponseEntity<>("Ya existe ese evento para este usuario en esa fecha",
-					HttpStatus.NOT_ACCEPTABLE);
-		} else {
-			return new ResponseEntity<>("Error al crear el evento", HttpStatus.BAD_REQUEST);
 		}
+
+		return new ResponseEntity<>("Error al crear evento", HttpStatus.BAD_REQUEST);
+	}
+
+	@PostMapping("/crearMio")
+	public ResponseEntity<String> crearMio(@RequestBody EventoDTO newEvento, Authentication authentication) {
+		String correo = authentication.getName();
+		int status = eventoSer.crearParaUsuario(correo, newEvento);
+
+		if (status == 0)
+			return new ResponseEntity<>("Evento creado con éxito", HttpStatus.CREATED);
+		else if (status == 2)
+			return new ResponseEntity<>("Ya existe ese evento en esa fecha", HttpStatus.NOT_ACCEPTABLE);
+		else
+			return new ResponseEntity<>("Error al crear el evento", HttpStatus.BAD_REQUEST);
+	}
+
+	// Y mis eventos:
+	@GetMapping("/misEventos")
+	public ResponseEntity<List<EventoDTO>> misEventos(Authentication authentication) {
+		String correo = authentication.getName();
+		List<EventoDTO> eventos = eventoSer.obtenerPorCorreo(correo);
+		if (eventos.isEmpty())
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(eventos, HttpStatus.OK);
 	}
 
 	@PostMapping(path = "/createjson", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

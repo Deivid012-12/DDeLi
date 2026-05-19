@@ -40,13 +40,9 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 		Usuario user = modelMapper.map(newData, Usuario.class);
 		Random tokenR = new Random();
 		int token = 10000 + tokenR.nextInt(90000);
-		if (findNombreAlreadyTaken(user.getNombre())) {
-
-			return 1;
-		}
 		if (findCorreoAlreadyTaken(user.getCorreo())) {
 
-			return 2;
+			return 1;
 		}
 		user.setContrasenia(passwordEncoder.encode(newData.getContrasenia()));
 		if (newData.getRol() != null) {
@@ -116,13 +112,6 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 		return 1;
 	}
 
-	public boolean findNombreAlreadyTaken(String nombre) {
-
-		Optional<Usuario> found = userRepo.findByNombre(nombre);
-
-		return found.isPresent();
-	}
-
 	public boolean findCorreoAlreadyTaken(String correo) {
 
 		Optional<Usuario> found = userRepo.findByCorreo(correo);
@@ -138,7 +127,7 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 
 			Usuario user = userOpt.get();
 
-			if (passwordEncoder.matches(password, user.getPassword())) {
+			if (passwordEncoder.matches(password, user.getContrasenia())) {
 
 				return 0;
 			}
@@ -160,20 +149,6 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 	public boolean exist(Long id) {
 
 		return userRepo.existsById(id);
-	}
-
-	public int deleteById(Long id) {
-
-		Optional<Usuario> found = userRepo.findById(id);
-
-		if (found.isPresent()) {
-
-			userRepo.delete(found.get());
-
-			return 0;
-		}
-
-		return 1;
 	}
 
 	public int deleteByCorreo(String correo) {
@@ -218,11 +193,31 @@ public class UsuarioService implements CRUDOperation<UsuarioDTO> {
 		return modelMapper.map(usuario, UsuarioDTO.class);
 	}
 
-	public UsuarioDTO obtenerPorNombre(String nombre) {
+	public List<UsuarioDTO> obtenerPorNombre(String nombre) {
 
-		Usuario usuario = userRepo.findByNombre(nombre)
-				.orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + nombre));
+		List<Usuario> usuarios = userRepo.findAllByNombre(nombre);
 
-		return modelMapper.map(usuario, UsuarioDTO.class);
+		List<UsuarioDTO> dtoList = new ArrayList<>();
+
+		usuarios.forEach(usuario -> {
+			dtoList.add(modelMapper.map(usuario, UsuarioDTO.class));
+		});
+
+		return dtoList;
+	}
+	public void reenviarCodigo(String correo) {
+	    Usuario usuario = userRepo.findByCorreo(correo)
+	        .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+	    if (usuario.isVerificado()) {
+	        throw new RuntimeException("La cuenta ya está verificada");
+	    }
+
+	    Random tokenR = new Random();
+	    int nuevoToken = 10000 + tokenR.nextInt(90000);
+	    usuario.setToken(nuevoToken);
+	    userRepo.save(usuario);
+
+	    envioCorreo.enviarCorreoVerificacion(correo, nuevoToken);
 	}
 }

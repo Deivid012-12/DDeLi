@@ -38,14 +38,15 @@ public class PedidoController {
 
 	@GetMapping(path = "/misPedidos")
 	public ResponseEntity<List<PedidoDTO>> obtenerMisPedidos(Authentication authentication) {
-	    String correo = authentication.getName();
-	    List<PedidoDTO> pedidos = pedidoSer.obtenerPorCorreo(correo);
-	    if (pedidos.isEmpty()) {
-	        return new ResponseEntity<>(pedidos, HttpStatus.NO_CONTENT);
-	    } else {
-	        return new ResponseEntity<>(pedidos, HttpStatus.OK);
-	    }
+		String correo = authentication.getName();
+		List<PedidoDTO> pedidos = pedidoSer.obtenerPorCorreo(correo);
+		if (pedidos.isEmpty()) {
+			return new ResponseEntity<>(pedidos, HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<>(pedidos, HttpStatus.OK);
+		}
 	}
+
 	@GetMapping(path = "/getbyid/{id}")
 	public ResponseEntity<PedidoDTO> getById(@PathVariable Long id) {
 		return pedidoSer.obtenerPorId(id).map(pedido -> new ResponseEntity<>(pedido, HttpStatus.OK))
@@ -54,21 +55,20 @@ public class PedidoController {
 
 	@PostMapping(path = "/confirmarCarrito/{idCarrito}")
 	public ResponseEntity<String> confirmarCarrito(@PathVariable Long idCarrito,
-			@RequestParam(required = false) Long idPromocion) {
+			@RequestParam(required = false) Long idPromocion, @RequestParam(required = false) Long idEvento) {
 		try {
-			PedidoDTO pedido = pedidoSer.confirmarCarrito(idCarrito, idPromocion);
+			PedidoDTO pedido = pedidoSer.confirmarCarrito(idCarrito, idPromocion, idEvento);
 			return new ResponseEntity<>("Pedido creado con éxito - ID: " + pedido.getIdPedido(), HttpStatus.CREATED);
 		} catch (RuntimeException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 
-
 	@PostMapping(path = "/confirmarjson/{idCarrito}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> confirmarCarritoJSON(@PathVariable Long idCarrito,
-			@RequestParam(required = false) Long idPromocion) {
+			@RequestParam(required = false) Long idPromocion, Long idEvento) {
 		try {
-			PedidoDTO pedido = pedidoSer.confirmarCarrito(idCarrito, idPromocion);
+			PedidoDTO pedido = pedidoSer.confirmarCarrito(idCarrito, idPromocion, idEvento);
 			return new ResponseEntity<>("Pedido creado correctamente - ID: " + pedido.getIdPedido(),
 					HttpStatus.CREATED);
 		} catch (RuntimeException e) {
