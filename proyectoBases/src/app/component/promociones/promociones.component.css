@@ -1,15 +1,11 @@
-/* FUENTES — agregar en index.html:
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
-*/
+
 
 .fondo {
   background: linear-gradient(135deg, #f7cdd8 10%, #f0b3c4 40%, #e8708a 100%);
   min-height: 100vh;
   padding-bottom: 80px;
 }
-/* =========================
-   HERO
-========================= */
+
 
 .page-hero {
   text-align: center;
